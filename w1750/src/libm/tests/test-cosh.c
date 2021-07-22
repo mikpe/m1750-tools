@@ -1,0 +1,116 @@
+/*
+ * Test for ANSI Standard C: 7.5.3.1
+ * 
+ * #include <math.h>
+ * double cosh (double x);
+ * 
+ * Copyright (c) 1997, Chris Nettleton Software
+ *
+ * This test program was developed for European Space Agency contract 
+ * 11935/96/NL/JG. Permission to use copy, modify, and distribute this 
+ * software for any purpose without fee is hereby granted, provided that 
+ * this entire notice is included in all copies of any software which is 
+ * or includes a copy or modification of this software and in all copies 
+ * of the supporting documentation for such software. This software is 
+ * provided "as is", without any express or implied warranty. In 
+ * particular, neither the author nor the European Space Agency makes 
+ * any representation or warranty of any kind concerning the 
+ * merchantability of this software or its fitness for any particular 
+ * purpose. 
+ *
+ * $Log: test-cosh.c,v $
+ * Revision 1.1  1997/05/07 09:29:36  nettleto
+ * Initial revision
+ *
+ */
+
+#include <math.h>
+
+#include <report.h>
+#include <float.h>
+
+
+static struct test {
+  double x;
+  double y;
+} tests [] = {
+  -4.134659046875854e+00, 3.124214840157332e+01, 
+  -2.602186889368570e+00, 6.783662643354674e+00, 
+  -5.046662302998213e-01, 1.130069801053910e+00, 
+  -4.476208103335553e+00, 4.395605296186967e+01, 
+  3.501978925116530e+00, 1.660559376385675e+01, 
+  3.104281081844118e+00, 1.116902149591044e+01, 
+  4.335924022262465e+00, 3.820430360901116e+01, 
+  -4.711298462392759e+00, 5.560272185476730e+01, 
+  -3.242728245842960e+00, 1.282126816196486e+01, 
+  2.552401112587275e+00, 6.457893218513372e+00, 
+  -7.749497003704700e-01, 1.315604952380340e+00, 
+  1.782060688670895e+00, 3.055189799963927e+00, 
+  1.993730061171970e+00, 3.739529299404865e+00, 
+  -6.440505698615970e-01, 1.214669597798838e+00, 
+  4.339413554819595e+00, 3.833780596758820e+01, 
+  -4.421694686377042e+00, 4.162462037427387e+01, 
+  -9.765607711479971e-01, 1.515956204444056e+00, 
+  -1.723757061122651e+00, 2.891971995182878e+00, 
+  -6.723078367055987e+00, 4.156870249732897e+02, 
+  -4.404573369906650e-01, 1.098579719054629e+00, 
+  3.670005308337482e+00, 1.963879527896500e+01, 
+  -4.247175934108083e+00, 3.496100695568970e+01, 
+  2.689841018182316e+00, 7.398612885027649e+00, 
+  5.997633897221622e+00, 2.012389262619788e+02, 
+  -1.005185494458636e+00, 1.549195407669586e+00, 
+  5.836615777688174e-01, 1.175221070365498e+00, 
+  -3.082017030820308e-01, 1.047871286237379e+00, 
+  -1.748111676728735e+00, 2.958924387013018e+00, 
+  4.523814793330777e+00, 4.609872422218740e+01, 
+  3.726016696498139e+00, 2.076875322010164e+01, 
+  5.057154003317493e+00, 7.857450774704697e+01, 
+  -4.397400886731567e+00, 4.062587640054294e+01, 
+  4.993024642955757e+00, 7.369415581218560e+01, 
+  4.524975301475751e+00, 4.615224063284384e+01, 
+  4.874906983653984e+00, 6.548480342234208e+01, 
+  1.879651067722596e+00, 3.351930945192667e+00, 
+  -8.230315458590658e-01, 1.358245946632216e+00, 
+  4.948403476623469e+00, 7.047842467099078e+01, 
+  -4.971094961202781e+00, 7.209580657289403e+01, 
+  -4.672048626639397e+00, 5.346295170508522e+01, 
+  9.504975798233630e-01, 1.486772606604515e+00, 
+  -5.949278415887438e-01, 1.182251245714924e+00, 
+  5.238177961593559e+00, 9.416598057074481e+01, 
+  -2.635565846493556e+00, 7.011441434605514e+00, 
+  -2.497483538637687e+00, 6.117083774394346e+00, 
+  5.233217043265336e+00, 9.370001400611541e+01, 
+  -5.763782067600573e+00, 1.592769867560307e+02, 
+  -4.678199987293416e+00, 5.379277764396429e+01, 
+  -4.881051015996837e+00, 6.588833579012942e+01, 
+};
+
+
+int
+main ()
+{
+  int len;
+  int i;
+  double ms = 0.0;
+
+  test ("test-cosh", "test for the cosh function");
+
+  len = sizeof (tests) / sizeof (struct test);
+
+  for (i = 0; i < len; i++)
+    {
+      double x = tests [i].x;
+      double y = cosh (x);
+      double err = y - tests [i].y;
+
+      ms += err * err;
+      if (abs (err) >= 100.0 * DBL_EPSILON)
+        failed ("x = %.10e, err = %+e, y = %.12e", x, err, y);
+    }
+
+  comment ("rms error = %.3e", sqrt (ms / len));
+
+  result ();
+}
+
+

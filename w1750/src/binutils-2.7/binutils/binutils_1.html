@@ -1,0 +1,504 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from binutils.texi on 29 November 1996 -->
+
+<TITLE>gnu Binary Utilities - ar</TITLE>
+</HEAD>
+<BODY>
+Go to the first, previous, <A HREF="binutils_2.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC1" HREF="binutils_toc.html#TOC1">ar</A></H1>
+
+<P>
+<A NAME="IDX1"></A>
+<A NAME="IDX2"></A>
+<A NAME="IDX3"></A>
+
+<PRE>
+m1750-coff-ar [-]<VAR>p</VAR>[<VAR>mod</VAR> [<VAR>relpos</VAR>]] <VAR>archive</VAR> [<VAR>member</VAR>...]
+m1750-coff-ar -M [ &#60;mri-script ]
+</PRE>
+
+<P>
+The GNU <CODE>ar</CODE> program creates, modifies, and extracts from
+archives.  An <STRONG>archive</STRONG> is a single file holding a collection of
+other files in a structure that makes it possible to retrieve
+the original individual files (called <STRONG>members</STRONG> of the archive).
+
+</P>
+<P>
+The original files' contents, mode (permissions), timestamp, owner, and
+group are preserved in the archive, and can be restored on
+extraction.  
+
+</P>
+<P>
+<A NAME="IDX4"></A>
+GNU <CODE>ar</CODE> can maintain archives whose members have names of any
+length; however, depending on how <CODE>ar</CODE> is configured on your
+system, a limit on member-name length may be imposed for compatibility
+with archive formats maintained with other tools.  If it exists, the
+limit is often 15 characters (typical of formats related to a.out) or 16
+characters (typical of formats related to coff).
+
+</P>
+<P>
+<A NAME="IDX5"></A>
+<CODE>ar</CODE> is considered a binary utility because archives of this sort
+are most often used as <STRONG>libraries</STRONG> holding commonly needed
+subroutines.
+
+</P>
+<P>
+<A NAME="IDX6"></A>
+<CODE>ar</CODE> creates an index to the symbols defined in relocatable
+object modules in the archive when you specify the modifier <SAMP>`s'</SAMP>.
+Once created, this index is updated in the archive whenever <CODE>ar</CODE>
+makes a change to its contents (save for the <SAMP>`q'</SAMP> update operation).
+An archive with such an index speeds up linking to the library, and
+allows routines in the library to call each other without regard to
+their placement in the archive.
+
+</P>
+<P>
+You may use <SAMP>`nm -s'</SAMP> or <SAMP>`nm --print-armap'</SAMP> to list this index
+table.  If an archive lacks the table, another form of <CODE>ar</CODE> called
+<CODE>ranlib</CODE> can be used to add just the table.
+
+</P>
+<P>
+<A NAME="IDX7"></A>
+<A NAME="IDX8"></A>
+GNU <CODE>ar</CODE> is designed to be compatible with two different
+facilities.  You can control its activity using command-line options,
+like the different varieties of <CODE>ar</CODE> on Unix systems; or, if you
+specify the single command-line option <SAMP>`-M'</SAMP>, you can control it
+with a script supplied via standard input, like the MRI "librarian"
+program.
+
+</P>
+
+
+
+<H2><A NAME="SEC2" HREF="binutils_toc.html#TOC2">Controlling <CODE>ar</CODE> on the command line</A></H2>
+
+
+<PRE>
+m1750-coff-ar [-]<VAR>p</VAR>[<VAR>mod</VAR> [<VAR>relpos</VAR>]] <VAR>archive</VAR> [<VAR>member</VAR>...]
+</PRE>
+
+<P>
+<A NAME="IDX9"></A>
+When you use <CODE>ar</CODE> in the Unix style, <CODE>ar</CODE> insists on at least two
+arguments to execute: one keyletter specifying the <EM>operation</EM>
+(optionally accompanied by other keyletters specifying
+<EM>modifiers</EM>), and the archive name to act on.
+
+</P>
+<P>
+Most operations can also accept further <VAR>member</VAR> arguments,
+specifying particular files to operate on.
+
+</P>
+<P>
+GNU <CODE>ar</CODE> allows you to mix the operation code <VAR>p</VAR> and modifier
+flags <VAR>mod</VAR> in any order, within the first command-line argument.
+
+</P>
+<P>
+If you wish, you may begin the first command-line argument with a
+dash.
+
+</P>
+<P>
+<A NAME="IDX10"></A>
+The <VAR>p</VAR> keyletter specifies what operation to execute; it may be
+any of the following, but you must specify only one of them:
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>d</CODE>
+<DD>
+<A NAME="IDX11"></A>
+<EM>Delete</EM> modules from the archive.  Specify the names of modules to
+be deleted as <VAR>member</VAR>...; the archive is untouched if you
+specify no files to delete.
+
+If you specify the <SAMP>`v'</SAMP> modifier, <CODE>ar</CODE> lists each module
+as it is deleted.
+
+<DT><CODE>m</CODE>
+<DD>
+<A NAME="IDX12"></A>
+Use this operation to <EM>move</EM> members in an archive.
+
+The ordering of members in an archive can make a difference in how
+programs are linked using the library, if a symbol is defined in more
+than one member.  
+
+If no modifiers are used with <CODE>m</CODE>, any members you name in the
+<VAR>member</VAR> arguments are moved to the <EM>end</EM> of the archive;
+you can use the <SAMP>`a'</SAMP>, <SAMP>`b'</SAMP>, or <SAMP>`i'</SAMP> modifiers to move them to a
+specified place instead.
+
+<DT><CODE>p</CODE>
+<DD>
+<A NAME="IDX13"></A>
+<EM>Print</EM> the specified members of the archive, to the standard
+output file.  If the <SAMP>`v'</SAMP> modifier is specified, show the member
+name before copying its contents to standard output.
+
+If you specify no <VAR>member</VAR> arguments, all the files in the archive are
+printed.
+
+<DT><CODE>q</CODE>
+<DD>
+<A NAME="IDX14"></A>
+<EM>Quick append</EM>; add the files <VAR>member</VAR>... to the end of
+<VAR>archive</VAR>, without checking for replacement.
+
+The modifiers <SAMP>`a'</SAMP>, <SAMP>`b'</SAMP>, and <SAMP>`i'</SAMP> do <EM>not</EM> affect this
+operation; new members are always placed at the end of the archive.
+
+The modifier <SAMP>`v'</SAMP> makes <CODE>ar</CODE> list each file as it is appended.
+
+Since the point of this operation is speed, the archive's symbol table
+index is not updated, even if it already existed; you can use <SAMP>`ar s'</SAMP> or
+<CODE>ranlib</CODE> explicitly to update the symbol table index.
+
+<DT><CODE>r</CODE>
+<DD>
+<A NAME="IDX15"></A>
+Insert the files <VAR>member</VAR>... into <VAR>archive</VAR> (with
+<EM>replacement</EM>). This operation differs from <SAMP>`q'</SAMP> in that any
+previously existing members are deleted if their names match those being
+added.
+
+If one of the files named in <VAR>member</VAR>... does not exist, <CODE>ar</CODE>
+displays an error message, and leaves undisturbed any existing members
+of the archive matching that name.
+
+By default, new members are added at the end of the file; but you may
+use one of the modifiers <SAMP>`a'</SAMP>, <SAMP>`b'</SAMP>, or <SAMP>`i'</SAMP> to request
+placement relative to some existing member.
+
+The modifier <SAMP>`v'</SAMP> used with this operation elicits a line of
+output for each file inserted, along with one of the letters <SAMP>`a'</SAMP> or
+<SAMP>`r'</SAMP> to indicate whether the file was appended (no old member
+deleted) or replaced.
+
+<DT><CODE>t</CODE>
+<DD>
+<A NAME="IDX16"></A>
+Display a <EM>table</EM> listing the contents of <VAR>archive</VAR>, or those
+of the files listed in <VAR>member</VAR>... that are present in the
+archive.  Normally only the member name is shown; if you also want to
+see the modes (permissions), timestamp, owner, group, and size, you can
+request that by also specifying the <SAMP>`v'</SAMP> modifier.
+
+If you do not specify a <VAR>member</VAR>, all files in the archive
+are listed.
+
+<A NAME="IDX17"></A>
+<A NAME="IDX18"></A>
+If there is more than one file with the same name (say, <SAMP>`fie'</SAMP>) in
+an archive (say <SAMP>`b.a'</SAMP>), <SAMP>`ar t b.a fie'</SAMP> lists only the
+first instance; to see them all, you must ask for a complete
+listing--in our example, <SAMP>`ar t b.a'</SAMP>.
+
+<DT><CODE>x</CODE>
+<DD>
+<A NAME="IDX19"></A>
+<EM>Extract</EM> members (named <VAR>member</VAR>) from the archive.  You can
+use the <SAMP>`v'</SAMP> modifier with this operation, to request that
+<CODE>ar</CODE> list each name as it extracts it.
+
+If you do not specify a <VAR>member</VAR>, all files in the archive
+are extracted.
+
+</DL>
+
+<P>
+A number of modifiers (<VAR>mod</VAR>) may immediately follow the <VAR>p</VAR>
+keyletter, to specify variations on an operation's behavior:
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>a</CODE>
+<DD>
+<A NAME="IDX20"></A>
+Add new files <EM>after</EM> an existing member of the
+archive.  If you use the modifier <SAMP>`a'</SAMP>, the name of an existing archive
+member must be present as the <VAR>relpos</VAR> argument, before the
+<VAR>archive</VAR> specification.
+
+<DT><CODE>b</CODE>
+<DD>
+Add new files <EM>before</EM> an existing member of the
+archive.  If you use the modifier <SAMP>`b'</SAMP>, the name of an existing archive
+member must be present as the <VAR>relpos</VAR> argument, before the
+<VAR>archive</VAR> specification.  (same as <SAMP>`i'</SAMP>).
+
+<DT><CODE>c</CODE>
+<DD>
+<A NAME="IDX21"></A>
+<EM>Create</EM> the archive.  The specified <VAR>archive</VAR> is always
+created if it did not exist, when you request an update.  But a warning is
+issued unless you specify in advance that you expect to create it, by
+using this modifier.
+
+<DT><CODE>f</CODE>
+<DD>
+Truncate names in the archive.  GNU <CODE>ar</CODE> will normally permit file
+names of any length.  This will cause it to create archives which are
+not compatible with the native <CODE>ar</CODE> program on some systems.  If
+this is a concern, the <SAMP>`f'</SAMP> modifier may be used to truncate file
+names when putting them in the archive.
+
+<DT><CODE>i</CODE>
+<DD>
+Insert new files <EM>before</EM> an existing member of the
+archive.  If you use the modifier <SAMP>`i'</SAMP>, the name of an existing archive
+member must be present as the <VAR>relpos</VAR> argument, before the
+<VAR>archive</VAR> specification.  (same as <SAMP>`b'</SAMP>).
+
+<DT><CODE>l</CODE>
+<DD>
+This modifier is accepted but not used.
+
+<DT><CODE>o</CODE>
+<DD>
+<A NAME="IDX22"></A>
+Preserve the <EM>original</EM> dates of members when extracting them.  If
+you do not specify this modifier, files extracted from the archive
+are stamped with the time of extraction.
+
+<DT><CODE>s</CODE>
+<DD>
+<A NAME="IDX23"></A>
+Write an object-file index into the archive, or update an existing one,
+even if no other change is made to the archive.  You may use this modifier
+flag either with any operation, or alone.  Running <SAMP>`ar s'</SAMP> on an
+archive is equivalent to running <SAMP>`ranlib'</SAMP> on it.
+
+<DT><CODE>u</CODE>
+<DD>
+<A NAME="IDX24"></A>
+Normally, <SAMP>`ar r'</SAMP>... inserts all files
+listed into the archive.  If you would like to insert <EM>only</EM> those
+of the files you list that are newer than existing members of the same
+names, use this modifier.  The <SAMP>`u'</SAMP> modifier is allowed only for the
+operation <SAMP>`r'</SAMP> (replace).  In particular, the combination <SAMP>`qu'</SAMP> is
+not allowed, since checking the timestamps would lose any speed
+advantage from the operation <SAMP>`q'</SAMP>.
+
+<DT><CODE>v</CODE>
+<DD>
+This modifier requests the <EM>verbose</EM> version of an operation.  Many
+operations display additional information, such as filenames processed,
+when the modifier <SAMP>`v'</SAMP> is appended.
+
+<DT><CODE>V</CODE>
+<DD>
+This modifier shows the version number of <CODE>ar</CODE>.
+</DL>
+
+
+
+<H2><A NAME="SEC3" HREF="binutils_toc.html#TOC3">Controlling <CODE>ar</CODE> with a script</A></H2>
+
+
+<PRE>
+m1750-coff-ar -M [ &#60;<VAR>script</VAR> ]
+</PRE>
+
+<P>
+<A NAME="IDX25"></A>
+<A NAME="IDX26"></A>
+If you use the single command-line option <SAMP>`-M'</SAMP> with <CODE>ar</CODE>, you
+can control its operation with a rudimentary command language.  This
+form of <CODE>ar</CODE> operates interactively if standard input is coming
+directly from a terminal.  During interactive use, <CODE>ar</CODE> prompts for
+input (the prompt is <SAMP>`AR &#62;'</SAMP>), and continues executing even after
+errors.  If you redirect standard input to a script file, no prompts are
+issued, and <CODE>ar</CODE> abandons execution (with a nonzero exit code)
+on any error.
+
+</P>
+<P>
+The <CODE>ar</CODE> command language is <EM>not</EM> designed to be equivalent
+to the command-line options; in fact, it provides somewhat less control
+over archives.  The only purpose of the command language is to ease the
+transition to GNU <CODE>ar</CODE> for developers who already have scripts
+written for the MRI "librarian" program.
+
+</P>
+<P>
+The syntax for the <CODE>ar</CODE> command language is straightforward:
+
+<UL>
+<LI>
+
+commands are recognized in upper or lower case; for example, <CODE>LIST</CODE>
+is the same as <CODE>list</CODE>.  In the following descriptions, commands are
+shown in upper case for clarity.
+
+<LI>
+
+a single command may appear on each line; it is the first word on the
+line.
+
+<LI>
+
+empty lines are allowed, and have no effect.
+
+<LI>
+
+comments are allowed; text after either of the characters <SAMP>`*'</SAMP>
+or <SAMP>`;'</SAMP> is ignored.
+
+<LI>
+
+Whenever you use a list of names as part of the argument to an <CODE>ar</CODE>
+command, you can separate the individual names with either commas or
+blanks.  Commas are shown in the explanations below, for clarity.
+
+<LI>
+
+<SAMP>`+'</SAMP> is used as a line continuation character; if <SAMP>`+'</SAMP> appears
+at the end of a line, the text on the following line is considered part
+of the current command.
+</UL>
+
+<P>
+Here are the commands you can use in <CODE>ar</CODE> scripts, or when using
+<CODE>ar</CODE> interactively.  Three of them have special significance:
+
+</P>
+<P>
+<CODE>OPEN</CODE> or <CODE>CREATE</CODE> specify a <STRONG>current archive</STRONG>, which is
+a temporary file required for most of the other commands.
+
+</P>
+<P>
+<CODE>SAVE</CODE> commits the changes so far specified by the script.  Prior
+to <CODE>SAVE</CODE>, commands affect only the temporary copy of the current
+archive.
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>ADDLIB <VAR>archive</VAR></CODE>
+<DD>
+<DT><CODE>ADDLIB <VAR>archive</VAR> (<VAR>module</VAR>, <VAR>module</VAR>, ... <VAR>module</VAR>)</CODE>
+<DD>
+Add all the contents of <VAR>archive</VAR> (or, if specified, each named
+<VAR>module</VAR> from <VAR>archive</VAR>) to the current archive.
+
+Requires prior use of <CODE>OPEN</CODE> or <CODE>CREATE</CODE>.
+
+<DT><CODE>ADDMOD <VAR>member</VAR>, <VAR>member</VAR>, ... <VAR>member</VAR></CODE>
+<DD>
+Add each named <VAR>member</VAR> as a module in the current archive.
+
+Requires prior use of <CODE>OPEN</CODE> or <CODE>CREATE</CODE>.
+
+<DT><CODE>CLEAR</CODE>
+<DD>
+Discard the contents of the current archive, cancelling the effect of
+any operations since the last <CODE>SAVE</CODE>.  May be executed (with no
+effect) even if  no current archive is specified.
+
+<DT><CODE>CREATE <VAR>archive</VAR></CODE>
+<DD>
+Creates an archive, and makes it the current archive (required for many
+other commands).  The new archive is created with a temporary name; it
+is not actually saved as <VAR>archive</VAR> until you use <CODE>SAVE</CODE>.
+You can overwrite existing archives; similarly, the contents of any
+existing file named <VAR>archive</VAR> will not be destroyed until <CODE>SAVE</CODE>.
+
+<DT><CODE>DELETE <VAR>module</VAR>, <VAR>module</VAR>, ... <VAR>module</VAR></CODE>
+<DD>
+Delete each listed <VAR>module</VAR> from the current archive; equivalent to
+<SAMP>`ar -d <VAR>archive</VAR> <VAR>module</VAR> ... <VAR>module</VAR>'</SAMP>.
+
+Requires prior use of <CODE>OPEN</CODE> or <CODE>CREATE</CODE>.
+
+<DT><CODE>DIRECTORY <VAR>archive</VAR> (<VAR>module</VAR>, ... <VAR>module</VAR>)</CODE>
+<DD>
+<DT><CODE>DIRECTORY <VAR>archive</VAR> (<VAR>module</VAR>, ... <VAR>module</VAR>) <VAR>outputfile</VAR></CODE>
+<DD>
+List each named <VAR>module</VAR> present in <VAR>archive</VAR>.  The separate
+command <CODE>VERBOSE</CODE> specifies the form of the output: when verbose
+output is off, output is like that of <SAMP>`ar -t <VAR>archive</VAR>
+<VAR>module</VAR>...'</SAMP>.  When verbose output is on, the listing is like
+<SAMP>`ar -tv <VAR>archive</VAR> <VAR>module</VAR>...'</SAMP>.
+
+Output normally goes to the standard output stream; however, if you
+specify <VAR>outputfile</VAR> as a final argument, <CODE>ar</CODE> directs the
+output to that file.
+
+<DT><CODE>END</CODE>
+<DD>
+Exit from <CODE>ar</CODE>, with a <CODE>0</CODE> exit code to indicate successful
+completion.  This command does not save the output file; if you have
+changed the current archive since the last <CODE>SAVE</CODE> command, those
+changes are lost.
+
+<DT><CODE>EXTRACT <VAR>module</VAR>, <VAR>module</VAR>, ... <VAR>module</VAR></CODE>
+<DD>
+Extract each named <VAR>module</VAR> from the current archive, writing them
+into the current directory as separate files.  Equivalent to <SAMP>`ar -x
+<VAR>archive</VAR> <VAR>module</VAR>...'</SAMP>.
+
+Requires prior use of <CODE>OPEN</CODE> or <CODE>CREATE</CODE>.
+
+<DT><CODE>LIST</CODE>
+<DD>
+Display full contents of the current archive, in "verbose" style
+regardless of the state of <CODE>VERBOSE</CODE>.  The effect is like <SAMP>`ar
+tv <VAR>archive</VAR>'</SAMP>).  (This single command is a GNU <CODE>ld</CODE>
+enhancement, rather than present for MRI compatibility.)
+
+Requires prior use of <CODE>OPEN</CODE> or <CODE>CREATE</CODE>.
+
+<DT><CODE>OPEN <VAR>archive</VAR></CODE>
+<DD>
+Opens an existing archive for use as the current archive (required for
+many other commands).  Any changes as the result of subsequent commands
+will not actually affect <VAR>archive</VAR> until you next use <CODE>SAVE</CODE>.
+
+<DT><CODE>REPLACE <VAR>module</VAR>, <VAR>module</VAR>, ... <VAR>module</VAR></CODE>
+<DD>
+In the current archive, replace each existing <VAR>module</VAR> (named in
+the <CODE>REPLACE</CODE> arguments) from files in the current working directory.
+To execute this command without errors, both the file, and the module in
+the current archive, must exist. 
+
+Requires prior use of <CODE>OPEN</CODE> or <CODE>CREATE</CODE>.
+
+<DT><CODE>VERBOSE</CODE>
+<DD>
+Toggle an internal flag governing the output from <CODE>DIRECTORY</CODE>.
+When the flag is on, <CODE>DIRECTORY</CODE> output matches output from
+<SAMP>`ar -tv '</SAMP>....
+
+<DT><CODE>SAVE</CODE>
+<DD>
+Commit your changes to the current archive, and actually save it as a
+file with the name specified in the last <CODE>CREATE</CODE> or <CODE>OPEN</CODE>
+command. 
+
+Requires prior use of <CODE>OPEN</CODE> or <CODE>CREATE</CODE>.
+
+</DL>
+
+<P><HR><P>
+Go to the first, previous, <A HREF="binutils_2.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+</BODY>
+</HTML>

@@ -1,0 +1,361 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from binutils.texi on 29 November 1996 -->
+
+<TITLE>gnu Binary Utilities - Selecting the target system</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_11.html">previous</A>, <A HREF="binutils_13.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC14" HREF="binutils_toc.html#TOC14">Selecting the target system</A></H1>
+
+<P>
+You can specify three aspects of the target system to the GNU
+binary file utilities, each in several ways:
+
+</P>
+
+<UL>
+<LI>
+
+the target
+
+<LI>
+
+the architecture
+
+<LI>
+
+the linker emulation (which applies to the linker only)
+</UL>
+
+<P>
+In the following summaries, the lists of ways to specify values are in
+order of decreasing precedence.  The ways listed first override those
+listed later.
+
+</P>
+<P>
+The commands to list valid values only list the values for which the
+programs you are running were configured.  If they were configured with
+<SAMP>`--enable-targets=all'</SAMP>, the commands list most of the available
+values, but a few are left out; not all targets can be configured in at
+once because some of them can only be configured <STRONG>native</STRONG> (on hosts
+with the same type as the target system).
+
+</P>
+
+
+
+<H2><A NAME="SEC15" HREF="binutils_toc.html#TOC15">Target Selection</A></H2>
+
+<P>
+A <STRONG>target</STRONG> is an object file format.  A given target may be
+supported for multiple architectures (see section <A HREF="binutils_12.html#SEC16">Architecture selection</A>).
+A target selection may also have variations for different operating
+systems or architectures.
+
+</P>
+<P>
+The command to list valid target values is <SAMP>`objdump -i'</SAMP>
+(the first column of output contains the relevant information).
+
+</P>
+<P>
+Some sample values are: <SAMP>`a.out-hp300bsd'</SAMP>, <SAMP>`ecoff-littlemips'</SAMP>,
+<SAMP>`a.out-sunos-big'</SAMP>.
+
+</P>
+
+<H3><CODE>objdump</CODE> Target</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line option: <SAMP>`-b'</SAMP> or <SAMP>`--target'</SAMP>
+
+<LI>
+
+environment variable <CODE>GNUTARGET</CODE>
+
+<LI>
+
+deduced from the input file
+</OL>
+
+
+<H3><CODE>objcopy</CODE> and <CODE>strip</CODE> Input Target</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line options: <SAMP>`-I'</SAMP> or <SAMP>`--input-target'</SAMP>, or <SAMP>`-F'</SAMP> or <SAMP>`--target'</SAMP>
+
+<LI>
+
+environment variable <CODE>GNUTARGET</CODE>
+
+<LI>
+
+deduced from the input file
+</OL>
+
+
+<H3><CODE>objcopy</CODE> and <CODE>strip</CODE> Output Target</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line options: <SAMP>`-O'</SAMP> or <SAMP>`--output-target'</SAMP>, or <SAMP>`-F'</SAMP> or <SAMP>`--target'</SAMP>
+
+<LI>
+
+the input target (see "<CODE>objcopy</CODE> and <CODE>strip</CODE> Input Target" above)
+
+<LI>
+
+environment variable <CODE>GNUTARGET</CODE>
+
+<LI>
+
+deduced from the input file
+</OL>
+
+
+<H3><CODE>nm</CODE>, <CODE>size</CODE>, and <CODE>strings</CODE> Target</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line option: <SAMP>`--target'</SAMP>
+
+<LI>
+
+environment variable <CODE>GNUTARGET</CODE>
+
+<LI>
+
+deduced from the input file
+</OL>
+
+
+<H3>Linker Input Target</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line option: <SAMP>`-b'</SAMP> or <SAMP>`--format'</SAMP>
+(see section `Options' in <CITE>Using LD</CITE>)
+
+<LI>
+
+script command <CODE>TARGET</CODE>
+(see section `Option Commands' in <CITE>Using LD</CITE>)
+
+<LI>
+
+environment variable <CODE>GNUTARGET</CODE>
+(see section `Environment' in <CITE>Using LD</CITE>)
+
+<LI>
+
+the default target of the selected linker emulation
+(see section <A HREF="binutils_12.html#SEC17">Linker emulation selection</A>)
+</OL>
+
+
+<H3>Linker Output Target</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line option: <SAMP>`-oformat'</SAMP>
+(see section `Options' in <CITE>Using LD</CITE>)
+
+<LI>
+
+script command <CODE>OUTPUT_FORMAT</CODE>
+(see section `Option Commands' in <CITE>Using LD</CITE>)
+
+<LI>
+
+the linker input target (see "Linker Input Target" above)
+</OL>
+
+
+
+<H2><A NAME="SEC16" HREF="binutils_toc.html#TOC16">Architecture selection</A></H2>
+
+<P>
+An <STRONG>architecture</STRONG> is a type of CPU on which an object file is
+to run.  Its name may contain a colon, separating the name of the
+processor family from the name of the particular CPU.
+
+</P>
+<P>
+The command to list valid architecture values is <SAMP>`objdump -i'</SAMP> (the
+second column contains the relevant information).
+
+</P>
+<P>
+Sample values: <SAMP>`m68k:68020'</SAMP>, <SAMP>`mips:3000'</SAMP>, <SAMP>`sparc'</SAMP>.
+
+</P>
+
+<H3><CODE>objdump</CODE> Architecture</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line option: <SAMP>`-m'</SAMP> or <SAMP>`--architecture'</SAMP>
+
+<LI>
+
+deduced from the input file
+</OL>
+
+
+<H3><CODE>objcopy</CODE>, <CODE>nm</CODE>, <CODE>size</CODE>, <CODE>strings</CODE> Architecture</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+deduced from the input file
+</OL>
+
+
+<H3>Linker Input Architecture</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+deduced from the input file
+</OL>
+
+
+<H3>Linker Output Architecture</H3>
+
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+script command <CODE>OUTPUT_ARCH</CODE>
+(see section `Option Commands' in <CITE>Using LD</CITE>)
+
+<LI>
+
+the default architecture from the linker output target
+(see section <A HREF="binutils_12.html#SEC15">Target Selection</A>)
+</OL>
+
+
+
+<H2><A NAME="SEC17" HREF="binutils_toc.html#TOC17">Linker emulation selection</A></H2>
+
+<P>
+A linker <STRONG>emulation</STRONG> is a "personality" of the linker, which gives
+the linker default values for the other aspects of the target system.
+In particular, it consists of
+
+</P>
+
+<UL>
+<LI>
+
+the linker script
+
+<LI>
+
+the target
+
+<LI>
+
+several "hook" functions that are run at certain stages of the linking
+process to do special things that some targets require
+</UL>
+
+<P>
+The command to list valid linker emulation values is <SAMP>`ld -V'</SAMP>.
+
+</P>
+<P>
+Sample values: <SAMP>`hp300bsd'</SAMP>, <SAMP>`mipslit'</SAMP>, <SAMP>`sun4'</SAMP>.
+
+</P>
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line option: <SAMP>`-m'</SAMP>
+(see section `Options' in <CITE>Using LD</CITE>)
+
+<LI>
+
+environment variable <CODE>LDEMULATION</CODE>
+
+<LI>
+
+compiled-in <CODE>DEFAULT_EMULATION</CODE> from <TT>`Makefile'</TT>,
+which comes from <CODE>EMUL</CODE> in <TT>`config/<VAR>target</VAR>.mt'</TT>
+</OL>
+
+<P><HR><P>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_11.html">previous</A>, <A HREF="binutils_13.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+</BODY>
+</HTML>

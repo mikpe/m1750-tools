@@ -1,0 +1,135 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from binutils.texi on 29 November 1996 -->
+
+<TITLE>gnu Binary Utilities - c++filt</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_9.html">previous</A>, <A HREF="binutils_11.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC12" HREF="binutils_toc.html#TOC12">c++filt</A></H1>
+
+<P>
+<A NAME="IDX101"></A>
+<A NAME="IDX102"></A>
+
+</P>
+
+<PRE>
+m1750-coff-c++filt [ -_ | --strip-underscores ]
+	[ -n | --no-strip-underscores ]
+        [ -s <VAR>format</VAR> | --format=<VAR>format</VAR> ]
+        [ --help ]  [ --version ]  [ <VAR>symbol</VAR>... ]
+</PRE>
+
+<P>
+The C++ language provides function overloading, which means that you can
+write many functions with the same name (providing each takes parameters
+of different types).  All C++ function names are encoded into a
+low-level assembly label (this process is known as
+<STRONG>mangling</STRONG>). The <CODE>c++filt</CODE> program does the inverse mapping: it
+decodes (<STRONG>demangles</STRONG>) low-level names into user-level names so that
+the linker can keep these overloaded functions from clashing.
+
+</P>
+<P>
+Every alphanumeric word (consisting of letters, digits, underscores,
+dollars, or periods) seen in the input is a potential label.  If the
+label decodes into a C++ name, the C++ name replaces the low-level
+name in the output.
+
+</P>
+<P>
+You can use <CODE>c++filt</CODE> to decipher individual symbols:
+
+</P>
+
+<PRE>
+m1750-coff-c++filt <VAR>symbol</VAR>
+</PRE>
+
+<P>
+If no <VAR>symbol</VAR> arguments are given, <CODE>c++filt</CODE> reads symbol
+names from the standard input and writes the demangled names to the
+standard output.  All results are printed on the standard output.
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>-_</CODE>
+<DD>
+<DT><CODE>--strip-underscores</CODE>
+<DD>
+On some systems, both the C and C++ compilers put an underscore in front
+of every name.  For example, the C name <CODE>foo</CODE> gets the low-level
+name <CODE>_foo</CODE>.  This option removes the initial underscore.  Whether
+<CODE>c++filt</CODE> removes the underscore by default is target dependent.
+
+<DT><CODE>-n</CODE>
+<DD>
+<DT><CODE>--no-strip-underscores</CODE>
+<DD>
+Do not remove the initial underscore.
+
+<DT><CODE>-s <VAR>format</VAR></CODE>
+<DD>
+<DT><CODE>--format=<VAR>format</VAR></CODE>
+<DD>
+GNU <CODE>nm</CODE> can decode three different methods of mangling, used by
+different C++ compilers.  The argument to this option selects which
+method it uses:
+
+<DL COMPACT>
+
+<DT><CODE>gnu</CODE>
+<DD>
+the one used by the GNU compiler (the default method)
+<DT><CODE>lucid</CODE>
+<DD>
+the one used by the Lucid compiler
+<DT><CODE>arm</CODE>
+<DD>
+the one specified by the C++ Annotated Reference Manual
+</DL>
+
+<DT><CODE>--help</CODE>
+<DD>
+Print a summary of the options to <CODE>c++filt</CODE> and exit.
+
+<DT><CODE>--version</CODE>
+<DD>
+Print the version number of <CODE>c++filt</CODE> and exit.
+</DL>
+
+
+<BLOCKQUOTE>
+<P>
+<EM>Warning:</EM> <CODE>c++filt</CODE> is a new utility, and the details of its
+user interface are subject to change in future releases.  In particular,
+a command-line option may be required in the the future to decode a name
+passed as an argument on the command line; in other words, 
+
+</P>
+
+<PRE>
+m1750-coff-c++filt <VAR>symbol</VAR>
+</PRE>
+
+<P>
+may in a future release become
+
+</P>
+
+<PRE>
+m1750-coff-c++filt <VAR>option</VAR> <VAR>symbol</VAR>
+</PRE>
+
+</BLOCKQUOTE>
+
+<P><HR><P>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_9.html">previous</A>, <A HREF="binutils_11.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+</BODY>
+</HTML>

@@ -1,0 +1,40 @@
+Welcome to GCC-1750 (Version 0.8) for WIN-32
+
+GCC-1750 is a cross compiler (based on GCC) for the MIL-STD-1750A/B
+processor.
+
+GCC-1750 is Copyright © 1996, Chris Nettleton Software, Farnborough, UK. 
+
+GCC-1750 is funded by the European Space Agency, ESTEC contract
+11935/NL/JG. 
+
+This distribution contains a port of GCC-1750 to WIN-32 platform.
+With this port you'll be able to develop C based applications
+for the 1750 on a Wintel platform.
+
+This port has been performed by:
+
+M. Martignano
+ESA/ESTEC/WME
+European Space Agency
+Keplerlaan 1
+2200AG Noordwijk The Netherlands
++31-71-565-5180
++31-71-565-5420
+maurizio@wm.estec.esa.nl
+
+See file COPYING for licensing and distribution information.
+
+THIS SOFTWARE IS PROVIDED "AS-IS'' AND WITHOUT WARRANTY OF ANY KIND,
+EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY
+WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  
+
+IN NO EVENT SHALL THE EUROPEAN SPACE AGENCY BE LIABLE FOR ANY SPECIAL,
+INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND, OR ANY
+DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF
+LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+OF THIS SOFTWARE. 
+
+
+

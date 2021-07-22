@@ -1,0 +1,17 @@
+Fri Aug  8 10:04:48 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* pthread_internals.h: Added code to set and clear _enbl to the
+	definitions for INTERRUPT_ENABLE and INTERRUPT_DISABLE. This will
+	allow the expanded memory call/return mechanism to work with
+	interrupts disabled, as in the pthread kernel.
+	
+	* pthread_create.c: (pthread_body) Added expanded memory case 
+	to the code that calls the body.
+
+	*intwait.c: (intwait_handler) Made the handler function 
+	external so that the compiler generates a long return.
+	
+Thu Jul 17 18:39:51 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* First complete release.
+

@@ -1,0 +1,19 @@
+This is the port of O. Kellogg's sim1750 Ver. 2.3b
+to WIN32. This port has been done by:
+
+Maurizio Martignano
+ESA/ESTEC/WME
+Keplerlaan 1
+2200 AG Noordwijk
+The Netherlands
+Tel. +31-71-565-5180
+Fax. +31-71-565-5420
+maurizio@wm.estec.esa.nl
+
+This port contains an enhanced support for
+the MAS381 box. With this support it
+is possible to have asynchronous I/O
+on the box serial lines.
+Check out the files "do_xio.c" , "exec.c" and "asyncio.c".
+
+

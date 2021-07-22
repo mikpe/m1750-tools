@@ -1,0 +1,272 @@
+#    Makefile template for Configure for the sim1750 library.
+#    Copyright (C) 1997 Free Software Foundation, Inc.
+#    Written by Chris Nettleton, based on z8k version
+#    by Cygnus Support.
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+VPATH = @srcdir@
+srcdir = @srcdir@
+srcroot = $(srcdir)/../..
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+host_alias = @host_alias@
+target_alias = @target_alias@
+program_transform_name = @program_transform_name@
+bindir = $(exec_prefix)/bin
+libdir = $(exec_prefix)/lib
+tooldir = $(libdir)/$(target_alias)
+
+datadir = $(prefix)/lib
+mandir = $(prefix)/man
+man1dir = $(mandir)/man1
+man2dir = $(mandir)/man2
+man3dir = $(mandir)/man3
+man4dir = $(mandir)/man4
+man5dir = $(mandir)/man5
+man6dir = $(mandir)/man6
+man7dir = $(mandir)/man7
+man8dir = $(mandir)/man8
+man9dir = $(mandir)/man9
+infodir = $(prefix)/info
+includedir = $(prefix)/include
+docdir = $(datadir)/doc
+
+SHELL = /bin/sh
+
+INSTALL = $(srcroot)/install.sh -c
+INSTALL_PROGRAM = $(INSTALL)
+INSTALL_DATA = $(INSTALL)
+INSTALL_XFORM = $(INSTALL) -t='$(program_transform_name)'
+INSTALL_XFORM1= $(INSTALL_XFORM) -b=.1
+
+AR = @AR@
+AR_FLAGS = rc
+CC = @CC@
+CFLAGS = @CFLAGS@ -DSTRDUP -DSTRNCASECMP -DLONGLONG -DMAS281 -DUNIX -DGNU_READLINE
+
+CC_FOR_BUILD = @CC_FOR_BUILD@
+MAKEINFO = makeinfo
+RANLIB = @RANLIB@
+
+HDEFINES = @HDEFINES@
+TDEFINES =
+
+.NOEXPORT:
+MAKEOVERRIDES=
+
+INCDIR = $(srcdir)/../../include
+CSEARCH = -I. -I$(srcdir)  -I../../include  -I../../gdb -I$(srcdir)/../../mmalloc/ \
+  -I../../bfd -I$(INCDIR) -I$(srcdir)/../../bfd -I$(srcdir)/../../gdb 
+DEP = mkdep
+
+TARGETLIB = libsim.a
+
+all:	run load libsim.a
+
+CFILES = \
+	m1750-dis.c \
+	$(srcdir)/sim_calls.c   \
+	$(srcdir)/arith.c       \
+	$(srcdir)/break.c       \
+	$(srcdir)/cmd.c	 \
+	$(srcdir)/cpu.c	 \
+	$(srcdir)/dism1750.c    \
+	$(srcdir)/do_xio.c      \
+	$(srcdir)/exec.c	\
+	$(srcdir)/flt1750.c     \
+	$(srcdir)/lic.c	 \
+	$(srcdir)/loadfile.c    \
+	$(srcdir)/main.c	\
+	$(srcdir)/phys_mem.c    \
+	$(srcdir)/peekpoke.c    \
+	$(srcdir)/sdisasm.c     \
+	$(srcdir)/smemacc.c     \
+	$(srcdir)/status.c      \
+	$(srcdir)/tekhex.c      \
+	$(srcdir)/tekops.c      \
+	$(srcdir)/tldldm.c      \
+	$(srcdir)/utils.c       \
+	$(srcdir)/load_coff.c   \
+	$(srcdir)/asyncio.c     \
+	$(srcdir)/xiodef.c \
+	../../gdb/version.c
+
+OFILES = \
+	sim_calls.o   \
+	arith.o       \
+	break.o       \
+	cmd.o	 \
+	cpu.o	 \
+	dism1750.o    \
+	do_xio.o      \
+	exec.o	\
+	flt1750.o     \
+	lic.o	 \
+	loadfile.o    \
+	main.o	\
+	phys_mem.o    \
+	peekpoke.o    \
+	sdisasm.o     \
+	smemacc.o     \
+	status.o      \
+	tekhex.o      \
+	tekops.o      \
+	tldldm.o      \
+	utils.o       \
+	load_coff.o   \
+	asyncio.o     \
+	xiodef.o      \
+	../../gdb/version.o
+
+
+run:$(OFILES) run.o
+	$(CC) $(CFLAGS) -o run run.o $(OFILES) ../../bfd/libbfd.a ../../libiberty/libiberty.a  \
+	../../opcodes/libopcodes.a  -lm -lreadline -ltermcap
+
+load : load.o ../../gdb/version.o
+	$(CC) $(CFLAGS) -o load load.o ../../gdb/version.o ../../bfd/libbfd.a ../../libiberty/libiberty.a  \
+	../../opcodes/libopcodes.a  -lm -lreadline -ltermcap
+
+$(TARGETLIB): $(OFILES)
+	 rm -f $(TARGETLIB)
+	 $(AR) $(AR_FLAGS) $(TARGETLIB) $(OFILES)
+	 $(RANLIB) $(TARGETLIB)
+
+.c.o:
+	$(CC) -c $(CFLAGS) $(HDEFINES) $(TDEFINES) $(CSEARCH) $(CSWITCHES) $<
+
+check:
+
+info:
+clean-info:
+install-info:
+
+tags etags: TAGS
+
+TAGS: force
+	etags $(INCDIR)/*.h $(srcdir)/*.h $(srcdir)/*.c
+
+mostlyclean clean:
+	rm -f *.[oa] *~ core  
+	rm -f run load libsim.a config.log
+
+distclean maintainer-clean realclean: clean
+	rm -f TAGS
+	rm -f Makefile config.cache config.log config.status config.h stamp-h
+
+# Dummy target to force execution of dependent targets.
+#
+force:
+
+# Copy the files into directories where they will be run.
+install:
+	$(INSTALL_XFORM) run $(bindir)/run
+	$(INSTALL_XFORM) load $(bindir)/load
+
+Makefile: Makefile.in config.status
+	CONFIG_FILES=Makefile CONFIG_HEADERS= $(SHELL) ./config.status
+
+config.h: stamp-h ; @true
+stamp-h: config.in config.status
+	CONFIG_FILES= CONFIG_HEADERS=config.h:config.in $(SHELL) ./config.status
+
+config.status: configure
+	$(SHELL) ./config.status --recheck
+
+dep: $(CFILES)
+	mkdep $(CFLAGS) $?
+
+arith.o: $(srcdir)/arch.h $(srcdir)/status.h $(srcdir)/flt1750.h $(srcdir)/arith.c
+	$(CC) -c $(CFLAGS) $(srcdir)/arith.c -o arith.o
+
+break.o: $(srcdir)/arch.h $(srcdir)/status.h $(srcdir)/utils.h \
+	  $(srcdir)/break.h $(srcdir)/type.h $(srcdir)/break.c
+	$(CC) -c $(CFLAGS) $(srcdir)/break.c -o break.o
+
+cmd.o: $(srcdir)/utils.h $(srcdir)/status.h \
+	  $(srcdir)/loadfile.h $(srcdir)/tekops.h $(srcdir)/phys_mem.h $(srcdir)/break.h \
+	  $(srcdir)/exec.h $(srcdir)/cmd.c
+	$(CC) -c $(CFLAGS) $(srcdir)/cmd.c -o cmd.o
+
+cpu.o: $(srcdir)/xiodef.h $(srcdir)/status.h \
+	  $(srcdir)/stime.h $(srcdir)/flt1750.h $(srcdir)/phys_mem.h $(srcdir)/break.h \
+	  $(srcdir)/arith.h $(srcdir)/cpu.c
+	$(CC) -c $(CFLAGS) $(srcdir)/cpu.c -o cpu.o
+
+dism1750.o: $(srcdir)/type.h $(srcdir)/xiodef.h \
+	  $(srcdir)/dism1750.c
+	$(CC) -c $(CFLAGS) $(srcdir)/dism1750.c  -o dism1750.o
+
+do_xio.o: $(srcdir)/arch.h $(srcdir)/status.h $(srcdir)/do_xio.c
+	$(CC) -c $(CFLAGS) $(srcdir)/do_xio.c -o do_xio.o
+
+exec.o: $(srcdir)/arch.h $(srcdir)/status.h $(srcdir)/break.h $(srcdir)/exec.c
+	$(CC) -c $(CFLAGS) $(srcdir)/exec.c -o exec.o
+
+flt1750.o:       $(srcdir)/flt1750.h $(srcdir)/flt1750.c
+	$(CC) -c $(CFLAGS) $(srcdir)/flt1750.c -o flt1750.o
+
+lic.o:   $(srcdir)/lic.c
+	$(CC) -c $(CFLAGS) $(srcdir)/lic.c -o lic.o
+
+loadfile.o: $(srcdir)/status.h $(srcdir)/phys_mem.h \
+	  $(srcdir)/utils.h $(srcdir)/tekhex.h $(srcdir)/tekops.h $(srcdir)/loadfile.c
+	$(CC) -c $(CFLAGS) $(srcdir)/loadfile.c  -o loadfile.o
+
+main.o: $(srcdir)/status.h $(srcdir)/main.c
+	$(CC) -c $(CFLAGS) $(srcdir)/main.c -o main.o
+
+phys_mem.o: $(srcdir)/arch.h $(srcdir)/status.h $(srcdir)/utils.h \
+	  $(srcdir)/tekhex.h $(srcdir)/arch.h $(srcdir)/phys_mem.c
+	$(CC) -c $(CFLAGS) $(srcdir)/phys_mem.c  -o phys_mem.o
+
+peekpoke.o: $(srcdir)/arch.h $(srcdir)/peekpoke.c
+	$(CC) -c $(CFLAGS) $(srcdir)/peekpoke.c  -o peekpoke.o
+
+sdisasm.o: $(srcdir)/arch.h $(srcdir)/sdisasm.c
+	$(CC) -c $(CFLAGS) $(srcdir)/sdisasm.c -o sdisasm.o
+
+smemacc.o: $(srcdir)/arch.h $(srcdir)/smemacc.c
+	$(CC) -c $(CFLAGS) $(srcdir)/smemacc.c -o smemacc.o
+
+status.o: $(srcdir)/status.h $(srcdir)/status.c
+	$(CC) -c $(CFLAGS) $(srcdir)/status.c -o status.o
+
+tekhex.o: $(srcdir)/arch.h $(srcdir)/status.h $(srcdir)/utils.h $(srcdir)/tekhex.c
+	$(CC) -c $(CFLAGS) $(srcdir)/tekhex.c -o tekhex.o
+
+tekops.o: $(srcdir)/arch.h $(srcdir)/utils.h $(srcdir)/status.h $(srcdir)/tekops.c
+	$(CC) -c $(CFLAGS) $(srcdir)/tekops.c -o tekops.o
+
+tldldm.o: $(srcdir)/arch.h $(srcdir)/peekpoke.h $(srcdir)/utils.h $(srcdir)/tldldm.c
+	$(CC) -c $(CFLAGS) $(srcdir)/tldldm.c -o tldldm.o
+
+load_coff.o: $(srcdir)/arch.h $(srcdir)/peekpoke.h $(srcdir)/utils.h $(srcdir)/load_coff.c
+	$(CC) -c $(CFLAGS) $(srcdir)/load_coff.c -o load_coff.o
+
+asyncio.o: $(srcdir)/asyncio.c
+	$(CC) -c $(CFLAGS) $(srcdir)/asyncio.c -o asyncio.o
+
+utils.o: $(srcdir)/type.h $(srcdir)/utils.h $(srcdir)/utils.c
+	$(CC) -c $(CFLAGS) $(srcdir)/utils.c -o utils.o
+
+xiodef.o: $(srcdir)/xiodef.h $(srcdir)/xiodef.c
+	$(CC) -c $(CFLAGS) $(srcdir)/xiodef.c -o xiodef.o
+
+# DO NOT DELETE THIS LINE -- mkdep uses it.
+# DO NOT PUT ANYTHING AFTER THIS LINE, IT WILL GO AWAY.

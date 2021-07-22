@@ -1,0 +1,205 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from as.texinfo on 29 November 1996 -->
+
+<TITLE>Using m1750-coff-as - Table of Contents</TITLE>
+</HEAD>
+<BODY>
+<H1>Using m1750-coff-as</H1>
+<H2>The GNU Assembler</H2>
+<H2>November 1996</H2>
+<ADDRESS>Dean Elsner, Jay Fenlason &#38; friends</ADDRESS>
+<ADDRESS>Customized by Chris Nettleton</ADDRESS>
+<P>
+<P><HR><P>
+<UL>
+<LI><A NAME="TOC1" HREF="as_1.html#SEC1">Overview</A>
+<UL>
+<LI><A NAME="TOC2" HREF="as_1.html#SEC2">Structure of this Manual</A>
+<LI><A NAME="TOC3" HREF="as_1.html#SEC3">m1750-coff-as, the GNU Assembler</A>
+<LI><A NAME="TOC4" HREF="as_1.html#SEC4">Object File Formats</A>
+<LI><A NAME="TOC5" HREF="as_1.html#SEC5">Command Line</A>
+<LI><A NAME="TOC6" HREF="as_1.html#SEC6">Input Files</A>
+<LI><A NAME="TOC7" HREF="as_1.html#SEC7">Output (Object) File</A>
+<LI><A NAME="TOC8" HREF="as_1.html#SEC8">Error and Warning Messages</A>
+</UL>
+<LI><A NAME="TOC9" HREF="as_2.html#SEC9">Command-Line Options</A>
+<UL>
+<LI><A NAME="TOC10" HREF="as_2.html#SEC10">Enable Listings: <CODE>-a[dhlns]</CODE></A>
+<LI><A NAME="TOC11" HREF="as_2.html#SEC11"><CODE>-D</CODE></A>
+<LI><A NAME="TOC12" HREF="as_2.html#SEC12">Work Faster: <CODE>-f</CODE></A>
+<LI><A NAME="TOC13" HREF="as_2.html#SEC13"><CODE>.include</CODE> search path: <CODE>-I</CODE> <VAR>path</VAR></A>
+<LI><A NAME="TOC14" HREF="as_2.html#SEC14">Difference Tables: <CODE>-K</CODE></A>
+<LI><A NAME="TOC15" HREF="as_2.html#SEC15">Include Local Labels: <CODE>-L</CODE></A>
+<LI><A NAME="TOC16" HREF="as_2.html#SEC16">Assemble in MRI Compatibility Mode: <CODE>-M</CODE></A>
+<LI><A NAME="TOC17" HREF="as_2.html#SEC17">Name the Object File: <CODE>-o</CODE></A>
+<LI><A NAME="TOC18" HREF="as_2.html#SEC18">Join Data and Text Sections: <CODE>-R</CODE></A>
+<LI><A NAME="TOC19" HREF="as_2.html#SEC19">Display Assembly Statistics: <CODE>--statistics</CODE></A>
+<LI><A NAME="TOC20" HREF="as_2.html#SEC20">Announce Version: <CODE>-v</CODE></A>
+<LI><A NAME="TOC21" HREF="as_2.html#SEC21">Suppress Warnings: <CODE>-W</CODE></A>
+<LI><A NAME="TOC22" HREF="as_2.html#SEC22">Generate Object File in Spite of Errors: <CODE>-Z</CODE></A>
+</UL>
+<LI><A NAME="TOC23" HREF="as_3.html#SEC23">Syntax</A>
+<UL>
+<LI><A NAME="TOC24" HREF="as_3.html#SEC24">Preprocessing</A>
+<LI><A NAME="TOC25" HREF="as_3.html#SEC25">Whitespace</A>
+<LI><A NAME="TOC26" HREF="as_3.html#SEC26">Comments</A>
+<LI><A NAME="TOC27" HREF="as_3.html#SEC27">Symbols</A>
+<LI><A NAME="TOC28" HREF="as_3.html#SEC28">Statements</A>
+<LI><A NAME="TOC29" HREF="as_3.html#SEC29">Constants</A>
+<UL>
+<LI><A NAME="TOC30" HREF="as_3.html#SEC30">Character Constants</A>
+<UL>
+<LI><A NAME="TOC31" HREF="as_3.html#SEC31">Strings</A>
+<LI><A NAME="TOC32" HREF="as_3.html#SEC32">Characters</A>
+</UL>
+<LI><A NAME="TOC33" HREF="as_3.html#SEC33">Number Constants</A>
+<UL>
+<LI><A NAME="TOC34" HREF="as_3.html#SEC34">Integers</A>
+<LI><A NAME="TOC35" HREF="as_3.html#SEC35">Bignums</A>
+<LI><A NAME="TOC36" HREF="as_3.html#SEC36">Flonums</A>
+</UL>
+</UL>
+</UL>
+<LI><A NAME="TOC37" HREF="as_4.html#SEC37">Sections and Relocation</A>
+<UL>
+<LI><A NAME="TOC38" HREF="as_4.html#SEC38">Background</A>
+<LI><A NAME="TOC39" HREF="as_4.html#SEC39">m1750-coff-ld Sections</A>
+<LI><A NAME="TOC40" HREF="as_4.html#SEC40">m1750-coff-as Internal Sections</A>
+<LI><A NAME="TOC41" HREF="as_4.html#SEC41">Sub-Sections</A>
+<LI><A NAME="TOC42" HREF="as_4.html#SEC42">bss Section</A>
+</UL>
+<LI><A NAME="TOC43" HREF="as_5.html#SEC43">Symbols</A>
+<UL>
+<LI><A NAME="TOC44" HREF="as_5.html#SEC44">Labels</A>
+<LI><A NAME="TOC45" HREF="as_5.html#SEC45">Giving Symbols Other Values</A>
+<LI><A NAME="TOC46" HREF="as_5.html#SEC46">Symbol Names</A>
+<LI><A NAME="TOC47" HREF="as_5.html#SEC47">The Special Dot Symbol</A>
+<LI><A NAME="TOC48" HREF="as_5.html#SEC48">Symbol Attributes</A>
+<UL>
+<LI><A NAME="TOC49" HREF="as_5.html#SEC49">Value</A>
+<LI><A NAME="TOC50" HREF="as_5.html#SEC50">Type</A>
+<LI><A NAME="TOC51" HREF="as_5.html#SEC51">Symbol Attributes: <CODE>a.out</CODE></A>
+<LI><A NAME="TOC52" HREF="as_5.html#SEC52">Symbol Attributes: <CODE>a.out</CODE></A>
+<UL>
+<LI><A NAME="TOC53" HREF="as_5.html#SEC53">Descriptor</A>
+<LI><A NAME="TOC54" HREF="as_5.html#SEC54">Other</A>
+</UL>
+<LI><A NAME="TOC55" HREF="as_5.html#SEC55">Symbol Attributes for COFF</A>
+<UL>
+<LI><A NAME="TOC56" HREF="as_5.html#SEC56">Primary Attributes</A>
+<LI><A NAME="TOC57" HREF="as_5.html#SEC57">Auxiliary Attributes</A>
+</UL>
+</UL>
+</UL>
+<LI><A NAME="TOC58" HREF="as_6.html#SEC58">Expressions</A>
+<UL>
+<LI><A NAME="TOC59" HREF="as_6.html#SEC59">Empty Expressions</A>
+<LI><A NAME="TOC60" HREF="as_6.html#SEC60">Integer Expressions</A>
+<UL>
+<LI><A NAME="TOC61" HREF="as_6.html#SEC61">Arguments</A>
+<LI><A NAME="TOC62" HREF="as_6.html#SEC62">Operators</A>
+<LI><A NAME="TOC63" HREF="as_6.html#SEC63">Prefix Operator</A>
+<LI><A NAME="TOC64" HREF="as_6.html#SEC64">Infix Operators</A>
+</UL>
+</UL>
+<LI><A NAME="TOC65" HREF="as_7.html#SEC65">Assembler Directives</A>
+<UL>
+<LI><A NAME="TOC66" HREF="as_7.html#SEC66"><CODE>.abort</CODE></A>
+<LI><A NAME="TOC67" HREF="as_7.html#SEC67"><CODE>.ABORT</CODE></A>
+<LI><A NAME="TOC68" HREF="as_7.html#SEC68"><CODE>.align <VAR>abs-expr</VAR> , <VAR>abs-expr</VAR></CODE></A>
+<LI><A NAME="TOC69" HREF="as_7.html#SEC69"><CODE>.app-file <VAR>string</VAR></CODE></A>
+<LI><A NAME="TOC70" HREF="as_7.html#SEC70"><CODE>.ascii "<VAR>string</VAR>"</CODE>...</A>
+<LI><A NAME="TOC71" HREF="as_7.html#SEC71"><CODE>.asciz "<VAR>string</VAR>"</CODE>...</A>
+<LI><A NAME="TOC72" HREF="as_7.html#SEC72"><CODE>.balign[wl] <VAR>abs-expr</VAR> , <VAR>abs-expr</VAR></CODE></A>
+<LI><A NAME="TOC73" HREF="as_7.html#SEC73"><CODE>.byte <VAR>expressions</VAR></CODE></A>
+<LI><A NAME="TOC74" HREF="as_7.html#SEC74"><CODE>.comm <VAR>symbol</VAR> , <VAR>length</VAR> </CODE></A>
+<LI><A NAME="TOC75" HREF="as_7.html#SEC75"><CODE>.data <VAR>subsection</VAR></CODE></A>
+<LI><A NAME="TOC76" HREF="as_7.html#SEC76"><CODE>.def <VAR>name</VAR></CODE></A>
+<LI><A NAME="TOC77" HREF="as_7.html#SEC77"><CODE>.dim</CODE></A>
+<LI><A NAME="TOC78" HREF="as_7.html#SEC78"><CODE>.double <VAR>flonums</VAR></CODE></A>
+<LI><A NAME="TOC79" HREF="as_7.html#SEC79"><CODE>.eject</CODE></A>
+<LI><A NAME="TOC80" HREF="as_7.html#SEC80"><CODE>.else</CODE></A>
+<LI><A NAME="TOC81" HREF="as_7.html#SEC81"><CODE>.endef</CODE></A>
+<LI><A NAME="TOC82" HREF="as_7.html#SEC82"><CODE>.endif</CODE></A>
+<LI><A NAME="TOC83" HREF="as_7.html#SEC83"><CODE>.equ <VAR>symbol</VAR>, <VAR>expression</VAR></CODE></A>
+<LI><A NAME="TOC84" HREF="as_7.html#SEC84"><CODE>.extern</CODE></A>
+<LI><A NAME="TOC85" HREF="as_7.html#SEC85"><CODE>.file <VAR>string</VAR></CODE></A>
+<LI><A NAME="TOC86" HREF="as_7.html#SEC86"><CODE>.fill <VAR>repeat</VAR> , <VAR>size</VAR> , <VAR>value</VAR></CODE></A>
+<LI><A NAME="TOC87" HREF="as_7.html#SEC87"><CODE>.float <VAR>flonums</VAR></CODE></A>
+<LI><A NAME="TOC88" HREF="as_7.html#SEC88"><CODE>.global <VAR>symbol</VAR></CODE>, <CODE>.globl <VAR>symbol</VAR></CODE></A>
+<LI><A NAME="TOC89" HREF="as_7.html#SEC89"><CODE>.hword <VAR>expressions</VAR></CODE></A>
+<LI><A NAME="TOC90" HREF="as_7.html#SEC90"><CODE>.ident</CODE></A>
+<LI><A NAME="TOC91" HREF="as_7.html#SEC91"><CODE>.if <VAR>absolute expression</VAR></CODE></A>
+<LI><A NAME="TOC92" HREF="as_7.html#SEC92"><CODE>.include "<VAR>file</VAR>"</CODE></A>
+<LI><A NAME="TOC93" HREF="as_7.html#SEC93"><CODE>.int <VAR>expressions</VAR></CODE></A>
+<LI><A NAME="TOC94" HREF="as_7.html#SEC94"><CODE>.irp <VAR>symbol</VAR>,<VAR>values</VAR></CODE>...</A>
+<LI><A NAME="TOC95" HREF="as_7.html#SEC95"><CODE>.irpc <VAR>symbol</VAR>,<VAR>values</VAR></CODE>...</A>
+<LI><A NAME="TOC96" HREF="as_7.html#SEC96"><CODE>.lcomm <VAR>symbol</VAR> , <VAR>length</VAR></CODE></A>
+<LI><A NAME="TOC97" HREF="as_7.html#SEC97"><CODE>.lflags</CODE></A>
+<LI><A NAME="TOC98" HREF="as_7.html#SEC98"><CODE>.line <VAR>line-number</VAR></CODE></A>
+<LI><A NAME="TOC99" HREF="as_7.html#SEC99"><CODE>.linkonce [<VAR>type</VAR>]</CODE></A>
+<LI><A NAME="TOC100" HREF="as_7.html#SEC100"><CODE>.ln <VAR>line-number</VAR></CODE></A>
+<LI><A NAME="TOC101" HREF="as_7.html#SEC101"><CODE>.mri <VAR>val</VAR></CODE></A>
+<LI><A NAME="TOC102" HREF="as_7.html#SEC102"><CODE>.list</CODE></A>
+<LI><A NAME="TOC103" HREF="as_7.html#SEC103"><CODE>.long <VAR>expressions</VAR></CODE></A>
+<LI><A NAME="TOC104" HREF="as_7.html#SEC104"><CODE>.macro</CODE></A>
+<LI><A NAME="TOC105" HREF="as_7.html#SEC105"><CODE>.nolist</CODE></A>
+<LI><A NAME="TOC106" HREF="as_7.html#SEC106"><CODE>.octa <VAR>bignums</VAR></CODE></A>
+<LI><A NAME="TOC107" HREF="as_7.html#SEC107"><CODE>.org <VAR>new-lc</VAR> , <VAR>fill</VAR></CODE></A>
+<LI><A NAME="TOC108" HREF="as_7.html#SEC108"><CODE>.p2align[wl] <VAR>abs-expr</VAR> , <VAR>abs-expr</VAR></CODE></A>
+<LI><A NAME="TOC109" HREF="as_7.html#SEC109"><CODE>.psize <VAR>lines</VAR> , <VAR>columns</VAR></CODE></A>
+<LI><A NAME="TOC110" HREF="as_7.html#SEC110"><CODE>.quad <VAR>bignums</VAR></CODE></A>
+<LI><A NAME="TOC111" HREF="as_7.html#SEC111"><CODE>.rept <VAR>count</VAR></CODE></A>
+<LI><A NAME="TOC112" HREF="as_7.html#SEC112"><CODE>.sbttl "<VAR>subheading</VAR>"</CODE></A>
+<LI><A NAME="TOC113" HREF="as_7.html#SEC113"><CODE>.scl <VAR>class</VAR></CODE></A>
+<LI><A NAME="TOC114" HREF="as_7.html#SEC114"><CODE>.section <VAR>name</VAR>, <VAR>subsection</VAR></CODE></A>
+<LI><A NAME="TOC115" HREF="as_7.html#SEC115"><CODE>.set <VAR>symbol</VAR>, <VAR>expression</VAR></CODE></A>
+<LI><A NAME="TOC116" HREF="as_7.html#SEC116"><CODE>.short <VAR>expressions</VAR></CODE></A>
+<LI><A NAME="TOC117" HREF="as_7.html#SEC117"><CODE>.single <VAR>flonums</VAR></CODE></A>
+<LI><A NAME="TOC118" HREF="as_7.html#SEC118"><CODE>.size</CODE></A>
+<LI><A NAME="TOC119" HREF="as_7.html#SEC119"><CODE>.skip <VAR>size</VAR> , <VAR>fill</VAR></CODE></A>
+<LI><A NAME="TOC120" HREF="as_7.html#SEC120"><CODE>.space <VAR>size</VAR> , <VAR>fill</VAR></CODE></A>
+<LI><A NAME="TOC121" HREF="as_7.html#SEC121"><CODE>.stabd, .stabn, .stabs</CODE></A>
+<LI><A NAME="TOC122" HREF="as_7.html#SEC122"><CODE>.string</CODE> "<VAR>str</VAR>"</A>
+<LI><A NAME="TOC123" HREF="as_7.html#SEC123"><CODE>.tag <VAR>structname</VAR></CODE></A>
+<LI><A NAME="TOC124" HREF="as_7.html#SEC124"><CODE>.text <VAR>subsection</VAR></CODE></A>
+<LI><A NAME="TOC125" HREF="as_7.html#SEC125"><CODE>.title "<VAR>heading</VAR>"</CODE></A>
+<LI><A NAME="TOC126" HREF="as_7.html#SEC126"><CODE>.type <VAR>int</VAR></CODE></A>
+<LI><A NAME="TOC127" HREF="as_7.html#SEC127"><CODE>.val <VAR>addr</VAR></CODE></A>
+<LI><A NAME="TOC128" HREF="as_7.html#SEC128"><CODE>.word <VAR>expressions</VAR></CODE></A>
+<LI><A NAME="TOC129" HREF="as_7.html#SEC129">Deprecated Directives</A>
+</UL>
+<LI><A NAME="TOC130" HREF="as_8.html#SEC130">Machine Dependent Features</A>
+<LI><A NAME="TOC131" HREF="as_9.html#SEC131">MIL-STD-1750 Dependent Features</A>
+<UL>
+<LI><A NAME="TOC132" HREF="as_9.html#SEC132">M1750 Options</A>
+<LI><A NAME="TOC133" HREF="as_9.html#SEC133">Syntax</A>
+<LI><A NAME="TOC134" HREF="as_9.html#SEC134">Floating Point</A>
+<LI><A NAME="TOC135" HREF="as_9.html#SEC135">M1750 Machine Directives</A>
+<UL>
+<LI><A NAME="TOC136" HREF="as_9.html#SEC136"><CODE>.skip <VAR>number</VAR></CODE></A>
+<LI><A NAME="TOC137" HREF="as_9.html#SEC137"><CODE>.rdata <VAR>subsection</VAR></CODE></A>
+<LI><A NAME="TOC138" HREF="as_9.html#SEC138"><CODE>.rodata <VAR>subsection</VAR></CODE></A>
+<LI><A NAME="TOC139" HREF="as_9.html#SEC139"><CODE>.sbam <VAR>flonums</VAR></CODE></A>
+<LI><A NAME="TOC140" HREF="as_9.html#SEC140"><CODE>.dbam <VAR>flonums</VAR></CODE></A>
+</UL>
+<LI><A NAME="TOC141" HREF="as_9.html#SEC141">Opcodes</A>
+<UL>
+<LI><A NAME="TOC142" HREF="as_9.html#SEC142">Extended Floating Load Register</A>
+<LI><A NAME="TOC143" HREF="as_9.html#SEC143">Expanded Memory Support</A>
+<LI><A NAME="TOC144" HREF="as_9.html#SEC144">Branch Improvement</A>
+<LI><A NAME="TOC145" HREF="as_9.html#SEC145">XIO Commands</A>
+<LI><A NAME="TOC146" HREF="as_9.html#SEC146">Special Characters</A>
+</UL>
+</UL>
+<LI><A NAME="TOC147" HREF="as_10.html#SEC147">Acknowledgements</A>
+<LI><A NAME="TOC148" HREF="as_11.html#SEC148">Index</A>
+</UL>
+<P><HR><P>
+This document was generated on 29 November 1996 using the
+<A HREF="http://wwwcn.cern.ch/dci/texi2html/">texi2html</A>
+translator version 1.50.</P>
+</BODY>
+</HTML>

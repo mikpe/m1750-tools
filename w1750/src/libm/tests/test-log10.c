@@ -1,0 +1,117 @@
+/*
+ * Test for ANSI Standard C: 7.5.4.5
+ * 
+ * #include <math.h>
+ * double log10 (double x);
+ * 
+ * Copyright (c) 1997, Chris Nettleton Software
+ *
+ * This test program was developed for European Space Agency contract 
+ * 11935/96/NL/JG. Permission to use copy, modify, and distribute this 
+ * software for any purpose without fee is hereby granted, provided that 
+ * this entire notice is included in all copies of any software which is 
+ * or includes a copy or modification of this software and in all copies 
+ * of the supporting documentation for such software. This software is 
+ * provided "as is", without any express or implied warranty. In 
+ * particular, neither the author nor the European Space Agency makes 
+ * any representation or warranty of any kind concerning the 
+ * merchantability of this software or its fitness for any particular 
+ * purpose. 
+ *
+ * $Log: test-log10.c,v $
+ * Revision 1.1  1997/05/07 09:29:39  nettleto
+ * Initial revision
+ *
+ */
+
+#include <math.h>
+
+#include <report.h>
+#include <float.h>
+
+
+static struct test {
+  double x;
+  double y;
+} tests [] = {
+  8.700391237685987e-24, -2.306046121766325e+01,
+  2.371953037762606e-15, -1.462489391380797e+01,
+  8.337008941942292e-04, -3.078989732695827e+00,
+  1.146741259498870e-25, -2.494053456139077e+01,
+  9.457640812050723e+18, 1.897578281609657e+01,
+  6.118370222310161e+16, 1.678663575258356e+01,
+  3.683613391281391e+23, 2.356627404311987e+01,
+  5.826384708681277e-27, -2.623460084285608e+01,
+  7.066675161223523e-19, -1.815078487174323e+01,
+  5.607711985342922e+13, 1.374878569996781e+01,
+  2.711576114487090e-05, -4.566778200323940e+00,
+  3.224107256491090e+09, 9.508409481063392e+00,
+  4.715782932387460e+10, 1.067355380629668e+01,
+  1.424827901794536e-04, -3.846237588858714e+00,
+  3.850191618830751e+23, 2.358548234429550e+01,
+  2.288427645929077e-25, -2.464046281427033e+01,
+  2.105929770435965e-06, -5.676556115971373e+00,
+  1.623550017590769e-10, -9.789534327284940e+00,
+  4.914271160826410e-38, -3.730854088359025e+01,
+  1.881270451170903e-03, -2.725548765848849e+00,
+  7.955952663684648e+19, 1.990069219049542e+01,
+  2.090182081684924e-24, -2.367981587961784e+01,
+  3.201329119918878e+14, 1.450533032507104e+01,
+  5.166978205771997e+32, 3.271323662970264e+01,
+  1.465135213664025e-06, -5.834122293508915e+00,
+  8.161377420929704e+02, 2.911763462163864e+00,
+  1.005677617134632e-02, -1.997541215639882e+00,
+  1.192352070276336e-10, -9.923595489896091e+00,
+  3.985913812354385e+24, 2.460052790369122e+01,
+  1.618115778343851e+20, 2.020900959273790e+01,
+  3.438107469022786e+27, 2.753631944782343e+01,
+  3.113605487038500e-25, -2.450673641606345e+01,
+  1.525163045890928e+27, 2.718331627394226e+01,
+  4.044976259748301e+24, 2.460691597705075e+01,
+  3.412965439545246e+26, 2.653313189053742e+01,
+  1.110709419377324e+10, 1.004560045491993e+01,
+  1.474188264439784e-05, -4.831447050407562e+00,
+  8.663570225972877e+26, 2.693769690009027e+01,
+  2.164396043407604e-28, -2.766466326864438e+01,
+  9.581903248963623e-27, -2.601854821864312e+01,
+  8.531590935363622e+04, 4.931030024136362e+00,
+  2.655588938514232e-04, -3.575839149014512e+00,
+  3.410158809807538e+28, 2.853277460439341e+01,
+  1.553710132814633e-15, -1.480863000191956e+01,
+  8.942331336831786e-15, -1.404854924242015e+01,
+  3.202336672918975e+28, 2.850546698889015e+01,
+  9.374586379085772e-33, -3.202804788490621e+01,
+  8.863215693599768e-27, -2.605240868165581e+01,
+  6.776227748390072e-28, -2.716901200583454e+01,
+};
+
+
+int
+main ()
+{
+  int len;
+  int i;
+  double ms = 0.0;
+
+  test ("test-log10", "test for the log10 function");
+
+  len = sizeof (tests) / sizeof (struct test);
+
+  for (i = 0; i < len; i++)
+    {
+      double x = tests [i].x;
+      double y = log10 (x);
+      double err = y / tests [i].y - 1;
+
+      ms += err * err;
+      if (fabs (err) >= 2 * DBL_EPSILON) 
+        failed ("x = %.10e, log10 (x) = %.10e, err = %e",
+                 x, y, err);
+    }
+
+  comment ("rms error = %.3e", sqrt (ms / len));
+
+  result ();
+}
+
+

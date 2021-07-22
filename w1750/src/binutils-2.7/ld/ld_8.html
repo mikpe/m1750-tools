@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 20 November 1996 -->
+
+<TITLE>Using LD, the GNU linker - Integers</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_7.html">previous</A>, <A HREF="ld_9.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H3><A NAME="SEC8" HREF="ld_toc.html#TOC8">Integers</A></H3>
+<P>
+<A NAME="IDX186"></A>
+<A NAME="IDX187"></A>
+An octal integer is <SAMP>`0'</SAMP> followed by zero or more of the octal
+digits (<SAMP>`01234567'</SAMP>).
+
+<PRE>
+_as_octal = 0157255;
+</PRE>
+
+<P>
+<A NAME="IDX188"></A>
+A decimal integer starts with a non-zero digit followed by zero or
+more digits (<SAMP>`0123456789'</SAMP>).
+
+<PRE>
+_as_decimal = 57005;
+</PRE>
+
+<P>
+<A NAME="IDX189"></A>
+<A NAME="IDX190"></A>
+A hexadecimal integer is <SAMP>`0x'</SAMP> or <SAMP>`0X'</SAMP> followed by one or
+more hexadecimal digits chosen from <SAMP>`0123456789abcdefABCDEF'</SAMP>.
+
+<PRE>
+_as_hex = 0xdead;
+</PRE>
+
+<P>
+<A NAME="IDX191"></A>
+To write a negative integer, use
+the prefix operator <SAMP>`-'</SAMP> (see section <A HREF="ld_11.html#SEC11">Operators</A>).
+
+<PRE>
+_as_neg = -57005;
+</PRE>
+
+<P>
+<A NAME="IDX192"></A>
+<A NAME="IDX193"></A>
+<A NAME="IDX194"></A>
+<A NAME="IDX195"></A>
+<A NAME="IDX196"></A>
+Additionally the suffixes <CODE>K</CODE> and <CODE>M</CODE> may be used to scale a
+constant by 
+respectively. For example, the following all refer to the same quantity:
+
+</P>
+
+<PRE>
+        _fourk_1 = 4K;
+        _fourk_2 = 4096;
+        _fourk_3 = 0x1000;
+</PRE>
+
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_7.html">previous</A>, <A HREF="ld_9.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>

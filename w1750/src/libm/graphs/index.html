@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.29 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H1>Graphs</H1>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<P>We checked the accuracy of most of the math functions by plotting a
+graph showing the abolute and relative errors over a relevant range of
+inputs.</P>
+
+<P>The control values were calculated using the GNU version of 'bc'. Here
+is the code that generated the data for graph-sin.c.</P>
+
+<UL>
+<PRE><TT>p=4*a(1)
+for (x=-2*p; x &lt;= 2*p; x += 0.1 / sqrt(5)) { 
+  y = s(x); 
+  print &quot; &quot;, x, &quot;, &quot;, y, &quot;,\n&quot;; 
+} 
+quit </TT></PRE>
+</UL>
+
+<P>The graphs may be plotted using 'gnuplot', of other suitable graph plotting
+program. Here is the absolute error plot from 'graph-sin.c'. The units
+on the vertical axis are epsilons. The graph shows that the error is less
+than two epsilons across the range from -2 pi to +2 pi.</P>
+
+<P><IMG SRC="sin.gif" HEIGHT=350 WIDTH=550></P>
+
+<P>Having run the program 'graph-sin' and saved the output in 'sin.dat',
+this graph was created using the following gnuplot command:</P>
+
+<P><TT>gnuplot&gt; <B>plot [] [-10:10] &quot;sin.dat&quot; with lines</B></TT></P>
+
+<P>To plot the relative error, use the first and third columns of data.</P>
+
+<P><TT>gnuplot&gt; <B>plot &quot;sin.dat&quot; using 1:3 with lines</B></TT></P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+</BODY>
+</HTML>

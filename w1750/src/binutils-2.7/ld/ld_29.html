@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 20 November 1996 -->
+
+<TITLE>Using LD, the GNU linker - BFD outline</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_28.html">previous</A>, <A HREF="ld_30.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H2><A NAME="SEC29" HREF="ld_toc.html#TOC29">How it works: an outline of BFD</A></H2>
+<P>
+<A NAME="IDX346"></A>
+When an object file is opened, BFD subroutines automatically determine
+the format of the input object file.  They then build a descriptor in
+memory with pointers to routines that will be used to access elements of
+the object file's data structures.
+
+</P>
+<P>
+As different information from the the object files is required,
+BFD reads from different sections of the file and processes them.
+For example, a very common operation for the linker is processing symbol
+tables.  Each BFD back end provides a routine for converting
+between the object file's representation of symbols and an internal
+canonical format. When the linker asks for the symbol table of an object
+file, it calls through a memory pointer to the routine from the
+relevant BFD back end which reads and converts the table into a canonical
+form.  The linker then operates upon the canonical form. When the link is
+finished and the linker writes the output file's symbol table,
+another BFD back end routine is called to take the newly
+created symbol table and convert it into the chosen output format.
+
+</P>
+
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_28.html">previous</A>, <A HREF="ld_30.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>

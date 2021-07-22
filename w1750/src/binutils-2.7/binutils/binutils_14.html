@@ -1,0 +1,116 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from binutils.texi on 20 November 1996 -->
+
+<TITLE>gnu Binary Utilities - nlmconv</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_13.html">previous</A>, <A HREF="binutils_15.html">next</A>, <A HREF="binutils_19.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC13" HREF="binutils_toc.html#TOC13">nlmconv</A></H1>
+
+<P>
+<CODE>nlmconv</CODE> converts a relocatable object file into a NetWare
+Loadable Module.
+
+</P>
+
+
+<BLOCKQUOTE>
+<P>
+<EM>Warning:</EM> <CODE>nlmconv</CODE> is not always built as part of the binary
+utilities, since it is only useful for NLM targets.
+</BLOCKQUOTE>
+
+
+<PRE>
+nlmconv [ -I <VAR>bfdname</VAR> | --input-target=<VAR>bfdname</VAR> ]
+        [ -O <VAR>bfdname</VAR> | --output-target=<VAR>bfdname</VAR> ]
+        [ -T <VAR>headerfile</VAR> | --header-file=<VAR>headerfile</VAR> ]
+        [ -d | --debug]  [ -l <VAR>linker</VAR> | --linker=<VAR>linker</VAR> ]
+        [ -h | --help ]  [ -V | --version ]
+        <VAR>infile</VAR> <VAR>outfile</VAR>
+</PRE>
+
+<P>
+<CODE>nlmconv</CODE> converts the relocatable <SAMP>`i386'</SAMP> object file
+<VAR>infile</VAR> into the NetWare Loadable Module <VAR>outfile</VAR>, optionally
+reading <VAR>headerfile</VAR> for NLM header information.  For instructions
+on writing the NLM command file language used in header files, see the
+<SAMP>`linkers'</SAMP> section, <SAMP>`NLMLINK'</SAMP> in particular, of the <CITE>NLM
+Development and Tools Overview</CITE>, which is part of the NLM Software
+Developer's Kit ("NLM SDK"), available from Novell, Inc.
+<CODE>nlmconv</CODE> uses the GNU Binary File Descriptor library to read
+<VAR>infile</VAR>; see section `BFD' in <CITE>Using LD</CITE>, for
+more information.
+
+</P>
+<P>
+<CODE>nlmconv</CODE> can perform a link step.  In other words, you can list
+more than one object file for input if you list them in the definitions
+file (rather than simply specifying one input file on the command line).
+In this case, <CODE>nlmconv</CODE> calls the linker for you.
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>-I <VAR>bfdname</VAR></CODE>
+<DD>
+<DT><CODE>--input-target=<VAR>bfdname</VAR></CODE>
+<DD>
+Object format of the input file.  <CODE>nlmconv</CODE> can usually determine
+the format of a given file (so no default is necessary).
+See section <A HREF="binutils_16.html#SEC15">Target Selection</A>, for more information.
+
+<DT><CODE>-O <VAR>bfdname</VAR></CODE>
+<DD>
+<DT><CODE>--output-target=<VAR>bfdname</VAR></CODE>
+<DD>
+Object format of the output file.  <CODE>nlmconv</CODE> infers the output
+format based on the input format, e.g. for a <SAMP>`i386'</SAMP> input file the
+output format is <SAMP>`nlm32-i386'</SAMP>.
+See section <A HREF="binutils_16.html#SEC15">Target Selection</A>, for more information.
+
+<DT><CODE>-T <VAR>headerfile</VAR></CODE>
+<DD>
+<DT><CODE>--header-file=<VAR>headerfile</VAR></CODE>
+<DD>
+Reads <VAR>headerfile</VAR> for NLM header information.  For instructions on
+writing the NLM command file language used in header files, see see the
+<SAMP>`linkers'</SAMP> section, of the <CITE>NLM Development and Tools
+Overview</CITE>, which is part of the NLM Software Developer's Kit, available
+from Novell, Inc.
+
+<DT><CODE>-d</CODE>
+<DD>
+<DT><CODE>--debug</CODE>
+<DD>
+Displays (on standard error) the linker command line used by <CODE>nlmconv</CODE>.
+
+<DT><CODE>-l <VAR>linker</VAR></CODE>
+<DD>
+<DT><CODE>--linker=<VAR>linker</VAR></CODE>
+<DD>
+Use <VAR>linker</VAR> for any linking.  <VAR>linker</VAR> can be an abosolute or a
+relative pathname.
+
+<DT><CODE>-h</CODE>
+<DD>
+<DT><CODE>--help</CODE>
+<DD>
+Prints a usage summary.
+
+<DT><CODE>-V</CODE>
+<DD>
+<DT><CODE>--version</CODE>
+<DD>
+Prints the version number for <CODE>nlmconv</CODE>.
+</DL>
+
+<P><HR><P>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_13.html">previous</A>, <A HREF="binutils_15.html">next</A>, <A HREF="binutils_19.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+</BODY>
+</HTML>

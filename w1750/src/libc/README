@@ -1,0 +1,17 @@
+INSTALLTION INSTRUCTIONS
+========================
+
+The directory tree contains the source for the GCC-1750 C library.
+
+To build the object code libraries, use the make command as follows:
+
+$ make
+
+To install the object code libraries, use make with the target 'install'
+You will probably need root privilege to do the installation. You may need
+to specifiy a prefix. On BSD-style Unix systems, the prefix is /usr/local.
+On Solaris it is /opt/gnu.
+
+$make install prefix=/opt/gnu
+
+

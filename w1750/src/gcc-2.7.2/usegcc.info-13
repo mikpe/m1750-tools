@@ -1,0 +1,826 @@
+This is Info file usegcc.info, produced by Makeinfo version 1.67 from
+the input file gcc.texi.
+
+   This file documents the use of the GNU compiler.
+
+   Published by the Free Software Foundation 59 Temple Place - Suite 330
+Boston, MA 02111-1307 USA
+
+   Copyright (C) 1988, 1989, 1992, 1993, 1994, 1995 Free Software
+Foundation, Inc.
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided also
+that the sections entitled "GNU General Public License," "Funding for
+Free Software," and "Protect Your Freedom--Fight `Look And Feel'" are
+included exactly as in the original, and provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that the sections entitled "GNU General Public
+License," "Funding for Free Software," and "Protect Your Freedom--Fight
+`Look And Feel'", and this permission notice, may be included in
+translations approved by the Free Software Foundation instead of in the
+original English.
+
+
+File: usegcc.info,  Node: Include Files and VMS,  Next: Global Declarations,  Up: VMS
+
+Include Files and VMS
+=====================
+
+   Due to the differences between the filesystems of Unix and VMS, GNU
+CC attempts to translate file names in `#include' into names that VMS
+will understand.  The basic strategy is to prepend a prefix to the
+specification of the include file, convert the whole filename to a VMS
+filename, and then try to open the file.  GNU CC tries various prefixes
+one by one until one of them succeeds:
+
+  1. The first prefix is the `GNU_CC_INCLUDE:' logical name: this is
+     where GNU C header files are traditionally stored.  If you wish to
+     store header files in non-standard locations, then you can assign
+     the logical `GNU_CC_INCLUDE' to be a search list, where each
+     element of the list is suitable for use with a rooted logical.
+
+  2. The next prefix tried is `SYS$SYSROOT:[SYSLIB.]'.  This is where
+     VAX-C header files are traditionally stored.
+
+  3. If the include file specification by itself is a valid VMS
+     filename, the preprocessor then uses this name with no prefix in
+     an attempt to open the include file.
+
+  4. If the file specification is not a valid VMS filename (i.e. does
+     not contain a device or a directory specifier, and contains a `/'
+     character), the preprocessor tries to convert it from Unix syntax
+     to VMS syntax.
+
+     Conversion works like this: the first directory name becomes a
+     device, and the rest of the directories are converted into
+     VMS-format directory names.  For example, the name `X11/foobar.h'
+     is translated to `X11:[000000]foobar.h' or `X11:foobar.h',
+     whichever one can be opened.  This strategy allows you to assign a
+     logical name to point to the actual location of the header files.
+
+  5. If none of these strategies succeeds, the `#include' fails.
+
+   Include directives of the form:
+
+     #include foobar
+
+are a common source of incompatibility between VAX-C and GNU CC.  VAX-C
+treats this much like a standard `#include <foobar.h>' directive.  That
+is incompatible with the ANSI C behavior implemented by GNU CC: to
+expand the name `foobar' as a macro.  Macro expansion should eventually
+yield one of the two standard formats for `#include':
+
+     #include "FILE"
+     #include <FILE>
+
+   If you have this problem, the best solution is to modify the source
+to convert the `#include' directives to one of the two standard forms.
+That will work with either compiler.  If you want a quick and dirty fix,
+define the file names as macros with the proper expansion, like this:
+
+     #define stdio <stdio.h>
+
+This will work, as long as the name doesn't conflict with anything else
+in the program.
+
+   Another source of incompatibility is that VAX-C assumes that:
+
+     #include "foobar"
+
+is actually asking for the file `foobar.h'.  GNU CC does not make this
+assumption, and instead takes what you ask for literally; it tries to
+read the file `foobar'.  The best way to avoid this problem is to
+always specify the desired file extension in your include directives.
+
+   GNU CC for VMS is distributed with a set of include files that is
+sufficient to compile most general purpose programs.  Even though the
+GNU CC distribution does not contain header files to define constants
+and structures for some VMS system-specific functions, there is no
+reason why you cannot use GNU CC with any of these functions.  You first
+may have to generate or create header files, either by using the public
+domain utility `UNSDL' (which can be found on a DECUS tape), or by
+extracting the relevant modules from one of the system macro libraries,
+and using an editor to construct a C header file.
+
+   A `#include' file name cannot contain a DECNET node name.  The
+preprocessor reports an I/O error if you attempt to use a node name,
+whether explicitly, or implicitly via a logical name.
+
+
+File: usegcc.info,  Node: Global Declarations,  Next: VMS Misc,  Prev: Include Files and VMS,  Up: VMS
+
+Global Declarations and VMS
+===========================
+
+   GNU CC does not provide the `globalref', `globaldef' and
+`globalvalue' keywords of VAX-C.  You can get the same effect with an
+obscure feature of GAS, the GNU assembler.  (This requires GAS version
+1.39 or later.)  The following macros allow you to use this feature in
+a fairly natural way:
+
+     #ifdef __GNUC__
+     #define GLOBALREF(TYPE,NAME)                      \
+       TYPE NAME                                       \
+       asm ("_$$PsectAttributes_GLOBALSYMBOL$$" #NAME)
+     #define GLOBALDEF(TYPE,NAME,VALUE)                \
+       TYPE NAME                                       \
+       asm ("_$$PsectAttributes_GLOBALSYMBOL$$" #NAME) \
+         = VALUE
+     #define GLOBALVALUEREF(TYPE,NAME)                 \
+       const TYPE NAME[1]                              \
+       asm ("_$$PsectAttributes_GLOBALVALUE$$" #NAME)
+     #define GLOBALVALUEDEF(TYPE,NAME,VALUE)           \
+       const TYPE NAME[1]                              \
+       asm ("_$$PsectAttributes_GLOBALVALUE$$" #NAME)  \
+         = {VALUE}
+     #else
+     #define GLOBALREF(TYPE,NAME) \
+       globalref TYPE NAME
+     #define GLOBALDEF(TYPE,NAME,VALUE) \
+       globaldef TYPE NAME = VALUE
+     #define GLOBALVALUEDEF(TYPE,NAME,VALUE) \
+       globalvalue TYPE NAME = VALUE
+     #define GLOBALVALUEREF(TYPE,NAME) \
+       globalvalue TYPE NAME
+     #endif
+
+(The `_$$PsectAttributes_GLOBALSYMBOL' prefix at the start of the name
+is removed by the assembler, after it has modified the attributes of
+the symbol).  These macros are provided in the VMS binaries
+distribution in a header file `GNU_HACKS.H'.  An example of the usage
+is:
+
+     GLOBALREF (int, ijk);
+     GLOBALDEF (int, jkl, 0);
+
+   The macros `GLOBALREF' and `GLOBALDEF' cannot be used
+straightforwardly for arrays, since there is no way to insert the array
+dimension into the declaration at the right place.  However, you can
+declare an array with these macros if you first define a typedef for the
+array type, like this:
+
+     typedef int intvector[10];
+     GLOBALREF (intvector, foo);
+
+   Array and structure initializers will also break the macros; you can
+define the initializer to be a macro of its own, or you can expand the
+`GLOBALDEF' macro by hand.  You may find a case where you wish to use
+the `GLOBALDEF' macro with a large array, but you are not interested in
+explicitly initializing each element of the array.  In such cases you
+can use an initializer like: `{0,}', which will initialize the entire
+array to `0'.
+
+   A shortcoming of this implementation is that a variable declared with
+`GLOBALVALUEREF' or `GLOBALVALUEDEF' is always an array.  For example,
+the declaration:
+
+     GLOBALVALUEREF(int, ijk);
+
+declares the variable `ijk' as an array of type `int [1]'.  This is
+done because a globalvalue is actually a constant; its "value" is what
+the linker would normally consider an address.  That is not how an
+integer value works in C, but it is how an array works.  So treating
+the symbol as an array name gives consistent results--with the
+exception that the value seems to have the wrong type.  *Don't try to
+access an element of the array.*  It doesn't have any elements.  The
+array "address" may not be the address of actual storage.
+
+   The fact that the symbol is an array may lead to warnings where the
+variable is used.  Insert type casts to avoid the warnings.  Here is an
+example; it takes advantage of the ANSI C feature allowing macros that
+expand to use the same name as the macro itself.
+
+     GLOBALVALUEREF (int, ss$_normal);
+     GLOBALVALUEDEF (int, xyzzy,123);
+     #ifdef __GNUC__
+     #define ss$_normal ((int) ss$_normal)
+     #define xyzzy ((int) xyzzy)
+     #endif
+
+   Don't use `globaldef' or `globalref' with a variable whose type is
+an enumeration type; this is not implemented.  Instead, make the
+variable an integer, and use a `globalvaluedef' for each of the
+enumeration values.  An example of this would be:
+
+     #ifdef __GNUC__
+     GLOBALDEF (int, color, 0);
+     GLOBALVALUEDEF (int, RED, 0);
+     GLOBALVALUEDEF (int, BLUE, 1);
+     GLOBALVALUEDEF (int, GREEN, 3);
+     #else
+     enum globaldef color {RED, BLUE, GREEN = 3};
+     #endif
+
+
+File: usegcc.info,  Node: VMS Misc,  Prev: Global Declarations,  Up: VMS
+
+Other VMS Issues
+================
+
+   GNU CC automatically arranges for `main' to return 1 by default if
+you fail to specify an explicit return value.  This will be interpreted
+by VMS as a status code indicating a normal successful completion.
+Version 1 of GNU CC did not provide this default.
+
+   GNU CC on VMS works only with the GNU assembler, GAS.  You need
+version 1.37 or later of GAS in order to produce value debugging
+information for the VMS debugger.  Use the ordinary VMS linker with the
+object files produced by GAS.
+
+   Under previous versions of GNU CC, the generated code would
+occasionally give strange results when linked to the sharable `VAXCRTL'
+library.  Now this should work.
+
+   A caveat for use of `const' global variables: the `const' modifier
+must be specified in every external declaration of the variable in all
+of the source files that use that variable.  Otherwise the linker will
+issue warnings about conflicting attributes for the variable.  Your
+program will still work despite the warnings, but the variable will be
+placed in writable storage.
+
+   Although the VMS linker does distinguish between upper and lower case
+letters in global symbols, most VMS compilers convert all such symbols
+into upper case and most run-time library routines also have upper case
+names.  To be able to reliably call such routines, GNU CC (by means of
+the assembler GAS) converts global symbols into upper case like other
+VMS compilers.  However, since the usual practice in C is to distinguish
+case, GNU CC (via GAS) tries to preserve usual C behavior by augmenting
+each name that is not all lower case.  This means truncating the name
+to at most 23 characters and then adding more characters at the end
+which encode the case pattern of those 23.   Names which contain at
+least one dollar sign are an exception; they are converted directly into
+upper case without augmentation.
+
+   Name augmentation yields bad results for programs that use
+precompiled libraries (such as Xlib) which were generated by another
+compiler.  You can use the compiler option `/NOCASE_HACK' to inhibit
+augmentation; it makes external C functions and variables
+case-independent as is usual on VMS.  Alternatively, you could write
+all references to the functions and variables in such libraries using
+lower case; this will work on VMS, but is not portable to other
+systems.  The compiler option `/NAMES' also provides control over
+global name handling.
+
+   Function and variable names are handled somewhat differently with GNU
+C++.  The GNU C++ compiler performs "name mangling" on function names,
+which means that it adds information to the function name to describe
+the data types of the arguments that the function takes.  One result of
+this is that the name of a function can become very long.  Since the
+VMS linker only recognizes the first 31 characters in a name, special
+action is taken to ensure that each function and variable has a unique
+name that can be represented in 31 characters.
+
+   If the name (plus a name augmentation, if required) is less than 32
+characters in length, then no special action is performed.  If the name
+is longer than 31 characters, the assembler (GAS) will generate a hash
+string based upon the function name, truncate the function name to 23
+characters, and append the hash string to the truncated name.  If the
+`/VERBOSE' compiler option is used, the assembler will print both the
+full and truncated names of each symbol that is truncated.
+
+   The `/NOCASE_HACK' compiler option should not be used when you are
+compiling programs that use libg++.  libg++ has several instances of
+objects (i.e.  `Filebuf' and `filebuf') which become indistinguishable
+in a case-insensitive environment.  This leads to cases where you need
+to inhibit augmentation selectively (if you were using libg++ and Xlib
+in the same program, for example).  There is no special feature for
+doing this, but you can get the result by defining a macro for each
+mixed case symbol for which you wish to inhibit augmentation.  The
+macro should expand into the lower case equivalent of itself.  For
+example:
+
+     #define StuDlyCapS studlycaps
+
+   These macro definitions can be placed in a header file to minimize
+the number of changes to your source code.
+
+
+File: usegcc.info,  Node: Index,  Prev: VMS,  Up: Top
+
+Index
+*****
+
+* Menu:
+
+* ! in constraint:                       Multi-Alternative.
+* # in constraint:                       Modifiers.
+* #pragma implementation, implied:       C++ Interface.
+* #pragma, reason for not using:         Function Attributes.
+* $:                                     Dollar Signs.
+* % in constraint:                       Modifiers.
+* & in constraint:                       Modifiers.
+* ':                                     Incompatibilities.
+* + in constraint:                       Modifiers.
+* -lgcc, use with -nodefaultlibs:        Link Options.
+* -lgcc, use with -nostdlib:             Link Options.
+* -nodefaultlibs and unresolved references: Link Options.
+* -nostdlib and unresolved references:   Link Options.
+* //:                                    C++ Comments.
+* 0 in constraint:                       Simple Constraints.
+* < in constraint:                       Simple Constraints.
+* <?:                                    Min and Max.
+* = in constraint:                       Modifiers.
+* > in constraint:                       Simple Constraints.
+* >?:                                    Min and Max.
+* ? in constraint:                       Multi-Alternative.
+* ?: extensions <1>:                     Conditionals.
+* ?: extensions:                         Lvalues.
+* ?: side effect:                        Conditionals.
+* _ in variables in macros:              Naming Types.
+* __builtin_apply:                       Constructing Calls.
+* __builtin_apply_args:                  Constructing Calls.
+* __builtin_return:                      Constructing Calls.
+* __main:                                Collect2.
+* abort:                                 C Dialect Options.
+* abs:                                   C Dialect Options.
+* address constraints:                   Simple Constraints.
+* address of a label:                    Labels as Values.
+* address_operand:                       Simple Constraints.
+* alias attribute:                       Function Attributes.
+* aligned attribute <1>:                 Type Attributes.
+* aligned attribute:                     Variable Attributes.
+* alignment:                             Alignment.
+* Alliant:                               Interoperation.
+* alloca:                                C Dialect Options.
+* alloca and SunOs:                      Installation.
+* alloca vs variable-length arrays:      Variable Length.
+* alloca, for SunOs:                     Sun Install.
+* alloca, for Unos:                      Configurations.
+* alternate keywords:                    Alternate Keywords.
+* AMD29K options:                        AMD29K Options.
+* ANSI support:                          C Dialect Options.
+* apostrophes:                           Incompatibilities.
+* arguments in frame (88k):              M88K Options.
+* ARM options:                           ARM Options.
+* arrays of length zero:                 Zero Length.
+* arrays of variable length:             Variable Length.
+* arrays, non-lvalue:                    Subscripting.
+* asm constraints:                       Constraints.
+* asm expressions:                       Extended Asm.
+* assembler instructions:                Extended Asm.
+* assembler names for identifiers:       Asm Labels.
+* assembler syntax, 88k:                 M88K Options.
+* assembly code, invalid:                Bug Criteria.
+* attribute of types:                    Type Attributes.
+* attribute of variables:                Variable Attributes.
+* autoincrement/decrement addressing:    Simple Constraints.
+* automatic inline for C++ member fns:   Inline.
+* backtrace for bug reports:             Bug Reporting.
+* Bison parser generator:                Installation.
+* bit shift overflow (88k):              M88K Options.
+* bug criteria:                          Bug Criteria.
+* bug report mailing lists:              Bug Lists.
+* bugs:                                  Bugs.
+* bugs, known:                           Trouble.
+* builtin functions:                     C Dialect Options.
+* byte writes (29k):                     AMD29K Options.
+* C compilation options:                 Invoking GCC.
+* C intermediate output, nonexistent:    G++ and GCC.
+* C language extensions:                 C Extensions.
+* C language, traditional:               C Dialect Options.
+* c++:                                   Invoking G++.
+* C++:                                   G++ and GCC.
+* C++ comments:                          C++ Comments.
+* C++ compilation options:               Invoking GCC.
+* C++ interface and implementation headers: C++ Interface.
+* C++ language extensions:               C++ Extensions.
+* C++ member fns, automatically inline:  Inline.
+* C++ misunderstandings:                 C++ Misunderstandings.
+* C++ named return value:                Naming Results.
+* C++ options, command line:             C++ Dialect Options.
+* C++ pragmas, effect on inlining:       C++ Interface.
+* C++ signatures:                        C++ Signatures.
+* C++ source file suffixes:              Invoking G++.
+* C++ static data, declaring and defining: Static Definitions.
+* C++ subtype polymorphism:              C++ Signatures.
+* C++ type abstraction:                  C++ Signatures.
+* C_INCLUDE_PATH:                        Environment Variables.
+* case labels in initializers:           Labeled Elements.
+* case ranges:                           Case Ranges.
+* case sensitivity and VMS:              VMS Misc.
+* cast to a union:                       Cast to Union.
+* casts as lvalues:                      Lvalues.
+* code generation conventions:           Code Gen Options.
+* command options:                       Invoking GCC.
+* comments, C++ style:                   C++ Comments.
+* compilation in a separate directory:   Other Dir.
+* compiler bugs, reporting:              Bug Reporting.
+* compiler compared to C++ preprocessor: G++ and GCC.
+* compiler options, C++:                 C++ Dialect Options.
+* compiler version, specifying:          Target Options.
+* COMPILER_PATH:                         Environment Variables.
+* complex numbers:                       Complex.
+* compound expressions as lvalues:       Lvalues.
+* computed gotos:                        Labels as Values.
+* conditional expressions as lvalues:    Lvalues.
+* conditional expressions, extensions:   Conditionals.
+* configurations supported by GNU CC:    Configurations.
+* conflicting types:                     Disappointments.
+* const applied to function:             Function Attributes.
+* const function attribute:              Function Attributes.
+* constants in constraints:              Simple Constraints.
+* constraint modifier characters:        Modifiers.
+* constraint, matching:                  Simple Constraints.
+* constraints, asm:                      Constraints.
+* constraints, machine specific:         Machine Constraints.
+* constructing calls:                    Constructing Calls.
+* constructor expressions:               Constructors.
+* constructor function attribute:        Function Attributes.
+* constructors vs goto:                  Destructors and Goto.
+* constructors, automatic calls:         Collect2.
+* contributors:                          Contributors.
+* Convex options:                        Convex Options.
+* core dump:                             Bug Criteria.
+* cos:                                   C Dialect Options.
+* CPLUS_INCLUDE_PATH:                    Environment Variables.
+* cross compiling:                       Target Options.
+* cross-compiler, installation:          Cross-Compiler.
+* d in constraint:                       Simple Constraints.
+* DBX:                                   Interoperation.
+* deallocating variable length arrays:   Variable Length.
+* debug_rtx:                             Bug Reporting.
+* debugging information options:         Debugging Options.
+* debugging, 88k OCS:                    M88K Options.
+* declaration scope:                     Incompatibilities.
+* declarations inside expressions:       Statement Exprs.
+* declaring attributes of functions:     Function Attributes.
+* declaring static data in C++:          Static Definitions.
+* default implementation, signature member function: C++ Signatures.
+* defining static data in C++:           Static Definitions.
+* dependencies for make as output:       Environment Variables.
+* dependencies, make:                    Preprocessor Options.
+* DEPENDENCIES_OUTPUT:                   Environment Variables.
+* destructor function attribute:         Function Attributes.
+* destructors vs goto:                   Destructors and Goto.
+* detecting -traditional:                C Dialect Options.
+* dialect options:                       C Dialect Options.
+* digits in constraint:                  Simple Constraints.
+* directory options:                     Directory Options.
+* divide instruction, 88k:               M88K Options.
+* dollar signs in identifier names:      Dollar Signs.
+* double-word arithmetic:                Long Long.
+* downward funargs:                      Nested Functions.
+* DW bit (29k):                          AMD29K Options.
+* E in constraint:                       Simple Constraints.
+* enumeration clash warnings:            Warning Options.
+* environment variables:                 Environment Variables.
+* error messages:                        Warnings and Errors.
+* escape sequences, traditional:         C Dialect Options.
+* exclamation point:                     Multi-Alternative.
+* exit:                                  C Dialect Options.
+* exit status and VMS:                   VMS Misc.
+* explicit register variables:           Explicit Reg Vars.
+* expressions containing statements:     Statement Exprs.
+* expressions, compound, as lvalues:     Lvalues.
+* expressions, conditional, as lvalues:  Lvalues.
+* expressions, constructor:              Constructors.
+* extended asm:                          Extended Asm.
+* extensible constraints:                Simple Constraints.
+* extensions, ?: <1>:                    Conditionals.
+* extensions, ?::                        Lvalues.
+* extensions, C language:                C Extensions.
+* extensions, C++ language:              C++ Extensions.
+* external declaration scope:            Incompatibilities.
+* F in constraint:                       Simple Constraints.
+* fabs:                                  C Dialect Options.
+* fatal signal:                          Bug Criteria.
+* ffs:                                   C Dialect Options.
+* file name suffix:                      Overall Options.
+* file names:                            Link Options.
+* float as function value type:          Incompatibilities.
+* format function attribute:             Function Attributes.
+* forwarding calls:                      Constructing Calls.
+* fscanf, and constant strings:          Incompatibilities.
+* function attributes:                   Function Attributes.
+* function pointers, arithmetic:         Pointer Arith.
+* function prototype declarations:       Function Prototypes.
+* function, size of pointer to:          Pointer Arith.
+* functions in arbitrary sections:       Function Attributes.
+* functions that are passed arguments in registers on the 386: Function Attributes.
+* functions that do not pop the argument stack on the 386: Function Attributes.
+* functions that do pop the argument stack on the 386: Function Attributes.
+* functions that have no side effects:   Function Attributes.
+* functions that never return:           Function Attributes.
+* functions that pop the argument stack on the 386: Function Attributes.
+* functions with printf or scanf style arguments: Function Attributes.
+* g in constraint:                       Simple Constraints.
+* G in constraint:                       Simple Constraints.
+* G++:                                   G++ and GCC.
+* g++:                                   Invoking G++.
+* g++ 1.XX:                              Invoking G++.
+* g++ older version:                     Invoking G++.
+* g++, separate compiler:                Invoking G++.
+* GCC:                                   G++ and GCC.
+* GCC_EXEC_PREFIX:                       Environment Variables.
+* generalized lvalues:                   Lvalues.
+* genflags, crash on Sun 4:              Installation Problems.
+* global offset table:                   Code Gen Options.
+* global register after longjmp:         Global Reg Vars.
+* global register variables:             Global Reg Vars.
+* GLOBALDEF:                             Global Declarations.
+* GLOBALREF:                             Global Declarations.
+* GLOBALVALUEDEF:                        Global Declarations.
+* GLOBALVALUEREF:                        Global Declarations.
+* GNU CC command options:                Invoking GCC.
+* goto in C++:                           Destructors and Goto.
+* goto with computed label:              Labels as Values.
+* gp-relative references (MIPS):         MIPS Options.
+* gprof:                                 Debugging Options.
+* grouping options:                      Invoking GCC.
+* H in constraint:                       Simple Constraints.
+* hardware models and configurations, specifying: Submodel Options.
+* header files and VMS:                  Include Files and VMS.
+* HPPA Options:                          HPPA Options.
+* i in constraint:                       Simple Constraints.
+* I in constraint:                       Simple Constraints.
+* i386 Options:                          i386 Options.
+* IBM RS/6000 and PowerPC Options:       RS/6000 and PowerPC Options.
+* IBM RT options:                        RT Options.
+* IBM RT PC:                             Interoperation.
+* identifier names, dollar signs in:     Dollar Signs.
+* identifiers, names in assembler code:  Asm Labels.
+* identifying source, compiler (88k):    M88K Options.
+* implicit argument: return value:       Naming Results.
+* implied #pragma implementation:        C++ Interface.
+* include files and VMS:                 Include Files and VMS.
+* incompatibilities of GNU CC:           Incompatibilities.
+* increment operators:                   Bug Criteria.
+* initializations in expressions:        Constructors.
+* initializers with labeled elements:    Labeled Elements.
+* initializers, non-constant:            Initializers.
+* inline automatic for C++ member fns:   Inline.
+* inline functions:                      Inline.
+* inline functions, omission of:         Inline.
+* inlining and C++ pragmas:              C++ Interface.
+* installation trouble:                  Trouble.
+* installing GNU CC:                     Installation.
+* installing GNU CC on the Sun:          Sun Install.
+* installing GNU CC on VMS:              VMS Install.
+* integrating function code:             Inline.
+* Intel 386 Options:                     i386 Options.
+* interface and implementation headers, C++: C++ Interface.
+* intermediate C version, nonexistent:   G++ and GCC.
+* introduction:                          Top.
+* invalid assembly code:                 Bug Criteria.
+* invalid input:                         Bug Criteria.
+* invoking g++:                          Invoking G++.
+* kernel and user registers (29k):       AMD29K Options.
+* keywords, alternate:                   Alternate Keywords.
+* known causes of trouble:               Trouble.
+* labeled elements in initializers:      Labeled Elements.
+* labels as values:                      Labels as Values.
+* labs:                                  C Dialect Options.
+* language dialect options:              C Dialect Options.
+* large bit shifts (88k):                M88K Options.
+* length-zero arrays:                    Zero Length.
+* Libraries:                             Link Options.
+* LIBRARY_PATH:                          Environment Variables.
+* link options:                          Link Options.
+* load address instruction:              Simple Constraints.
+* local labels:                          Local Labels.
+* local variables in macros:             Naming Types.
+* local variables, specifying registers: Local Reg Vars.
+* long long data types:                  Long Long.
+* longjmp:                               Global Reg Vars.
+* longjmp and automatic variables:       C Dialect Options.
+* longjmp incompatibilities:             Incompatibilities.
+* longjmp warnings:                      Warning Options.
+* lvalues, generalized:                  Lvalues.
+* m in constraint:                       Simple Constraints.
+* M680x0 options:                        M680x0 Options.
+* M88k options:                          M88K Options.
+* machine dependent options:             Submodel Options.
+* machine specific constraints:          Machine Constraints.
+* macro with variable arguments:         Macro Varargs.
+* macros containing asm:                 Extended Asm.
+* macros, inline alternative:            Inline.
+* macros, local labels:                  Local Labels.
+* macros, local variables in:            Naming Types.
+* macros, statements in expressions:     Statement Exprs.
+* macros, types of arguments:            Typeof.
+* main and the exit status:              VMS Misc.
+* make:                                  Preprocessor Options.
+* matching constraint:                   Simple Constraints.
+* maximum operator:                      Min and Max.
+* member fns, automatically inline:      Inline.
+* memcmp:                                C Dialect Options.
+* memcpy:                                C Dialect Options.
+* memory model (29k):                    AMD29K Options.
+* memory references in constraints:      Simple Constraints.
+* messages, warning:                     Warning Options.
+* messages, warning and error:           Warnings and Errors.
+* middle-operands, omitted:              Conditionals.
+* minimum operator:                      Min and Max.
+* MIPS options:                          MIPS Options.
+* misunderstandings in C++:              C++ Misunderstandings.
+* mktemp, and constant strings:          Incompatibilities.
+* mode attribute:                        Variable Attributes.
+* modifiers in constraints:              Modifiers.
+* multiple alternative constraints:      Multi-Alternative.
+* multiprecision arithmetic:             Long Long.
+* n in constraint:                       Simple Constraints.
+* name augmentation:                     VMS Misc.
+* named return value in C++:             Naming Results.
+* names used in assembler code:          Asm Labels.
+* naming convention, implementation headers: C++ Interface.
+* naming types:                          Naming Types.
+* nested functions:                      Nested Functions.
+* newline vs string constants:           C Dialect Options.
+* nocommon attribute:                    Variable Attributes.
+* non-constant initializers:             Initializers.
+* non-static inline function:            Inline.
+* noreturn function attribute:           Function Attributes.
+* o in constraint:                       Simple Constraints.
+* OBJC_INCLUDE_PATH:                     Environment Variables.
+* Objective C:                           G++ and GCC.
+* obstack_free:                          Configurations.
+* OCS (88k):                             M88K Options.
+* offsettable address:                   Simple Constraints.
+* old-style function definitions:        Function Prototypes.
+* omitted middle-operands:               Conditionals.
+* open coding:                           Inline.
+* operand constraints, asm:              Constraints.
+* optimize options:                      Optimize Options.
+* options to control warnings:           Warning Options.
+* options, C++:                          C++ Dialect Options.
+* options, code generation:              Code Gen Options.
+* options, debugging:                    Debugging Options.
+* options, dialect:                      C Dialect Options.
+* options, directory search:             Directory Options.
+* options, GNU CC command:               Invoking GCC.
+* options, grouping:                     Invoking GCC.
+* options, linking:                      Link Options.
+* options, optimization:                 Optimize Options.
+* options, order:                        Invoking GCC.
+* options, preprocessor:                 Preprocessor Options.
+* order of evaluation, side effects:     Non-bugs.
+* order of options:                      Invoking GCC.
+* other directory, compilation in:       Other Dir.
+* output file option:                    Overall Options.
+* overloaded virtual fn, warning:        Warning Options.
+* p in constraint:                       Simple Constraints.
+* packed attribute:                      Variable Attributes.
+* parameter forward declaration:         Variable Length.
+* parser generator, Bison:               Installation.
+* PIC:                                   Code Gen Options.
+* pointer arguments:                     Function Attributes.
+* portions of temporary objects, pointers to: Temporaries.
+* pragma, reason for not using:          Function Attributes.
+* pragmas in C++, effect on inlining:    C++ Interface.
+* pragmas, interface and implementation: C++ Interface.
+* preprocessing numbers:                 Incompatibilities.
+* preprocessing tokens:                  Incompatibilities.
+* preprocessor options:                  Preprocessor Options.
+* processor selection (29k):             AMD29K Options.
+* prof:                                  Debugging Options.
+* promotion of formal parameters:        Function Prototypes.
+* push address instruction:              Simple Constraints.
+* Q, in constraint:                      Simple Constraints.
+* qsort, and global register variables:  Global Reg Vars.
+* question mark:                         Multi-Alternative.
+* r in constraint:                       Simple Constraints.
+* r0-relative references (88k):          M88K Options.
+* ranges in case statements:             Case Ranges.
+* read-only strings:                     Incompatibilities.
+* register positions in frame (88k):     M88K Options.
+* register variable after longjmp:       Global Reg Vars.
+* registers:                             Extended Asm.
+* registers for local variables:         Local Reg Vars.
+* registers in constraints:              Simple Constraints.
+* registers, global allocation:          Explicit Reg Vars.
+* registers, global variables in:        Global Reg Vars.
+* reordering, warning:                   Warning Options.
+* reporting bugs:                        Bugs.
+* rest argument (in macro):              Macro Varargs.
+* return value of main:                  VMS Misc.
+* return value, named, in C++:           Naming Results.
+* return, in C++ function header:        Naming Results.
+* RS/6000 and PowerPC Options:           RS/6000 and PowerPC Options.
+* RT options:                            RT Options.
+* RT PC:                                 Interoperation.
+* run-time options:                      Code Gen Options.
+* s in constraint:                       Simple Constraints.
+* scanf, and constant strings:           Incompatibilities.
+* scope of a variable length array:      Variable Length.
+* scope of declaration:                  Disappointments.
+* scope of external declarations:        Incompatibilities.
+* search path:                           Directory Options.
+* second include path:                   Preprocessor Options.
+* section function attribute:            Function Attributes.
+* section variable attribute:            Variable Attributes.
+* separate directory, compilation in:    Other Dir.
+* sequential consistency on 88k:         M88K Options.
+* setjmp:                                Global Reg Vars.
+* setjmp incompatibilities:              Incompatibilities.
+* shared strings:                        Incompatibilities.
+* shared VMS run time system:            VMS Misc.
+* side effect in ?::                     Conditionals.
+* side effects, macro argument:          Statement Exprs.
+* side effects, order of evaluation:     Non-bugs.
+* signature:                             C++ Signatures.
+* signature in C++, advantages:          C++ Signatures.
+* signature member function default implementation: C++ Signatures.
+* signatures, C++:                       C++ Signatures.
+* simple constraints:                    Simple Constraints.
+* sin:                                   C Dialect Options.
+* sizeof:                                Typeof.
+* smaller data references (88k):         M88K Options.
+* smaller data references (MIPS):        MIPS Options.
+* SPARC options:                         SPARC Options.
+* specified registers:                   Explicit Reg Vars.
+* specifying compiler version and target machine: Target Options.
+* specifying hardware config:            Submodel Options.
+* specifying machine version:            Target Options.
+* specifying registers for local variables: Local Reg Vars.
+* sqrt:                                  C Dialect Options.
+* sscanf, and constant strings:          Incompatibilities.
+* stack checks (29k):                    AMD29K Options.
+* stage1:                                Installation.
+* start files:                           Tools and Libraries.
+* statements inside expressions:         Statement Exprs.
+* static data in C++, declaring and defining: Static Definitions.
+* stdarg.h and RT PC:                    RT Options.
+* storem bug (29k):                      AMD29K Options.
+* strcmp:                                C Dialect Options.
+* strcpy:                                C Dialect Options.
+* string constants:                      Incompatibilities.
+* string constants vs newline:           C Dialect Options.
+* strlen:                                C Dialect Options.
+* structure passing (88k):               M88K Options.
+* structures:                            Incompatibilities.
+* structures, constructor expression:    Constructors.
+* submodel options:                      Submodel Options.
+* subscripting:                          Subscripting.
+* subscripting and function values:      Subscripting.
+* subtype polymorphism, C++:             C++ Signatures.
+* suffixes for C++ source:               Invoking G++.
+* Sun installation:                      Sun Install.
+* suppressing warnings:                  Warning Options.
+* surprises in C++:                      C++ Misunderstandings.
+* SVr4:                                  M88K Options.
+* syntax checking:                       Warning Options.
+* synthesized methods, warning:          Warning Options.
+* target machine, specifying:            Target Options.
+* target options:                        Target Options.
+* tcov:                                  Debugging Options.
+* template debugging:                    Warning Options.
+* template instantiation:                Template Instantiation.
+* temporaries, lifetime of:              Temporaries.
+* thunks:                                Nested Functions.
+* TMPDIR:                                Environment Variables.
+* traditional C language:                C Dialect Options.
+* type abstraction, C++:                 C++ Signatures.
+* type alignment:                        Alignment.
+* type attributes:                       Type Attributes.
+* typedef names as function parameters:  Incompatibilities.
+* typeof:                                Typeof.
+* Ultrix calling convention:             Interoperation.
+* undefined behavior:                    Bug Criteria.
+* undefined function value:              Bug Criteria.
+* underscores in variables in macros:    Naming Types.
+* underscores, avoiding (88k):           M88K Options.
+* union, casting to a:                   Cast to Union.
+* unions:                                Incompatibilities.
+* unresolved references and -nodefaultlibs: Link Options.
+* unresolved references and -nostdlib:   Link Options.
+* V in constraint:                       Simple Constraints.
+* value after longjmp:                   Global Reg Vars.
+* varargs.h and RT PC:                   RT Options.
+* variable alignment:                    Alignment.
+* variable attributes:                   Variable Attributes.
+* variable number of arguments:          Macro Varargs.
+* variable-length array scope:           Variable Length.
+* variable-length arrays:                Variable Length.
+* variables in specified registers:      Explicit Reg Vars.
+* variables, local, in macros:           Naming Types.
+* Vax calling convention:                Interoperation.
+* VAX options:                           VAX Options.
+* VAXCRTL:                               VMS Misc.
+* VMS and case sensitivity:              VMS Misc.
+* VMS and include files:                 Include Files and VMS.
+* VMS installation:                      VMS Install.
+* void pointers, arithmetic:             Pointer Arith.
+* void, size of pointer to:              Pointer Arith.
+* volatile applied to function:          Function Attributes.
+* warning for enumeration conversions:   Warning Options.
+* warning for overloaded virtual fn:     Warning Options.
+* warning for reordering of member initializers: Warning Options.
+* warning for synthesized methods:       Warning Options.
+* warning messages:                      Warning Options.
+* warnings vs errors:                    Warnings and Errors.
+* weak attribute:                        Function Attributes.
+* whitespace:                            Incompatibilities.
+* X in constraint:                       Simple Constraints.
+* zero division on 88k:                  M88K Options.
+* zero-length arrays:                    Zero Length.
+
+

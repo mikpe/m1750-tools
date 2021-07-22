@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 20 November 1996 -->
+
+<TITLE>Using LD, the GNU linker - Symbols</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_8.html">previous</A>, <A HREF="ld_10.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H3><A NAME="SEC9" HREF="ld_toc.html#TOC9">Symbol Names</A></H3>
+<P>
+<A NAME="IDX197"></A>
+<A NAME="IDX198"></A>
+<A NAME="IDX199"></A>
+<A NAME="IDX200"></A>
+Unless quoted, symbol names start with a letter, underscore, or point
+and may include any letters, underscores, digits, points,
+and hyphens.  Unquoted symbol names must not conflict with any
+keywords.  You can specify a symbol which contains odd characters or has
+the same name as a keyword, by surrounding the symbol name in double quotes:
+
+<PRE>
+        "SECTION" = 9;
+        "with a space" = "also with a space" + 10;
+</PRE>
+
+<P>
+Since symbols can contain many non-alphabetic characters, it is safest
+to delimit symbols with spaces.  For example, <SAMP>`A-B'</SAMP> is one symbol,
+whereas <SAMP>`A - B'</SAMP> is an expression involving subtraction.
+
+</P>
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_8.html">previous</A>, <A HREF="ld_10.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>

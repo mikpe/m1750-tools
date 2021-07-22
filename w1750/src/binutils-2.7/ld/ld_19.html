@@ -1,0 +1,176 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 20 November 1996 -->
+
+<TITLE>Using LD, the GNU linker - Section Placement</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_18.html">previous</A>, <A HREF="ld_20.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H3><A NAME="SEC19" HREF="ld_toc.html#TOC19">Section Placement</A></H3>
+
+<P>
+<A NAME="IDX252"></A>
+In a section definition, you can specify the contents of an output
+section by listing particular input files, by listing particular
+input-file sections, or by a combination of the two.  You can also place
+arbitrary data in the section, and define symbols relative to the
+beginning of the section.
+
+</P>
+<P>
+The <VAR>contents</VAR> of a section definition may include any of the
+following kinds of statement.  You can include as many of these as you
+like in a single section definition, separated from one another by
+whitespace. 
+
+</P>
+<DL COMPACT>
+
+<DT><CODE><VAR>filename</VAR></CODE>
+<DD>
+<A NAME="IDX253"></A>
+ <A NAME="IDX254"></A>
+ <A NAME="IDX255"></A>
+ 
+You may simply name a particular input file to be placed in the current
+output section; <EM>all</EM> sections from that file are placed in the
+current section definition.  If the file name has already been mentioned
+in another section definition, with an explicit section name list, then
+only those sections which have not yet been allocated are used.
+
+To specify a list of particular files by name:
+
+<PRE>
+.data : { afile.o bfile.o cfile.o }
+</PRE>
+
+The example also illustrates that multiple statements can be included in
+the contents of a section definition, since each file name is a separate
+statement. 
+
+<A NAME="IDX256"></A>
+<A NAME="IDX257"></A>
+<DT><CODE><VAR>filename</VAR>( <VAR>section</VAR> )</CODE>
+<DD>
+<DT><CODE><VAR>filename</VAR>( <VAR>section</VAR> , <VAR>section</VAR>, ... )</CODE>
+<DD>
+<DT><CODE><VAR>filename</VAR>( <VAR>section</VAR> <VAR>section</VAR> ... )</CODE>
+<DD>
+You can name one or more sections from your input files, for
+insertion in the current output section.  If you wish to specify a list
+of input-file sections inside the parentheses, you may separate the
+section names by either commas or whitespace.
+
+<A NAME="IDX258"></A>
+<A NAME="IDX259"></A>
+<DT><CODE>* (<VAR>section</VAR>)</CODE>
+<DD>
+<DT><CODE>* (<VAR>section</VAR>, <VAR>section</VAR>, ...)</CODE>
+<DD>
+<DT><CODE>* (<VAR>section</VAR> <VAR>section</VAR> ...)</CODE>
+<DD>
+Instead of explicitly naming particular input files in a link control
+script, you can refer to <EM>all</EM> files from the <CODE>ld</CODE> command
+line: use <SAMP>`*'</SAMP> instead of a particular file name before the
+parenthesized input-file section list.  
+
+If you have already explicitly included some files by name, <SAMP>`*'</SAMP>
+refers to all <EM>remaining</EM> files--those whose places in the output
+file have not yet been defined.
+
+For example, to copy sections <CODE>1</CODE> through <CODE>4</CODE> from an Oasys file
+into the <CODE>.text</CODE> section of an <CODE>a.out</CODE> file, and sections <CODE>13</CODE>
+and <CODE>14</CODE> into the <CODE>.data</CODE> section:
+
+<PRE>
+SECTIONS {
+  .text :{
+    *("1" "2" "3" "4")
+  }
+  
+  .data :{
+    *("13" "14")
+  }
+}
+</PRE>
+
+<A NAME="IDX260"></A>
+<SAMP>`[ <VAR>section</VAR> ... ]'</SAMP> used to be accepted as an alternate way
+to specify named sections from all unallocated input files.  Because
+some operating systems (VMS) allow brackets in file names, that notation
+is no longer supported.
+
+<A NAME="IDX261"></A>
+<A NAME="IDX262"></A>
+<A NAME="IDX263"></A>
+<DT><CODE><VAR>filename</VAR><CODE>( COMMON )</CODE></CODE>
+<DD>
+<DT><CODE>*( COMMON )</CODE>
+<DD>
+Specify where in your output file to place uninitialized data
+with this notation.  <CODE>*(COMMON)</CODE> by itself refers to all
+uninitialized data from all input files (so far as it is not yet
+allocated); <VAR>filename</VAR><CODE>(COMMON)</CODE> refers to uninitialized data
+from a particular file.  Both are special cases of the general
+mechanisms for specifying where to place input-file sections:
+<CODE>ld</CODE> permits you to refer to uninitialized data as if it
+were in an input-file section named <CODE>COMMON</CODE>, regardless of the
+input file's format.
+</DL>
+
+<P>
+For example, the following command script arranges the output file into
+three consecutive sections, named <CODE>.text</CODE>, <CODE>.data</CODE>, and
+<CODE>.bss</CODE>, taking the input for each from the correspondingly named
+sections of all the input files:
+
+</P>
+
+<PRE>
+SECTIONS { 
+  .text : { *(.text) }
+  .data : { *(.data) } 
+  .bss :  { *(.bss)  *(COMMON) } 
+} 
+</PRE>
+
+<P>
+The following example reads all of the sections from file <CODE>all.o</CODE>
+and places them at the start of output section <CODE>outputa</CODE> which
+starts at location <CODE>0x10000</CODE>. All of section <CODE>.input1</CODE> from
+file <CODE>foo.o</CODE> follows immediately, in the same output section.  All
+of section <CODE>.input2</CODE> from <CODE>foo.o</CODE> goes into output section
+<CODE>outputb</CODE>, followed by section <CODE>.input1</CODE> from <CODE>foo1.o</CODE>.
+All of the remaining <CODE>.input1</CODE> and <CODE>.input2</CODE> sections from any
+files are written to output section <CODE>outputc</CODE>.
+
+</P>
+
+<PRE>
+SECTIONS {
+  outputa 0x10000 :
+    {
+    all.o
+    foo.o (.input1)
+    }
+  outputb :
+    {
+    foo.o (.input2)
+    foo1.o (.input1)
+    }
+  outputc :
+    {
+    *(.input1)
+    *(.input2)
+    }
+}
+</PRE>
+
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_18.html">previous</A>, <A HREF="ld_20.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>

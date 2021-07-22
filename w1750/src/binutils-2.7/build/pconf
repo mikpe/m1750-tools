@@ -1,0 +1,5 @@
+#!/bin/sh
+echo Preparing configuration...
+/w1750/src/binutils-2.7/configure --v --srcdir=/w1750/src/binutils-2.7/ --prefix=/w1750 --target=m1750-coff 
+echo Done!
+

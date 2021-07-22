@@ -1,0 +1,3 @@
+wxIDE ICON wxIDE.ico
+
+rcinclude wx.rc

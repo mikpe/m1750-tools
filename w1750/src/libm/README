@@ -1,0 +1,41 @@
+README
+-----
+
+This is the GCC-1750 math library. It is based on the text by
+Cody and Waite, with additional functions specially written for 
+the 1750.
+
+Installation
+------------
+The header file, math.h, should be installed in a target-dependent
+location. On BSD-like Unix systems, this is usually:
+
+	/usr/local/m1750-coff/include/
+
+The path '/usr/local/' is referred to as the 'prefix' in the make
+file, and you will nedd to edit the definition of prefix for
+other kinds of Unix.
+
+The two library files, libm.a and libmx.a, must be installed in
+the general binary directory. Where the prefix is /usr/local then
+the binary directory is:
+
+        /usr/local/lib/gcc-lib/m1750-coff/2.7.2/
+
+To build the libaries, just type 'make'.
+
+To install the libraries, check the prefix is correct then type
+'make install'. You may need special privilege to do this.
+
+ 
+Accuracy
+--------
+On the whole the accuracy is good. If you have the libm test suite, 
+then you can test the root means square accuracy using the tests provided. 
+Change to the tests directory then type 'make run'.
+
+For a better idea of accuracy, look in the directory 'graphs'. There you
+will find test programs that generate data files for plotting. You can
+use a program such as 'gnuplot'.
+
+

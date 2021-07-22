@@ -1,0 +1,115 @@
+GCC-1750 Version 1.0
+--------------------
+
+This directory contains the target-dependent files for
+the MIL-STD-1750 configuration of GCC Version 2.7.2.
+
+NOTE: The files with suffix ",v" are the rcs files that
+correspond to the other text files.
+
+NOTE: Before you install the compiler, you must have already
+installed the binary utilities, and the 1750 header files.
+
+
+How to make and intall
+---------------------
+
+Note: You must have the gcc-2.7.2 distribution before you can go
+any further.
+
+Create a top level directory in some convenient place
+and call it gcc-1750-1.0.
+
+Example:
+
+bash$ cd a-convenient-place
+bash$ mkdir gcc-1750-1.0
+
+Now create two subdirectories, one to hold the source code and one
+to hold the object code and executable files.
+
+$ mkdir gcc-1750-1.0/src
+$ mkdir gcc-1750-1.0/work
+$ cd gcc-1750-1.0/
+$ ls
+src   work
+$ cd src
+
+Then copy the gcc version 2.7.2 distribution file into the current
+directory.  You can get this file from the main GNU ftp site at 
+ftp://prep.ai.mit.edu/pub/gnu/gcc-2.7.2.tar.gz, or from any mirror
+site.
+
+Now unpack the distribution file. We use GNU tar, which accepts the 
+'z' option.
+
+bash$ tar zxvf gcc-2.7.2.tar.gz
+...
+lots of output.
+...
+bash$
+
+Then create a directory in the config subdirectory for the 1750 
+configuration files. The configuration name for the MIL-STD-1750
+is "m1750".
+
+bash$ mkdir gcc-2.7.2/config/m1750
+
+Then copy the files in the directory in the directory you have just
+created.
+
+bash$ cp 1750-files gcc-2.7.2/config/m1750/
+
+Now some of the configuration files replace the standard gcc files.
+Copy the following files into the main gcc directory.
+
+  Makefile.in      
+  config.sub       
+  libgcc2.c        
+  c-decl.c         
+  configure        
+  calls.c          
+  expr.c           
+  machmode.def     
+  fold-const.c     
+
+Example:
+
+bash$ cd gcc-2.7.2/config/m1750/
+bash$ cp Makefile.in ../../
+bash$ ...
+
+
+Create a working directory for the compiler in the 'work' directory
+we created earlier.
+
+$ cd ../../../../work/
+$ mkdir gcc
+$ cd gcc
+
+Now configure the compiler for 'm1750-coff'
+
+bash$ ../../src/gcc-2.7.2//configure --srcdir=../../src/gcc-2.7.2/ \
+--target=m1750-coff --prefix=/usr/local
+
+Now make the C and C++ compilers as follows:
+
+bash$ $ make CFLAGS="-O2" LANGUAGES="c c++"
+
+
+When the make is complete, install the compiler. This will probably require
+super user privilege.
+
+bash$ su
+Password: 
+# make install LANGUAGES="c c++"
+# exit
+bash$ 
+
+
+You can now test the compiler (using a test program t1.c for example):
+
+bash$ m1750-coff-gcc -c -Wa,-a t1.c
+
+
+

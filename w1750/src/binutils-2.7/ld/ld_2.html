@@ -1,0 +1,1134 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 29 November 1996 -->
+
+<TITLE>Using m1750-coff-ld, the GNU linker - Invocation</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_1.html">previous</A>, <A HREF="ld_3.html">next</A>, <A HREF="ld_7.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC2" HREF="ld_toc.html#TOC2">Invocation</A></H1>
+
+<P>
+The GNU linker <CODE>ld</CODE> is meant to cover a broad range of situations,
+and to be as compatible as possible with other linkers.  As a result,
+you have many choices to control its behavior.
+
+</P>
+
+
+
+<H2><A NAME="SEC3" HREF="ld_toc.html#TOC3">Command Line Options</A></H2>
+
+<P>
+<A NAME="IDX3"></A>
+<A NAME="IDX4"></A>
+The linker supports a plethora of command-line options, but in actual
+practice few of them are used in any particular context.
+<A NAME="IDX5"></A>
+For instance, a frequent use of <CODE>ld</CODE> is to link standard Unix
+object files on a standard, supported Unix system.  On such a system, to
+link a file <CODE>hello.o</CODE>:
+
+</P>
+
+<PRE>
+m1750-coff-ld -o <VAR>output</VAR> /lib/crt0.o hello.o -lc
+</PRE>
+
+<P>
+This tells <CODE>ld</CODE> to produce a file called <VAR>output</VAR> as the
+result of linking the file <CODE>/lib/crt0.o</CODE> with <CODE>hello.o</CODE> and
+the library <CODE>libc.a</CODE>, which will come from the standard search
+directories.  (See the discussion of the <SAMP>`-l'</SAMP> option below.)
+
+</P>
+<P>
+The command-line options to <CODE>ld</CODE> may be specified in any order, and
+may be repeated at will.  Repeating most options with a different
+argument will either have no further effect, or override prior
+occurrences (those further to the left on the command line) of that
+option.  Options which may be meaningfully specified more than once are
+noted in the descriptions below.
+
+</P>
+<P>
+<A NAME="IDX6"></A>
+Non-option arguments are objects files which are to be linked together.
+They may follow, precede, or be mixed in with command-line options,
+except that an object file argument may not be placed between an option
+and its argument.
+
+</P>
+<P>
+Usually the linker is invoked with at least one object file, but you can
+specify other forms of binary input files using <SAMP>`-l'</SAMP>, <SAMP>`-R'</SAMP>,
+and the script command language.  If <EM>no</EM> binary input files at all
+are specified, the linker does not produce any output, and issues the
+message <SAMP>`No input files'</SAMP>.
+
+</P>
+<P>
+If the linker can not recognize the format of an object file, it will
+assume that it is a linker script.  A script specified in this way
+augments the main linker script used for the link (either the default
+linker script or the one specified by using <SAMP>`-T'</SAMP>).  This feature
+permits the linker to link against a file which appears to be an object
+or an archive, but actually merely defines some symbol values, or uses
+<CODE>INPUT</CODE> or <CODE>GROUP</CODE> to load other objects.  See section <A HREF="ld_3.html#SEC5">Command Language</A>.
+
+</P>
+<P>
+For options whose names are a single letter,
+option arguments must either follow the option letter without intervening
+whitespace, or be given as separate arguments immediately following the
+option that requires them.
+
+</P>
+<P>
+For options whose names are multiple letters, either one dash or two can
+precede the option name; for example, <SAMP>`--oformat'</SAMP> and
+<SAMP>`-oformat'</SAMP> are equivalent.  Arguments to multiple-letter options
+must either be separated from the option name by an equals sign, or be
+given as separate arguments immediately following the option that
+requires them.  For example, <SAMP>`--oformat srec'</SAMP> and
+<SAMP>`--oformat=srec'</SAMP> are equivalent.  Unique abbreviations of the names
+of multiple-letter options are accepted.
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>-a<VAR>keyword</VAR></CODE>
+<DD>
+<A NAME="IDX7"></A>
+ 
+This option is supported for HP/UX compatibility.  The <VAR>keyword</VAR>
+argument must be one of the strings <SAMP>`archive'</SAMP>, <SAMP>`shared'</SAMP>, or
+<SAMP>`default'</SAMP>.  <SAMP>`-aarchive'</SAMP> is functionally equivalent to
+<SAMP>`-Bstatic'</SAMP>, and the other two keywords are functionally equivalent
+to <SAMP>`-Bdynamic'</SAMP>.  This option may be used any number of times.
+
+<A NAME="IDX8"></A>
+<A NAME="IDX9"></A>
+<DT><CODE>-A<VAR>architecture</VAR></CODE>
+<DD>
+<A NAME="IDX10"></A>
+<DT><CODE>--architecture=<VAR>architecture</VAR></CODE>
+<DD>
+In the current release of <CODE>ld</CODE>, this option is useful only for the
+Intel 960 family of architectures.  In that <CODE>ld</CODE> configuration, the
+<VAR>architecture</VAR> argument identifies the particular architecture in
+the 960 family, enabling some safeguards and modifying the
+archive-library search path.  See section <A HREF="ld_4.html#SEC27"><CODE>ld</CODE> and the Intel 960 family</A>, for details.
+
+Future releases of <CODE>ld</CODE> may support similar functionality for
+other architecture families.
+
+<A NAME="IDX11"></A>
+<A NAME="IDX12"></A>
+<A NAME="IDX13"></A>
+<A NAME="IDX14"></A>
+<A NAME="IDX15"></A>
+<DT><CODE>-b <VAR>input-format</VAR></CODE>
+<DD>
+<DT><CODE>--format=<VAR>input-format</VAR></CODE>
+<DD>
+<CODE>ld</CODE> may be configured to support more than one kind of object
+file.  If your <CODE>ld</CODE> is configured this way, you can use the
+<SAMP>`-b'</SAMP> option to specify the binary format for input object files
+that follow this option on the command line.  Even when <CODE>ld</CODE> is
+configured to support alternative object formats, you don't usually need
+to specify this, as <CODE>ld</CODE> should be configured to expect as a
+default input format the most usual format on each machine.
+<VAR>input-format</VAR> is a text string, the name of a particular format
+supported by the BFD libraries.  (You can list the available binary
+formats with <SAMP>`objdump -i'</SAMP>.)
+See section <A HREF="ld_5.html#SEC28">BFD</A>.
+
+You may want to use this option if you are linking files with an unusual
+binary format.  You can also use <SAMP>`-b'</SAMP> to switch formats explicitly (when
+linking object files of different formats), by including
+<SAMP>`-b <VAR>input-format</VAR>'</SAMP> before each group of object files in a
+particular format.  
+
+The default format is taken from the environment variable
+<CODE>GNUTARGET</CODE>.
+See section <A HREF="ld_2.html#SEC4">Environment Variables</A>.
+You can also define the input
+format from a script, using the command <CODE>TARGET</CODE>; see section <A HREF="ld_3.html#SEC24">Option Commands</A>.
+
+<A NAME="IDX16"></A>
+<A NAME="IDX17"></A>
+<A NAME="IDX18"></A>
+<DT><CODE>-c <VAR>MRI-commandfile</VAR></CODE>
+<DD>
+<DT><CODE>--mri-script=<VAR>MRI-commandfile</VAR></CODE>
+<DD>
+For compatibility with linkers produced by MRI, <CODE>ld</CODE> accepts script
+files written in an alternate, restricted command language, described in
+section <A HREF="ld_6.html#SEC32">MRI Compatible Script Files</A>.  Introduce MRI script files with
+the option <SAMP>`-c'</SAMP>; use the <SAMP>`-T'</SAMP> option to run linker
+scripts written in the general-purpose <CODE>ld</CODE> scripting language.
+If <VAR>MRI-cmdfile</VAR> does not exist, <CODE>ld</CODE> looks for it in the directories
+specified by any <SAMP>`-L'</SAMP> options.
+
+<A NAME="IDX19"></A>
+<A NAME="IDX20"></A>
+<A NAME="IDX21"></A>
+<A NAME="IDX22"></A>
+<DT><CODE>-d</CODE>
+<DD>
+<DT><CODE>-dc</CODE>
+<DD>
+<DT><CODE>-dp</CODE>
+<DD>
+These three options are equivalent; multiple forms are supported for
+compatibility with other linkers.  They
+assign space to common symbols even if a relocatable output file is
+specified (with <SAMP>`-r'</SAMP>).  The script command
+<CODE>FORCE_COMMON_ALLOCATION</CODE> has the same effect.  See section <A HREF="ld_3.html#SEC24">Option Commands</A>.
+
+<A NAME="IDX23"></A>
+<A NAME="IDX24"></A>
+<A NAME="IDX25"></A>
+<DT><CODE>-e <VAR>entry</VAR></CODE>
+<DD>
+<DT><CODE>--entry=<VAR>entry</VAR></CODE>
+<DD>
+Use <VAR>entry</VAR> as the explicit symbol for beginning execution of your
+program, rather than the default entry point. See section <A HREF="ld_3.html#SEC23">The Entry Point</A>, for a
+discussion of defaults and other ways of specifying the
+entry point.
+
+<A NAME="IDX26"></A>
+<A NAME="IDX27"></A>
+<A NAME="IDX28"></A>
+<DT><CODE>-E</CODE>
+<DD>
+<DT><CODE>-export-dynamic</CODE>
+<DD>
+When creating a dynamically linked executable, add all symbols to the
+dynamic symbol table.  Normally, the dynamic symbol table contains only
+symbols which are used by a dynamic object.  This option is needed for
+some uses of <CODE>dlopen</CODE>.
+
+<A NAME="IDX29"></A>
+<DT><CODE>-F</CODE>
+<DD>
+<DT><CODE>-F<VAR>format</VAR></CODE>
+<DD>
+Ignored.  Some older linkers used this option throughout a compilation
+toolchain for specifying object-file format for both input and output
+object files.  The mechanisms <CODE>ld</CODE> uses for this purpose (the
+<SAMP>`-b'</SAMP> or <SAMP>`-format'</SAMP> options for input files, <SAMP>`-oformat'</SAMP>
+option or the <CODE>TARGET</CODE> command in linker scripts for output files,
+the <CODE>GNUTARGET</CODE> environment variable) are more flexible, but
+<CODE>ld</CODE> accepts the <SAMP>`-F'</SAMP> option for compatibility with scripts
+written to call the old linker.
+
+<A NAME="IDX30"></A>
+<DT><CODE>--force-exe-suffix</CODE>
+<DD>
+Make sure that an output file has a .exe suffix.
+
+If a successfully built fully linked output file does not have a
+<CODE>.exe</CODE> or <CODE>.dll</CODE> suffix, this option forces the linker to copy
+the output file to one of the same name with a <CODE>.exe</CODE> suffix. This
+option is useful when using unmodified Unix makefiles on a Microsoft
+Windows host, since some versions of Windows won't run an image unless
+it ends in a <CODE>.exe</CODE> suffix.
+
+<A NAME="IDX31"></A>
+<DT><CODE>-g</CODE>
+<DD>
+Ignored.  Provided for compatibility with other tools.
+
+<A NAME="IDX32"></A>
+<A NAME="IDX33"></A>
+<A NAME="IDX34"></A>
+<DT><CODE>-G<VAR>value</VAR></CODE>
+<DD>
+<DT><CODE>--gpsize=<VAR>value</VAR></CODE>
+<DD>
+Set the maximum size of objects to be optimized using the GP register to
+<VAR>size</VAR>.  This is only meaningful for object file formats such as
+MIPS ECOFF which supports putting large and small objects into different
+sections.  This is ignored for other object file formats.
+
+<A NAME="IDX35"></A>
+<A NAME="IDX36"></A>
+<A NAME="IDX37"></A>
+<DT><CODE>-h<VAR>name</VAR></CODE>
+<DD>
+<DT><CODE>-soname=<VAR>name</VAR></CODE>
+<DD>
+When creating an ELF shared object, set the internal DT_SONAME field to
+the specified name.  When an executable is linked with a shared object
+which has a DT_SONAME field, then when the executable is run the dynamic
+linker will attempt to load the shared object specified by the DT_SONAME
+field rather than the using the file name given to the linker.
+
+<A NAME="IDX38"></A>
+<A NAME="IDX39"></A>
+<DT><CODE>-i</CODE>
+<DD>
+Perform an incremental link (same as option <SAMP>`-r'</SAMP>).
+
+<A NAME="IDX40"></A>
+<A NAME="IDX41"></A>
+<A NAME="IDX42"></A>
+<DT><CODE>-l<VAR>archive</VAR></CODE>
+<DD>
+<DT><CODE>--library=<VAR>archive</VAR></CODE>
+<DD>
+Add archive file <VAR>archive</VAR> to the list of files to link.  This
+option may be used any number of times.  <CODE>ld</CODE> will search its
+path-list for occurrences of <CODE>lib<VAR>archive</VAR>.a</CODE> for every
+<VAR>archive</VAR> specified.  File extensions other than <CODE>.a</CODE> may be
+used on certain systems.
+
+<A NAME="IDX43"></A>
+<A NAME="IDX44"></A>
+<A NAME="IDX45"></A>
+<DT><CODE>-L<VAR>searchdir</VAR></CODE>
+<DD>
+<DT><CODE>--library-path=<VAR>searchdir</VAR></CODE>
+<DD>
+Add path <VAR>searchdir</VAR> to the list of paths that <CODE>ld</CODE> will search
+for archive libraries and <CODE>ld</CODE> control scripts.  You may use this
+option any number of times.  The directories are searched in the order
+in which they are specified on the command line.  Directories specified
+on the command line are searched before the default directories.  All
+<CODE>-L</CODE> options apply to all <CODE>-l</CODE> options, regardless of the
+order in which the options appear.
+
+The default set of paths searched (without being specified with
+<SAMP>`-L'</SAMP>) depends on which emulation mode <CODE>ld</CODE> is using, and in
+some cases also on how it was configured.  See section <A HREF="ld_2.html#SEC4">Environment Variables</A>.
+
+The paths can also be specified in a link script with the
+<CODE>SEARCH_DIR</CODE> command.  Directories specified this way are searched
+at the point in which the linker script appears in the command line.
+
+<A NAME="IDX46"></A>
+<A NAME="IDX47"></A>
+<DT><CODE>-m<VAR>emulation</VAR></CODE>
+<DD>
+Emulate the <VAR>emulation</VAR> linker.  You can list the available
+emulations with the <SAMP>`--verbose'</SAMP> or <SAMP>`-V'</SAMP> options.  The default
+depends on how your <CODE>ld</CODE> was configured.
+
+<A NAME="IDX48"></A>
+<A NAME="IDX49"></A>
+<A NAME="IDX50"></A>
+<DT><CODE>-M</CODE>
+<DD>
+<DT><CODE>--print-map</CODE>
+<DD>
+Print (to the standard output) a link map--diagnostic information about
+where symbols are mapped by <CODE>ld</CODE>, and information on global common
+storage allocation.
+
+<A NAME="IDX51"></A>
+<A NAME="IDX52"></A>
+<A NAME="IDX53"></A>
+<A NAME="IDX54"></A>
+<DT><CODE>-n</CODE>
+<DD>
+<DT><CODE>--nmagic</CODE>
+<DD>
+Set the text segment to be read only, and mark the output as
+<CODE>NMAGIC</CODE> if possible.
+
+<A NAME="IDX55"></A>
+<A NAME="IDX56"></A>
+<A NAME="IDX57"></A>
+<A NAME="IDX58"></A>
+<DT><CODE>-N</CODE>
+<DD>
+<DT><CODE>--omagic</CODE>
+<DD>
+Set the text and data sections to be readable and writable.  Also, do
+not page-align the data segment.  If the output format supports Unix
+style magic numbers, mark the output as <CODE>OMAGIC</CODE>.
+
+<A NAME="IDX59"></A>
+<A NAME="IDX60"></A>
+<A NAME="IDX61"></A>
+<DT><CODE>-o <VAR>output</VAR></CODE>
+<DD>
+<DT><CODE>--output=<VAR>output</VAR></CODE>
+<DD>
+Use <VAR>output</VAR> as the name for the program produced by <CODE>ld</CODE>; if this
+option is not specified, the name <TT>`a.out'</TT> is used by default.  The
+script command <CODE>OUTPUT</CODE> can also specify the output file name.
+
+<A NAME="IDX62"></A>
+<A NAME="IDX63"></A>
+<A NAME="IDX64"></A>
+<A NAME="IDX65"></A>
+<DT><CODE>-r</CODE>
+<DD>
+<DT><CODE>--relocateable</CODE>
+<DD>
+Generate relocatable output--i.e., generate an output file that can in
+turn serve as input to <CODE>ld</CODE>.  This is often called <STRONG>partial
+linking</STRONG>.  As a side effect, in environments that support standard Unix
+magic numbers, this option also sets the output file's magic number to
+<CODE>OMAGIC</CODE>.
+If this option is not specified, an absolute file is produced.  When
+linking C++ programs, this option <EM>will not</EM> resolve references to
+constructors; to do that, use <SAMP>`-Ur'</SAMP>.
+
+This option does the same thing as <SAMP>`-i'</SAMP>.
+
+<A NAME="IDX66"></A>
+<A NAME="IDX67"></A>
+<A NAME="IDX68"></A>
+<DT><CODE>-R <VAR>filename</VAR></CODE>
+<DD>
+<DT><CODE>--just-symbols=<VAR>filename</VAR></CODE>
+<DD>
+Read symbol names and their addresses from <VAR>filename</VAR>, but do not
+relocate it or include it in the output.  This allows your output file
+to refer symbolically to absolute locations of memory defined in other
+programs.  You may use this option more than once.
+
+For compatibility with other ELF linkers, if the <CODE>-R</CODE> option is
+followed by a directory name, rather than a file name, it is treated as
+the <CODE>-rpath</CODE> option.
+
+<A NAME="IDX69"></A>
+<A NAME="IDX70"></A>
+<A NAME="IDX71"></A>
+<DT><CODE>-s</CODE>
+<DD>
+<DT><CODE>--strip-all</CODE>
+<DD>
+Omit all symbol information from the output file.
+
+<A NAME="IDX72"></A>
+<A NAME="IDX73"></A>
+<A NAME="IDX74"></A>
+<DT><CODE>-S</CODE>
+<DD>
+<DT><CODE>--strip-debug</CODE>
+<DD>
+Omit debugger symbol information (but not all symbols) from the output file.
+
+<A NAME="IDX75"></A>
+<A NAME="IDX76"></A>
+<A NAME="IDX77"></A>
+<DT><CODE>-t</CODE>
+<DD>
+<DT><CODE>--trace</CODE>
+<DD>
+Print the names of the input files as <CODE>ld</CODE> processes them.
+
+<A NAME="IDX78"></A>
+<A NAME="IDX79"></A>
+<A NAME="IDX80"></A>
+<DT><CODE>-T <VAR>commandfile</VAR></CODE>
+<DD>
+<DT><CODE>--script=<VAR>commandfile</VAR></CODE>
+<DD>
+Read link commands from the file <VAR>commandfile</VAR>.  These commands
+replace <CODE>ld</CODE>'s default link script (rather than adding
+to it), so <VAR>commandfile</VAR> must specify everything necessary to describe
+the target format.  See section <A HREF="ld_3.html#SEC5">Command Language</A>.  If <VAR>commandfile</VAR> does not
+exist, <CODE>ld</CODE> looks for it in the directories specified by any
+preceding <SAMP>`-L'</SAMP> options.  Multiple <SAMP>`-T'</SAMP> options accumulate.
+
+<A NAME="IDX81"></A>
+<A NAME="IDX82"></A>
+<A NAME="IDX83"></A>
+<DT><CODE>-u <VAR>symbol</VAR></CODE>
+<DD>
+<DT><CODE>--undefined=<VAR>symbol</VAR></CODE>
+<DD>
+Force <VAR>symbol</VAR> to be entered in the output file as an undefined symbol.
+Doing this may, for example, trigger linking of additional modules from
+standard libraries.  <SAMP>`-u'</SAMP> may be repeated with different option
+arguments to enter additional undefined symbols.
+
+<A NAME="IDX84"></A>
+<A NAME="IDX85"></A>
+<A NAME="IDX86"></A>
+<A NAME="IDX87"></A>
+<DT><CODE>-v</CODE>
+<DD>
+<DT><CODE>--version</CODE>
+<DD>
+<DT><CODE>-V</CODE>
+<DD>
+Display the version number for <CODE>ld</CODE>.  The <CODE>-V</CODE> option also
+lists the supported emulations.
+
+<A NAME="IDX88"></A>
+<A NAME="IDX89"></A>
+<A NAME="IDX90"></A>
+<DT><CODE>-x</CODE>
+<DD>
+<DT><CODE>--discard-all</CODE>
+<DD>
+Delete all local symbols.
+
+<A NAME="IDX91"></A>
+<A NAME="IDX92"></A>
+<A NAME="IDX93"></A>
+<A NAME="IDX94"></A>
+<DT><CODE>-X</CODE>
+<DD>
+<DT><CODE>--discard-locals</CODE>
+<DD>
+Delete all temporary local symbols.  For most targets, this is all local
+symbols whose names begin with <SAMP>`L'</SAMP>.
+
+<A NAME="IDX95"></A>
+<A NAME="IDX96"></A>
+<A NAME="IDX97"></A>
+<DT><CODE>-y <VAR>symbol</VAR></CODE>
+<DD>
+<DT><CODE>--trace-symbol=<VAR>symbol</VAR></CODE>
+<DD>
+Print the name of each linked file in which <VAR>symbol</VAR> appears.  This
+option may be given any number of times.  On many systems it is necessary
+to prepend an underscore.
+
+This option is useful when you have an undefined symbol in your link but
+don't know where the reference is coming from.
+
+<A NAME="IDX98"></A>
+<DT><CODE>-Y <VAR>path</VAR></CODE>
+<DD>
+Add <VAR>path</VAR> to the default library search path.  This option exists
+for Solaris compatibility.
+
+<A NAME="IDX99"></A>
+<DT><CODE>-z <VAR>keyword</VAR></CODE>
+<DD>
+This option is ignored for Solaris compatibility.
+
+<A NAME="IDX100"></A>
+<A NAME="IDX101"></A>
+<DT><CODE>-( <VAR>archives</VAR> -)</CODE>
+<DD>
+<DT><CODE>--start-group <VAR>archives</VAR> --end-group</CODE>
+<DD>
+The <VAR>archives</VAR> should be a list of archive files.  They may be
+either explicit file names, or <SAMP>`-l'</SAMP> options.
+
+The specified archives are searched repeatedly until no new undefined
+references are created.  Normally, an archive is searched only once in
+the order that it is specified on the command line.  If a symbol in that
+archive is needed to resolve an undefined symbol referred to by an
+object in an archive that appears later on the command line, the linker
+would not be able to resolve that reference.  By grouping the archives,
+they all be searched repeatedly until all possible references are
+resolved.
+
+Using this option has a significant performance cost.  It is best to use
+it only when there are unavoidable circular references between two or
+more archives.
+
+<A NAME="IDX102"></A>
+<DT><CODE>-assert <VAR>keyword</VAR></CODE>
+<DD>
+This option is ignored for SunOS compatibility.
+
+<A NAME="IDX103"></A>
+<A NAME="IDX104"></A>
+<A NAME="IDX105"></A>
+<DT><CODE>-Bdynamic</CODE>
+<DD>
+<DT><CODE>-dy</CODE>
+<DD>
+<DT><CODE>-call_shared</CODE>
+<DD>
+Link against dynamic libraries.  This is only meaningful on platforms
+for which shared libraries are supported.  This option is normally the
+default on such platforms.  The different variants of this option are
+for compatibility with various systems.  You may use this option
+multiple times on the command line: it affects library searching for
+<CODE>-l</CODE> options which follow it.
+
+<A NAME="IDX106"></A>
+<A NAME="IDX107"></A>
+<A NAME="IDX108"></A>
+<A NAME="IDX109"></A>
+<DT><CODE>-Bstatic</CODE>
+<DD>
+<DT><CODE>-dn</CODE>
+<DD>
+<DT><CODE>-non_shared</CODE>
+<DD>
+<DT><CODE>-static</CODE>
+<DD>
+Do not link against shared libraries.  This is only meaningful on
+platforms for which shared libraries are supported.  The different
+variants of this option are for compatibility with various systems.  You
+may use this option multiple times on the command line: it affects
+library searching for <CODE>-l</CODE> options which follow it.
+
+<A NAME="IDX110"></A>
+<DT><CODE>-Bsymbolic</CODE>
+<DD>
+When creating a shared library, bind references to global symbols to the
+definition within the shared library, if any.  Normally, it is possible
+for a program linked against a shared library to override the definition
+within the shared library.  This option is only meaningful on ELF
+platforms which support shared libraries.
+
+<A NAME="IDX111"></A>
+<A NAME="IDX112"></A>
+<DT><CODE>--cref</CODE>
+<DD>
+Output a cross reference table.  If a linker map file is being
+generated, the cross reference table is printed to the map file.
+Otherwise, it is printed on the standard output.
+
+The format of the table is intentionally simple, so that it may be
+easily processed by a script if necessary.  The symbols are printed out,
+sorted by name.  For each symbol, a list of file names is given.  If the
+symbol is defined, the first file listed is the location of the
+definition.  The remaining files contain references to the symbol.
+
+<A NAME="IDX113"></A>
+<A NAME="IDX114"></A>
+<DT><CODE>--defsym <VAR>symbol</VAR>=<VAR>expression</VAR></CODE>
+<DD>
+Create a global symbol in the output file, containing the absolute
+address given by <VAR>expression</VAR>.  You may use this option as many
+times as necessary to define multiple symbols in the command line.  A
+limited form of arithmetic is supported for the <VAR>expression</VAR> in this
+context: you may give a hexadecimal constant or the name of an existing
+symbol, or use <CODE>+</CODE> and <CODE>-</CODE> to add or subtract hexadecimal
+constants or symbols.  If you need more elaborate expressions, consider
+using the linker command language from a script (see section <A HREF="ld_3.html#SEC13">Assignment: Defining Symbols</A>).  <EM>Note:</EM>  there should be no
+white space between <VAR>symbol</VAR>, the equals sign ("<KBD>=</KBD>"), and
+<VAR>expression</VAR>.
+
+<A NAME="IDX115"></A>
+<A NAME="IDX116"></A>
+<DT><CODE>--dynamic-linker <VAR>file</VAR></CODE>
+<DD>
+Set the name of the dynamic linker.  This is only meaningful when
+generating dynamically linked ELF executables.  The default dynamic
+linker is normally correct; don't use this unless you know what you are
+doing.
+
+<A NAME="IDX117"></A>
+<A NAME="IDX118"></A>
+<A NAME="IDX119"></A>
+<DT><CODE>-EB</CODE>
+<DD>
+Link big-endian objects.  This affects the default output format.
+
+<A NAME="IDX120"></A>
+<A NAME="IDX121"></A>
+<DT><CODE>-EL</CODE>
+<DD>
+Link little-endian objects.  This affects the default output format.
+
+<A NAME="IDX122"></A>
+<A NAME="IDX123"></A>
+<DT><CODE>-embedded-relocs</CODE>
+<DD>
+This option is only meaningful when linking MIPS embedded PIC code,
+generated by the -membedded-pic option to the GNU compiler and
+assembler.  It causes the linker to create a table which may be used at
+runtime to relocate any data which was statically initialized to pointer
+values.  See the code in testsuite/ld-empic for details.
+
+<A NAME="IDX124"></A>
+<A NAME="IDX125"></A>
+<A NAME="IDX126"></A>
+<DT><CODE>--help</CODE>
+<DD>
+Print a summary of the command-line options on the standard output and exit.
+
+<A NAME="IDX127"></A>
+<A NAME="IDX128"></A>
+<DT><CODE>-Map <VAR>mapfile</VAR></CODE>
+<DD>
+Print to the file <VAR>mapfile</VAR> a link map--diagnostic information
+about where symbols are mapped by <CODE>ld</CODE>, and information on global
+common storage allocation.
+
+<A NAME="IDX129"></A>
+<A NAME="IDX130"></A>
+<DT><CODE>--no-keep-memory</CODE>
+<DD>
+<CODE>ld</CODE> normally optimizes for speed over memory usage by caching the
+symbol tables of input files in memory.  This option tells <CODE>ld</CODE> to
+instead optimize for memory usage, by rereading the symbol tables as
+necessary.  This may be required if <CODE>ld</CODE> runs out of memory space
+while linking a large executable.
+
+<A NAME="IDX131"></A>
+<DT><CODE>--no-whole-archive</CODE>
+<DD>
+Turn off the effect of the <CODE>--whole-archive</CODE> option for subsequent
+archive files.
+
+<A NAME="IDX132"></A>
+<A NAME="IDX133"></A>
+<DT><CODE>--noinhibit-exec</CODE>
+<DD>
+Retain the executable output file whenever it is still usable.
+Normally, the linker will not produce an output file if it encounters
+errors during the link process; it exits without writing an output file
+when it issues any error whatsoever.
+
+<A NAME="IDX134"></A>
+<DT><CODE>-oformat <VAR>output-format</VAR></CODE>
+<DD>
+<CODE>ld</CODE> may be configured to support more than one kind of object
+file.  If your <CODE>ld</CODE> is configured this way, you can use the
+<SAMP>`-oformat'</SAMP> option to specify the binary format for the output
+object file.  Even when <CODE>ld</CODE> is configured to support alternative
+object formats, you don't usually need to specify this, as <CODE>ld</CODE>
+should be configured to produce as a default output format the most
+usual format on each machine.  <VAR>output-format</VAR> is a text string, the
+name of a particular format supported by the BFD libraries.  (You can
+list the available binary formats with <SAMP>`objdump -i'</SAMP>.)  The script
+command <CODE>OUTPUT_FORMAT</CODE> can also specify the output format, but
+this option overrides it.  See section <A HREF="ld_5.html#SEC28">BFD</A>.
+
+<A NAME="IDX135"></A>
+<DT><CODE>-qmagic</CODE>
+<DD>
+This option is ignored for Linux compatibility.
+
+<A NAME="IDX136"></A>
+<DT><CODE>-Qy</CODE>
+<DD>
+This option is ignored for SVR4 compatibility.
+
+<A NAME="IDX137"></A>
+<A NAME="IDX138"></A>
+<A NAME="IDX139"></A>
+<DT><CODE>--relax</CODE>
+<DD>
+An option with machine dependent effects.  
+This option is only supported on a few targets.
+See section <A HREF="ld_4.html#SEC26"><CODE>ld</CODE> and the H8/300</A>.
+See section <A HREF="ld_4.html#SEC27"><CODE>ld</CODE> and the Intel 960 family</A>.
+
+On some platforms, the <SAMP>`--relax'</SAMP> option performs global
+optimizations that become possible when the linker resolves addressing
+in the program, such as relaxing address modes and synthesizing new
+instructions in the output object file.
+
+On platforms where this is not supported, <SAMP>`-relax'</SAMP> is accepted, but
+ignored.
+
+<A NAME="IDX140"></A>
+<A NAME="IDX141"></A>
+<A NAME="IDX142"></A>
+<DT><CODE>--retain-symbols-file <VAR>filename</VAR></CODE>
+<DD>
+Retain <EM>only</EM> the symbols listed in the file <VAR>filename</VAR>,
+discarding all others.  <VAR>filename</VAR> is simply a flat file, with one
+symbol name per line.  This option is especially useful in environments
+(such as VxWorks)
+where a large global symbol table is accumulated gradually, to conserve
+run-time memory.
+
+<SAMP>`-retain-symbols-file'</SAMP> does <EM>not</EM> discard undefined symbols,
+or symbols needed for relocations.
+
+You may only specify <SAMP>`-retain-symbols-file'</SAMP> once in the command
+line.  It overrides <SAMP>`-s'</SAMP> and <SAMP>`-S'</SAMP>.
+
+<DT><CODE>-rpath <VAR>dir</VAR></CODE>
+<DD>
+<A NAME="IDX143"></A>
+<A NAME="IDX144"></A>
+Add a directory to the runtime library search path.  This is used when
+linking an ELF executable with shared objects.  All <CODE>-rpath</CODE>
+arguments are concatenated and passed to the runtime linker, which uses
+them to locate shared objects at runtime.  The <CODE>-rpath</CODE> option is
+also used when locating shared objects which are needed by shared
+objects explicitly included in the link; see the description of the
+<CODE>-rpath-link</CODE> option.  If <CODE>-rpath</CODE> is not used when linking an
+ELF executable, the contents of the environment variable
+<CODE>LD_RUN_PATH</CODE> will be used if it is defined.
+
+The <CODE>-rpath</CODE> option may also be used on SunOS.  By default, on
+SunOS, the linker will form a runtime search patch out of all the
+<CODE>-L</CODE> options it is given.  If a <CODE>-rpath</CODE> option is used, the
+runtime search path will be formed exclusively using the <CODE>-rpath</CODE>
+options, ignoring the <CODE>-L</CODE> options.  This can be useful when using
+gcc, which adds many <CODE>-L</CODE> options which may be on NFS mounted
+filesystems.
+
+For compatibility with other ELF linkers, if the <CODE>-R</CODE> option is
+followed by a directory name, rather than a file name, it is treated as
+the <CODE>-rpath</CODE> option.
+
+<A NAME="IDX145"></A>
+<A NAME="IDX146"></A>
+<DT><CODE>-rpath-link <VAR>DIR</VAR></CODE>
+<DD>
+When using ELF or SunOS, one shared library may require another.  This
+happens when an <CODE>ld -shared</CODE> link includes a shared library as one
+of the input files.
+
+When the linker encounters such a dependency when doing a non-shared,
+non-relocateable link, it will automatically try to locate the required
+shared library and include it in the link, if it is not included
+explicitly.  In such a case, the <CODE>-rpath-link</CODE> option
+specifies the first set of directories to search.  The
+<CODE>-rpath-link</CODE> option may specify a sequence of directory names
+either by specifying a list of names separated by colons, or by
+appearing multiple times.
+
+The linker uses the following search paths to locate required shared
+libraries.
+
+<OL>
+<LI>
+
+Any directories specified by <CODE>-rpath-link</CODE> options.
+<LI>
+
+Any directories specified by <CODE>-rpath</CODE> options.  The difference
+between <CODE>-rpath</CODE> and <CODE>-rpath-link</CODE> is that directories
+specified by <CODE>-rpath</CODE> options are included in the executable and
+used at runtime, whereas the <CODE>-rpath-link</CODE> option is only effective
+at link time.
+<LI>
+
+On an ELF system, if the <CODE>-rpath</CODE> and <CODE>rpath-link</CODE> options
+were not used, search the contents of the environment variable
+<CODE>LD_RUN_PATH</CODE>.
+<LI>
+
+On SunOS, if the <CODE>-rpath</CODE> option was not used, search any
+directories specified using <CODE>-L</CODE> options.
+<LI>
+
+For a native linker, the contents of the environment variable
+<CODE>LD_LIBRARY_PATH</CODE>.
+<LI>
+
+The default directories, normally <TT>`/lib'</TT> and <TT>`/usr/lib'</TT>.
+</OL>
+
+If the required shared library is not found, the linker will issue a
+warning and continue with the link.
+
+<A NAME="IDX147"></A>
+<A NAME="IDX148"></A>
+<DT><CODE>-shared</CODE>
+<DD>
+<DT><CODE>-Bshareable</CODE>
+<DD>
+<A NAME="IDX149"></A>
+Create a shared library.  This is currently only supported on ELF, XCOFF
+and SunOS platforms.  On SunOS, the linker will automatically create a
+shared library if the <CODE>-e</CODE> option is not used and there are
+undefined symbols in the link.
+
+<DT><CODE>--sort-common</CODE>
+<DD>
+<A NAME="IDX150"></A>
+This option tells <CODE>ld</CODE> to sort the common symbols by size when it
+places them in the appropriate output sections.  First come all the one
+byte symbols, then all the two bytes, then all the four bytes, and then
+everything else.  This is to prevent gaps between symbols due to
+alignment constraints.
+
+<A NAME="IDX151"></A>
+<DT><CODE>--split-by-file</CODE>
+<DD>
+Similar to <CODE>--split-by-reloc</CODE> but creates a new output section for
+each input file.
+
+<A NAME="IDX152"></A>
+<DT><CODE>--split-by-reloc <VAR>count</VAR></CODE>
+<DD>
+Trys to creates extra sections in the output file so that no single
+output section in the file contains more than <VAR>count</VAR> relocations.
+This is useful when generating huge relocatable for downloading into
+certain real time kernels with the COFF object file format; since COFF
+cannot represent more than 65535 relocations in a single section.  Note
+that this will fail to work with object file formats which do not
+support arbitrary sections.  The linker will not split up individual
+input sections for redistribution, so if a single input section contains
+more than <VAR>count</VAR> relocations one output section will contain that
+many relocations.
+
+<A NAME="IDX153"></A>
+<DT><CODE>--stats</CODE>
+<DD>
+Compute and display statistics about the operation of the linker, such
+as execution time and memory usage.
+
+<A NAME="IDX154"></A>
+<A NAME="IDX155"></A>
+<DT><CODE>-traditional-format</CODE>
+<DD>
+For some targets, the output of <CODE>ld</CODE> is different in some ways from
+the output of some existing linker.  This switch requests <CODE>ld</CODE> to
+use the traditional format instead.
+
+<A NAME="IDX156"></A>
+For example, on SunOS, <CODE>ld</CODE> combines duplicate entries in the
+symbol string table.  This can reduce the size of an output file with
+full debugging information by over 30 percent.  Unfortunately, the SunOS
+<CODE>dbx</CODE> program can not read the resulting program (<CODE>gdb</CODE> has no
+trouble).  The <SAMP>`-traditional-format'</SAMP> switch tells <CODE>ld</CODE> to not
+combine duplicate entries.
+
+<A NAME="IDX157"></A>
+<A NAME="IDX158"></A>
+<A NAME="IDX159"></A>
+<A NAME="IDX160"></A>
+<DT><CODE>-Tbss <VAR>org</VAR></CODE>
+<DD>
+<DT><CODE>-Tdata <VAR>org</VAR></CODE>
+<DD>
+<DT><CODE>-Ttext <VAR>org</VAR></CODE>
+<DD>
+Use <VAR>org</VAR> as the starting address for--respectively--the
+<CODE>bss</CODE>, <CODE>data</CODE>, or the <CODE>text</CODE> segment of the output file.
+<VAR>org</VAR> must be a single hexadecimal integer;
+for compatibility with other linkers, you may omit the leading
+<SAMP>`0x'</SAMP> usually associated with hexadecimal values.
+
+<A NAME="IDX161"></A>
+<A NAME="IDX162"></A>
+<DT><CODE>-Ur</CODE>
+<DD>
+For anything other than C++ programs, this option is equivalent to
+<SAMP>`-r'</SAMP>: it generates relocatable output--i.e., an output file that can in
+turn serve as input to <CODE>ld</CODE>.  When linking C++ programs, <SAMP>`-Ur'</SAMP>
+<EM>does</EM> resolve references to constructors, unlike <SAMP>`-r'</SAMP>.
+It does not work to use <SAMP>`-Ur'</SAMP> on files that were themselves linked
+with <SAMP>`-Ur'</SAMP>; once the constructor table has been built, it cannot
+be added to.  Use <SAMP>`-Ur'</SAMP> only for the last partial link, and
+<SAMP>`-r'</SAMP> for the others.
+
+<A NAME="IDX163"></A>
+<A NAME="IDX164"></A>
+<DT><CODE>--verbose</CODE>
+<DD>
+Display the version number for <CODE>ld</CODE> and list the linker emulations
+supported.  Display which input files can and cannot be opened.  Display
+the linker script if using a default builtin script.
+
+<A NAME="IDX165"></A>
+<A NAME="IDX166"></A>
+<A NAME="IDX167"></A>
+<DT><CODE>-warn-common</CODE>
+<DD>
+Warn when a common symbol is combined with another common symbol or with
+a symbol definition.  Unix linkers allow this somewhat sloppy practice,
+but linkers on some other operating systems do not.  This option allows
+you to find potential problems from combining global symbols.
+Unfortunately, some C libraries use this practice, so you may get some
+warnings about symbols in the libraries as well as in your programs.
+
+There are three kinds of global symbols, illustrated here by C examples:
+
+<DL COMPACT>
+
+<DT><SAMP>`int i = 1;'</SAMP>
+<DD>
+A definition, which goes in the initialized data section of the output
+file.
+
+<DT><SAMP>`extern int i;'</SAMP>
+<DD>
+An undefined reference, which does not allocate space.
+There must be either a definition or a common symbol for the
+variable somewhere.
+
+<DT><SAMP>`int i;'</SAMP>
+<DD>
+A common symbol.  If there are only (one or more) common symbols for a
+variable, it goes in the uninitialized data area of the output file.
+The linker merges multiple common symbols for the same variable into a
+single symbol.  If they are of different sizes, it picks the largest
+size.  The linker turns a common symbol into a declaration, if there is
+a definition of the same variable.
+</DL>
+
+The <SAMP>`-warn-common'</SAMP> option can produce five kinds of warnings.  Each
+warning consists of a pair of lines: the first describes the symbol just
+encountered, and the second describes the previous symbol encountered
+with the same name.  One or both of the two symbols will be a common
+symbol.
+
+
+<OL>
+<LI>
+
+Turning a common symbol into a reference, because there is already a
+definition for the symbol.
+
+<PRE>
+<VAR>file</VAR>(<VAR>section</VAR>): warning: common of `<VAR>symbol</VAR>'
+   overridden by definition
+<VAR>file</VAR>(<VAR>section</VAR>): warning: defined here
+</PRE>
+
+<LI>
+
+Turning a common symbol into a reference, because a later definition for
+the symbol is encountered.  This is the same as the previous case,
+except that the symbols are encountered in a different order.
+
+<PRE>
+<VAR>file</VAR>(<VAR>section</VAR>): warning: definition of `<VAR>symbol</VAR>'
+   overriding common
+<VAR>file</VAR>(<VAR>section</VAR>): warning: common is here
+</PRE>
+
+<LI>
+
+Merging a common symbol with a previous same-sized common symbol.
+
+<PRE>
+<VAR>file</VAR>(<VAR>section</VAR>): warning: multiple common
+   of `<VAR>symbol</VAR>'
+<VAR>file</VAR>(<VAR>section</VAR>): warning: previous common is here
+</PRE>
+
+<LI>
+
+Merging a common symbol with a previous larger common symbol.
+
+<PRE>
+<VAR>file</VAR>(<VAR>section</VAR>): warning: common of `<VAR>symbol</VAR>'
+   overridden by larger common
+<VAR>file</VAR>(<VAR>section</VAR>): warning: larger common is here
+</PRE>
+
+<LI>
+
+Merging a common symbol with a previous smaller common symbol.  This is
+the same as the previous case, except that the symbols are
+encountered in a different order.
+
+<PRE>
+<VAR>file</VAR>(<VAR>section</VAR>): warning: common of `<VAR>symbol</VAR>'
+   overriding smaller common
+<VAR>file</VAR>(<VAR>section</VAR>): warning: smaller common is here
+</PRE>
+
+</OL>
+
+<A NAME="IDX168"></A>
+<DT><CODE>-warn-constructors</CODE>
+<DD>
+Warn if any global constructors are used.  This is only useful for a few
+object file formats.  For formats like COFF or ELF, the linker can not
+detect the use of global constructors.
+
+<A NAME="IDX169"></A>
+<DT><CODE>-warn-multiple-gp</CODE>
+<DD>
+Warn if multiple global pointer values are required in the output file.
+This is only meaningful for certain processors, such as the Alpha.
+Specifically, some processors put large-valued constants in a special
+section.  A special register (the global pointer) points into the middle
+of this section, so that constants can be loaded efficiently via a
+base-register relative addressing mode.  Since the offset in
+base-register relative mode is fixed and relatively small (e.g., 16
+bits), this limits the maximum size of the constant pool.  Thus, in
+large programs, it is often necessary to use multiple global pointer
+values in order to be able to address all possible constants.  This
+option causes a warning to be issued whenever this case occurs.
+
+<A NAME="IDX170"></A>
+<A NAME="IDX171"></A>
+<A NAME="IDX172"></A>
+<DT><CODE>-warn-once</CODE>
+<DD>
+Only warn once for each undefined symbol, rather than once per module
+which refers to it.
+
+<A NAME="IDX173"></A>
+<A NAME="IDX174"></A>
+<DT><CODE>--whole-archive</CODE>
+<DD>
+For each archive mentioned on the command line after the
+<CODE>--whole-archive</CODE> option, include every object file in the archive
+in the link, rather than searching the archive for the required object
+files.  This is normally used to turn an archive file into a shared
+library, forcing every object to be included in the resulting shared
+library.  This option may be used more than once.
+
+<A NAME="IDX175"></A>
+<DT><CODE>--wrap <VAR>symbol</VAR></CODE>
+<DD>
+Use a wrapper function for <VAR>symbol</VAR>.  Any undefined reference to
+<VAR>symbol</VAR> will be resolved to <CODE>__wrap_<VAR>symbol</VAR></CODE>.  Any
+undefined reference to <CODE>__real_<VAR>symbol</VAR></CODE> will be resolved to
+<VAR>symbol</VAR>.
+
+This can be used to provide a wrapper for a system function.  The
+wrapper function should be called <CODE>__wrap_<VAR>symbol</VAR></CODE>.  If it
+wishes to call the system function, it should call
+<CODE>__real_<VAR>symbol</VAR></CODE>.
+
+Here is a trivial example:
+
+
+<PRE>
+void *
+__wrap_malloc (int c)
+{
+  printf ("malloc called with %ld\n", c);
+  return __real_malloc (c);
+}
+</PRE>
+
+If you link other code with this file using <CODE>--wrap malloc</CODE>, then
+all calls to <CODE>malloc</CODE> will call the function <CODE>__wrap_malloc</CODE>
+instead.  The call to <CODE>__real_malloc</CODE> in <CODE>__wrap_malloc</CODE> will
+call the real <CODE>malloc</CODE> function.
+
+You may wish to provide a <CODE>__real_malloc</CODE> function as well, so that
+links without the <CODE>--wrap</CODE> option will succeed.  If you do this,
+you should not put the definition of <CODE>__real_malloc</CODE> in the same
+file as <CODE>__wrap_malloc</CODE>; if you do, the assembler may resolve the
+call before the linker has a chance to wrap it to <CODE>malloc</CODE>.
+
+</DL>
+
+
+
+<H2><A NAME="SEC4" HREF="ld_toc.html#TOC4">Environment Variables</A></H2>
+
+<P>
+You can change the behavior of <CODE>ld</CODE> with the environment
+variable <CODE>GNUTARGET</CODE>.  
+
+</P>
+<P>
+<A NAME="IDX176"></A>
+<A NAME="IDX177"></A>
+<CODE>GNUTARGET</CODE> determines the input-file object format if you don't
+use <SAMP>`-b'</SAMP> (or its synonym <SAMP>`-format'</SAMP>).  Its value should be one
+of the BFD names for an input format (see section <A HREF="ld_5.html#SEC28">BFD</A>).  If there is no
+<CODE>GNUTARGET</CODE> in the environment, <CODE>ld</CODE> uses the natural format
+of the target. If <CODE>GNUTARGET</CODE> is set to <CODE>default</CODE> then BFD attempts to discover the
+input format by examining binary input files; this method often
+succeeds, but there are potential ambiguities, since there is no method
+of ensuring that the magic number used to specify object-file formats is
+unique.  However, the configuration procedure for BFD on each system
+places the conventional format for that system first in the search-list,
+so ambiguities are resolved in favor of convention.
+
+</P>
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_1.html">previous</A>, <A HREF="ld_3.html">next</A>, <A HREF="ld_7.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>

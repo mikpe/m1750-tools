@@ -1,0 +1,10 @@
+Mon Jun 30 19:56:48 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* src/cpu.c (workout_interrupts): fixed problem with XIO ENBL
+	so that it enable interrupts after the next instruction, not 
+	after this.
+
+	* src/cpu.c (MOV instruction) fixed problem with interrupts where 
+	interrupt handler was entered one instruction after entry point.
+	
+

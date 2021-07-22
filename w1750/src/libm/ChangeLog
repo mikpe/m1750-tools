@@ -1,0 +1,4 @@
+Mon Jul 14 11:21:56 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* Makefile simplified, and src/Makefile added.
+

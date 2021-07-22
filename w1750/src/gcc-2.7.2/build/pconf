@@ -1,0 +1,5 @@
+#!/bin/sh
+echo Preparing configuration...
+/w1750/src/gcc-2.7.2/configure --srcdir=/w1750/src/gcc-2.7.2/ --host=i386-unknown-cygwin32 --prefix=/w1750 --target=m1750-coff  --program-suffix=.exe
+echo Done!
+

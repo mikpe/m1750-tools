@@ -1,0 +1,37 @@
+int
+md_apply_fix (fixP, value)
+     fixS *fixP;
+     valueT *value;
+{
+  char *buf = fixP->fx_where + fixP->fx_frag->fr_literal;
+  offsetT val;
+
+  val = *value;
+
+  assert (fixP->fx_r_type < BFD_RELOC_UNUSED);
+
+  fixP->fx_addnumber = val;	/* Remember value for emit_reloc */
+
+  switch (fixP->fx_r_type)
+    {
+    case :
+      buf[0] = val >> 8;
+      buf[1] = val;
+      break;
+
+    case :
+      buf[3] = val;
+      break;
+
+    case BFD_RELOC_NONE:
+    default:
+      as_bad ("bad or unhandled relocation type: 0x%02x", fixP->fx_r_type);
+      break;
+    }
+
+  /* Are we finished with this relocation now?  */
+  if (fixP->fx_addsy == 0 && !fixP->fx_pcrel)
+    fixP->fx_done = 1;
+
+  return 1;
+}

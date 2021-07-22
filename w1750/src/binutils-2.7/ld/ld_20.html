@@ -1,0 +1,159 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 20 November 1996 -->
+
+<TITLE>Using LD, the GNU linker - Section Data Expressions</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_19.html">previous</A>, <A HREF="ld_21.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H3><A NAME="SEC20" HREF="ld_toc.html#TOC20">Section Data Expressions</A></H3>
+
+<P>
+<A NAME="IDX264"></A>
+The foregoing statements arrange, in your output file, data originating
+from your input files.  You can also place data directly in an output
+section from the link command script.  Most of these additional
+statements involve expressions (see section <A HREF="ld_7.html#SEC7">Expressions</A>).  Although these
+statements are shown separately here for ease of presentation, no such
+segregation is needed within a section definition in the <CODE>SECTIONS</CODE>
+command; you can intermix them freely with any of the statements we've
+just described.
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>CREATE_OBJECT_SYMBOLS</CODE>
+<DD>
+<A NAME="IDX265"></A>
+ <A NAME="IDX266"></A>
+ <A NAME="IDX267"></A>
+ 
+Create a symbol for each input file
+in the current section, set to the address of the first byte of
+data written from that input file.  For instance, with <CODE>a.out</CODE>
+files it is conventional to have a symbol for each input file.  You can
+accomplish this by defining the output <CODE>.text</CODE> section as follows:
+
+<PRE>
+SECTIONS {
+  .text 0x2020 :
+     {
+    CREATE_OBJECT_SYMBOLS
+    *(.text)
+    _etext = ALIGN(0x2000);
+    }
+  ...
+}
+</PRE>
+
+If <CODE>sample.ld</CODE> is a file containing this script, and <CODE>a.o</CODE>,
+<CODE>b.o</CODE>, <CODE>c.o</CODE>, and <CODE>d.o</CODE> are four input files with
+contents like the following---
+
+<PRE>
+/* a.c */
+
+afunction() { }
+int adata=1;
+int abss;
+</PRE>
+
+<SAMP>`ld -M -T sample.ld a.o b.o c.o d.o'</SAMP> would create a map like this,
+containing symbols matching the object file names:
+
+<PRE>
+00000000 A __DYNAMIC
+00004020 B _abss
+00004000 D _adata
+00002020 T _afunction
+00004024 B _bbss
+00004008 D _bdata
+00002038 T _bfunction
+00004028 B _cbss
+00004010 D _cdata
+00002050 T _cfunction
+0000402c B _dbss
+00004018 D _ddata
+00002068 T _dfunction
+00004020 D _edata
+00004030 B _end
+00004000 T _etext
+00002020 t a.o
+00002038 t b.o
+00002050 t c.o
+00002068 t d.o
+</PRE>
+
+<A NAME="IDX268"></A>
+<A NAME="IDX269"></A>
+<DT><CODE><VAR>symbol</VAR> = <VAR>expression</VAR> ;</CODE>
+<DD>
+<DT><CODE><VAR>symbol</VAR> <VAR>f</VAR>= <VAR>expression</VAR> ;</CODE>
+<DD>
+<VAR>symbol</VAR> is any symbol name (see section <A HREF="ld_9.html#SEC9">Symbol Names</A>).  "<VAR>f</VAR>=" 
+refers to any of the operators <CODE>&#38;= += -= *= /=</CODE> which combine
+arithmetic and assignment.
+
+<A NAME="IDX270"></A>
+When you assign a value to a symbol within a particular section
+definition, the value is relative to the beginning of the section
+(see section <A HREF="ld_13.html#SEC13">Assignment: Defining Symbols</A>).  If you write
+
+
+<PRE>
+SECTIONS {
+  abs = 14 ;
+  ...
+  .data : { ... rel = 14 ; ... }
+  abs2 = 14 + ADDR(.data);
+  ...
+}
+</PRE>
+
+<CODE>abs</CODE> and <CODE>rel</CODE> do not have the same value; <CODE>rel</CODE> has the
+same value as <CODE>abs2</CODE>.
+
+<A NAME="IDX271"></A>
+<A NAME="IDX272"></A>
+<A NAME="IDX273"></A>
+<A NAME="IDX274"></A>
+<A NAME="IDX275"></A>
+<DT><CODE>BYTE(<VAR>expression</VAR>)</CODE>
+<DD>
+<DT><CODE>SHORT(<VAR>expression</VAR>)</CODE>
+<DD>
+<DT><CODE>LONG(<VAR>expression</VAR>)</CODE>
+<DD>
+<DT><CODE>QUAD(<VAR>expression</VAR>)</CODE>
+<DD>
+By including one of these four statements in a section definition, you
+can explicitly place one, two, four, or eight bytes (respectively) at
+the current address of that section.  <CODE>QUAD</CODE> is only supported when
+using a 64 bit host or target.
+
+Multiple-byte quantities are represented in whatever byte order is
+appropriate for the output file format (see section <A HREF="ld_28.html#SEC28">BFD</A>).
+
+<A NAME="IDX276"></A>
+<A NAME="IDX277"></A>
+<A NAME="IDX278"></A>
+<DT><CODE>FILL(<VAR>expression</VAR>)</CODE>
+<DD>
+Specify the "fill pattern" for the current section.  Any otherwise
+unspecified regions of memory within the section (for example, regions
+you skip over by assigning a new value to the location counter <SAMP>`.'</SAMP>)
+are filled with the two least significant bytes from the
+<VAR>expression</VAR> argument.  A <CODE>FILL</CODE> statement covers memory
+locations <EM>after</EM> the point it occurs in the section definition; by
+including more than one <CODE>FILL</CODE> statement, you can have different
+fill patterns in different parts of an output section.
+</DL>
+
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_19.html">previous</A>, <A HREF="ld_21.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>

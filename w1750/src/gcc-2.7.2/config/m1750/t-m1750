@@ -1,0 +1,43 @@
+# m1750-coff Makfile fragment
+#
+# $Log: t-m1750,v $
+# Revision 1.3  1997/07/23 11:58:29  nettleto
+# Added -mno-movsi option for compiling libgcc.
+#
+# Revision 1.2  1997/07/18 10:54:32  nettleto
+# Removed __mulsi3 __udivmodsi4 until we fix compiler bug
+# that prevents compilation.
+#
+# Revision 1.1  1997/05/06 18:57:31  nettleto
+# Initial revision
+#
+
+# Do not fix prototypes
+STMP_FIXPROTO = 
+INSTALL_HEADERS =
+
+# libgcc1 is not used. All the libgcc functions are in libgcc2
+LIBGCC1 = libgcc1.null
+CROSS_LIBGCC1 = libgcc1.null
+LIBGCC2 = libgcc2.a
+
+# These are the libgccc functions
+LIB2FUNCS = __addsi3 __ashlsi3 __ashrsi3 __bb_init __builtin_delete __builtin_new \
+  __divsi3 __fix_trunctqfsi2 __fixuns_trunctqfsi2 __floatsitqf2 __floatunssitqf2 \
+  __lshrsi3 __modsi3 __negsi2 __subsi3 __ucmpsi2 __udivhi3 \
+  __mulsi3 __udivmodsi4 \
+  __udivsi3 __umodhi3 __umodsi3 __umulhisi3 bcopy bzero 
+
+LIB2FUNCS_EXTRA = 
+LIBGCC2_CFLAGS = -mno-movsi -O2
+
+# Expanded memory files are in multilib directory mmmu
+MULTILIB_OPTIONS = mmmu
+MULTILIB_DIRNAMES =
+MULTILIB_MATCHES = 
+
+LIBGCC = stmp-multilib
+INSTALL_LIBGCC = install-multilib
+
+
+

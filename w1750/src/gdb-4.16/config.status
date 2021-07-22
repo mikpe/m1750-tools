@@ -1,0 +1,5 @@
+#!/bin/sh
+# This file was generated automatically by configure.  Do not edit.
+# This directory was configured as follows:
+/w1750/src/gdb-4.16/configure --host=i386-unknown-cygwin32 -v --srcdir=/w1750/src/gdb-4.16/ --prefix=/w1750 --target=m1750-coff --norecursion 
+# 

@@ -1,0 +1,103 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 20 November 1996 -->
+
+<TITLE>Using LD, the GNU linker - Canonical format</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_30.html">previous</A>, <A HREF="ld_32.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H3><A NAME="SEC31" HREF="ld_toc.html#TOC31">The BFD canonical object-file format</A></H3>
+
+<P>
+The greatest potential for loss of information occurs when there is the least
+overlap between the information provided by the source format, that
+stored by the canonical format, and that needed by the
+destination format. A brief description of the canonical form may help
+you understand which kinds of data you can count on preserving across
+conversions.
+<A NAME="IDX347"></A>
+<A NAME="IDX348"></A>
+
+</P>
+<DL COMPACT>
+
+<DT><EM>files</EM>
+<DD>
+Information stored on a per-file basis includes target machine
+architecture, particular implementation format type, a demand pageable
+bit, and a write protected bit.  Information like Unix magic numbers is
+not stored here--only the magic numbers' meaning, so a <CODE>ZMAGIC</CODE>
+file would have both the demand pageable bit and the write protected
+text bit set.  The byte order of the target is stored on a per-file
+basis, so that big- and little-endian object files may be used with one
+another.
+
+<DT><EM>sections</EM>
+<DD>
+Each section in the input file contains the name of the section, the
+section's original address in the object file, size and alignment
+information, various flags, and pointers into other BFD data
+structures.
+
+<DT><EM>symbols</EM>
+<DD>
+Each symbol contains a pointer to the information for the object file
+which originally defined it, its name, its value, and various flag
+bits.  When a BFD back end reads in a symbol table, it relocates all
+symbols to make them relative to the base of the section where they were
+defined.  Doing this ensures that each symbol points to its containing
+section.  Each symbol also has a varying amount of hidden private data
+for the BFD back end.  Since the symbol points to the original file, the
+private data format for that symbol is accessible.  <CODE>ld</CODE> can
+operate on a collection of symbols of wildly different formats without
+problems.
+
+Normal global and simple local symbols are maintained on output, so an
+output file (no matter its format) will retain symbols pointing to
+functions and to global, static, and common variables.  Some symbol
+information is not worth retaining; in <CODE>a.out</CODE>, type information is
+stored in the symbol table as long symbol names.  This information would
+be useless to most COFF debuggers; the linker has command line switches
+to allow users to throw it away.
+
+There is one word of type information within the symbol, so if the
+format supports symbol type information within symbols (for example, COFF,
+IEEE, Oasys) and the type is simple enough to fit within one word
+(nearly everything but aggregates), the information will be preserved.
+
+<DT><EM>relocation level</EM>
+<DD>
+Each canonical BFD relocation record contains a pointer to the symbol to
+relocate to, the offset of the data to relocate, the section the data
+is in, and a pointer to a relocation type descriptor. Relocation is
+performed by passing messages through the relocation type
+descriptor and the symbol pointer. Therefore, relocations can be performed
+on output data using a relocation method that is only available in one of the
+input formats. For instance, Oasys provides a byte relocation format.
+A relocation record requesting this relocation type would point
+indirectly to a routine to perform this, so the relocation may be
+performed on a byte being written to a 68k COFF file, even though 68k COFF
+has no such relocation type.
+
+<DT><EM>line numbers</EM>
+<DD>
+Object formats can contain, for debugging purposes, some form of mapping
+between symbols, source line numbers, and addresses in the output file.
+These addresses have to be relocated along with the symbol information.
+Each symbol with an associated list of line number records points to the
+first record of the list.  The head of a line number list consists of a
+pointer to the symbol, which allows finding out the address of the
+function whose line number is being described. The rest of the list is
+made up of pairs: offsets into the section and line numbers. Any format
+which can simply derive this information can pass it successfully
+between formats (COFF, IEEE and Oasys).
+</DL>
+
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_30.html">previous</A>, <A HREF="ld_32.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>

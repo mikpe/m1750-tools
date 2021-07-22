@@ -1,0 +1,45 @@
+*asm:
+%{mmmu:-Ammu} %{mb1:-Ab1} %{mb2:-Ab2} %{mb3:-Ab3} %{mno-b1:-Ano-b1} %{mno-b2:-Ano-b2} %{mno-b3:-Ano-b3} %{mno-mmu:-Ano-mmu}
+
+*asm_final:
+
+
+*cpp:
+
+
+*cc1:
+-fno-force-mem
+
+*cc1plus:
+
+
+*endfile:
+
+
+*link:
+
+
+*lib:
+%{!mmmu:%{g*:-lg} %{!p:%{!pg:-lc}}%{p:-lc_p}%{pg:-lc_p}} %{mmmu:%{g*:-lgx} %{!p:%{!pg:-lcx}}%{p:-lc_px}%{pg:-lc_px}} 
+
+*libgcc:
+%{!shared:-lgcc}
+
+*startfile:
+%{!mmmu:%{pg:gcrt0%O%s}%{!pg:%{p:mcrt0%O%s}%{!p:crt0%O%s}}}%{mmmu:%{pg:gcrt0x%O%s}%{!pg:%{p:mcrt0x%O%s}%{!p:crt0x%O%s}}}
+
+*switches_need_spaces:
+
+
+*signed_char:
+%{funsigned-char:-D__CHAR_UNSIGNED__}
+
+*predefines:
+
+
+*cross_compile:
+1
+
+*multilib:
+. !mmmu;mmmu mmmu;
+

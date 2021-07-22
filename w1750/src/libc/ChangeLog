@@ -1,0 +1,35 @@
+Fri Aug  8 10:01:58 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* intrrpt/ivt.c: Added _enbl flag to be compatible with 
+	expanded memory. 
+	* crt0x.c: Added _enbl flag and test for the flag in BEX2 
+	handler to exit with interrupts enabled if flag set.
+
+Mon Aug  4 09:13:04 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* sys/write.c: (write): Fixed order of CR and LF characters at end 
+	of line.
+
+Sun Jul 27 15:43:18 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* intrrpt/handler.c: Added code to set the mask for calls that
+	establish a new handler, and to clear the mask for calls that
+	set the hnalder back to the default value.
+	
+Sat Jun 28 14:23:05 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* intrrpt/*: Added new files for interrupt support
+
+Thu Jun 26 06:30:09 1997  Chris Nettleton  <nettleto@ccfn.demon.co.uk>
+
+	* stdlib/getenv.c (environ): Changed declaration to array.
+
+	* Makefile: Removed references to sys/_stat.c and sys/_fstat.c since
+	  these functions are no longer required in libc.
+
+	* sys/_settime.c (_settime): New implementation.
+
+	* sys/_gettime.c (_gettime): Made compatible with new crt0. 
+
+	* include/time.h (CLOCK_PER_SEC): Changed to 100, to agree with POSIX.
+

@@ -1,0 +1,458 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from as.texinfo on 29 November 1996 -->
+
+<TITLE>Using m1750-coff-as - Overview</TITLE>
+</HEAD>
+<BODY>
+Go to the first, previous, <A HREF="as_2.html">next</A>, <A HREF="as_11.html">last</A> section, <A HREF="as_toc.html">table of contents</A>.
+<P><HR><P>
+
+<P>
+The Free Software Foundation Inc.  thanks The Nice Computer
+Company of Australia for loaning Dean Elsner to write the
+first (Vax) version of <CODE>as</CODE> for Project GNU.
+The proprietors, management and staff of TNCCA thank FSF for
+distracting the boss while they got some work
+done.
+<P>
+
+</P>
+<P>
+Copyright (C) 1991, 92, 93, 94, 95, 1996 Free Software Foundation, Inc.
+
+</P>
+<P>
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+</P>
+<P>
+Permission is granted to copy and distribute modified versions of this manual
+under the conditions for verbatim copying, provided that the entire resulting
+derived work is distributed under the terms of a permission notice identical to
+this one.
+
+</P>
+<P>
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.
+
+</P>
+
+
+
+<H1><A NAME="SEC1" HREF="as_toc.html#TOC1">Overview</A></H1>
+<P>
+This manual is a user guide to the GNU assembler <CODE>m1750-coff-as</CODE>.
+
+</P>
+<P>
+<A NAME="IDX1"></A>
+<A NAME="IDX2"></A>
+<A NAME="IDX3"></A>
+Here is a brief summary of how to invoke <CODE>m1750-coff-as</CODE>.  For details,
+see section <A HREF="as_2.html#SEC9">Command-Line Options</A>.
+
+</P>
+
+<PRE>
+m1750-coff-as [ -a[dhlns][=file] ] [ -D ]  [ --defsym <VAR>sym</VAR>=<VAR>val</VAR> ]
+ [ -f ] [ --help ] [ -I <VAR>dir</VAR> ] [ -J ] [ -K ] [ -L ]
+ [ -o <VAR>objfile</VAR> ] [ -R ] [ --statistics ] [ -v ] [ -version ]
+ [ --version ] [ -W ] [ -w ] [ -x ] [ -Z ]
+ [ -- | <VAR>files</VAR> ... ]
+</PRE>
+
+<DL COMPACT>
+
+<DT><CODE>-a[dhlns]</CODE>
+<DD>
+Turn on listings, in any of a variety of ways:
+
+<DL COMPACT>
+
+<DT><CODE>-ad</CODE>
+<DD>
+omit debugging directives
+
+<DT><CODE>-ah</CODE>
+<DD>
+include high-level source
+
+<DT><CODE>-al</CODE>
+<DD>
+include assembly
+
+<DT><CODE>-an</CODE>
+<DD>
+omit forms processing
+
+<DT><CODE>-as</CODE>
+<DD>
+include symbols
+
+<DT><CODE>=file</CODE>
+<DD>
+set the name of the listing file
+</DL>
+
+You may combine these options; for example, use <SAMP>`-aln'</SAMP> for assembly
+listing without forms processing.  The <SAMP>`=file'</SAMP> option, if used, must be
+the last one.  By itself, <SAMP>`-a'</SAMP> defaults to <SAMP>`-ahls'</SAMP>---that is, all
+listings turned on.
+
+<DT><CODE>-D</CODE>
+<DD>
+Ignored.  This option is accepted for script compatibility with calls to
+other assemblers.
+
+<DT><CODE>--defsym <VAR>sym</VAR>=<VAR>value</VAR></CODE>
+<DD>
+Define the symbol <VAR>sym</VAR> to be <VAR>value</VAR> before assembling the input file.
+<VAR>value</VAR> must be an integer constant.  As in C, a leading <SAMP>`0x'</SAMP>
+indicates a hexadecimal value, and a leading <SAMP>`0'</SAMP> indicates an octal value.
+
+<DT><CODE>-f</CODE>
+<DD>
+"fast"---skip whitespace and comment preprocessing (assume source is
+compiler output).
+
+<DT><CODE>--help</CODE>
+<DD>
+Print a summary of the command line options and exit.
+
+<DT><CODE>-I <VAR>dir</VAR></CODE>
+<DD>
+Add directory <VAR>dir</VAR> to the search list for <CODE>.include</CODE> directives.
+
+<DT><CODE>-J</CODE>
+<DD>
+Don't warn about signed overflow.
+
+<DT><CODE>-K</CODE>
+<DD>
+Issue warnings when difference tables altered for long displacements.
+
+<DT><CODE>-L</CODE>
+<DD>
+Keep (in the symbol table) local symbols, starting with <SAMP>`L'</SAMP>.
+
+<DT><CODE>-o <VAR>objfile</VAR></CODE>
+<DD>
+Name the object-file output from <CODE>m1750-coff-as</CODE> <VAR>objfile</VAR>.
+
+<DT><CODE>-R</CODE>
+<DD>
+Fold the data section into the text section.
+
+<DT><CODE>--statistics</CODE>
+<DD>
+Print the maximum space (in bytes) and total time (in seconds) used by
+assembly.
+
+<DT><CODE>-v</CODE>
+<DD>
+<DT><CODE>-version</CODE>
+<DD>
+Print the <CODE>as</CODE> version.
+
+<DT><CODE>--version</CODE>
+<DD>
+Print the <CODE>as</CODE> version and exit.
+
+<DT><CODE>-W</CODE>
+<DD>
+Suppress warning messages.
+
+<DT><CODE>-w</CODE>
+<DD>
+Ignored.
+
+<DT><CODE>-x</CODE>
+<DD>
+Ignored.
+
+<DT><CODE>-Z</CODE>
+<DD>
+Generate an object file even after errors.
+
+<DT><CODE>-- | <VAR>files</VAR> ...</CODE>
+<DD>
+Standard input, or source files to assemble.
+
+</DL>
+
+
+
+<H2><A NAME="SEC2" HREF="as_toc.html#TOC2">Structure of this Manual</A></H2>
+
+<P>
+<A NAME="IDX4"></A>
+This manual is intended to describe what you need to know to use
+GNU <CODE>m1750-coff-as</CODE>.  We cover the syntax expected in source files, including
+notation for symbols, constants, and expressions; the directives that
+<CODE>m1750-coff-as</CODE> understands; and of course how to invoke <CODE>m1750-coff-as</CODE>.
+
+</P>
+<P>
+This manual also describes some of the machine-dependent features of
+various flavors of the assembler.
+
+</P>
+<P>
+<A NAME="IDX5"></A>
+On the other hand, this manual is <EM>not</EM> intended as an introduction
+to programming in assembly language--let alone programming in general!
+In a similar vein, we make no attempt to introduce the machine
+architecture; we do <EM>not</EM> describe the instruction set, standard
+mnemonics, registers or addressing modes that are standard to a
+particular architecture.
+You may want to consult the manufacturer's
+machine architecture manual for this information.
+
+</P>
+
+
+
+<H2><A NAME="SEC3" HREF="as_toc.html#TOC3">m1750-coff-as, the GNU Assembler</A></H2>
+
+<P>
+GNU <CODE>as</CODE> is really a family of assemblers.
+If you use (or have used) the GNU assembler on one architecture, you
+should find a fairly similar environment when you use it on another
+architecture.  Each version has much in common with the others,
+including object file formats, most assembler directives (often called
+<STRONG>pseudo-ops</STRONG>) and assembler syntax.
+</P>
+<P>
+<A NAME="IDX6"></A>
+<CODE>m1750-coff-as</CODE> is primarily intended to assemble the output of the
+GNU C compiler <CODE>m1750-coff-gcc</CODE> for use by the linker
+<CODE>m1750-coff-ld</CODE>.  Nevertheless, we've tried to make <CODE>m1750-coff-as</CODE>
+assemble correctly everything that other assemblers for the same
+machine would assemble.
+
+</P>
+<P>
+Unlike older assemblers, <CODE>m1750-coff-as</CODE> is designed to assemble a source
+program in one pass of the source file.  This has a subtle impact on the
+<KBD>.org</KBD> directive (see section <A HREF="as_7.html#SEC107"><CODE>.org <VAR>new-lc</CODE> , <VAR>fill</VAR></VAR></A>).
+
+</P>
+
+
+<H2><A NAME="SEC4" HREF="as_toc.html#TOC4">Object File Formats</A></H2>
+
+<P>
+<A NAME="IDX7"></A>
+The GNU assembler can be configured to produce several alternative
+object file formats.  For the most part, this does not affect how you
+write assembly language programs; but directives for debugging symbols
+are typically different in different file formats.  See section <A HREF="as_5.html#SEC48">Symbol Attributes</A>.
+
+</P>
+
+
+<H2><A NAME="SEC5" HREF="as_toc.html#TOC5">Command Line</A></H2>
+
+<P>
+<A NAME="IDX8"></A>
+After the program name <CODE>m1750-coff-as</CODE>, the command line may contain
+options and file names.  Options may appear in any order, and may be
+before, after, or between file names.  The order of file names is
+significant.
+
+</P>
+<P>
+<A NAME="IDX9"></A>
+<A NAME="IDX10"></A>
+<TT>`--'</TT> (two hyphens) by itself names the standard input file
+explicitly, as one of the files for <CODE>m1750-coff-as</CODE> to assemble.
+
+</P>
+<P>
+<A NAME="IDX11"></A>
+Except for <SAMP>`--'</SAMP> any command line argument that begins with a
+hyphen (<SAMP>`-'</SAMP>) is an option.  Each option changes the behavior of
+<CODE>m1750-coff-as</CODE>.  No option changes the way another option works.  An
+option is a <SAMP>`-'</SAMP> followed by one or more letters; the case of
+the letter is important.   All options are optional.
+
+</P>
+<P>
+Some options expect exactly one file name to follow them.  The file
+name may either immediately follow the option's letter (compatible
+with older assemblers) or it may be the next command argument (GNU
+standard).  These two command lines are equivalent:
+
+</P>
+
+<PRE>
+m1750-coff-as -o my-object-file.o mumble.s
+m1750-coff-as -omy-object-file.o mumble.s
+</PRE>
+
+
+
+<H2><A NAME="SEC6" HREF="as_toc.html#TOC6">Input Files</A></H2>
+
+<P>
+<A NAME="IDX12"></A>
+<A NAME="IDX13"></A>
+<A NAME="IDX14"></A>
+We use the phrase <STRONG>source program</STRONG>, abbreviated <STRONG>source</STRONG>, to
+describe the program input to one run of <CODE>m1750-coff-as</CODE>.  The program may
+be in one or more files; how the source is partitioned into files
+doesn't change the meaning of the source.
+
+</P>
+<P>
+The source program is a concatenation of the text in all the files, in the
+order specified.
+
+</P>
+<P>
+Each time you run <CODE>m1750-coff-as</CODE> it assembles exactly one source
+program.  The source program is made up of one or more files.
+(The standard input is also a file.)
+
+</P>
+<P>
+You give <CODE>m1750-coff-as</CODE> a command line that has zero or more input file
+names.  The input files are read (from left file name to right).  A
+command line argument (in any position) that has no special meaning
+is taken to be an input file name.
+
+</P>
+<P>
+If you give <CODE>m1750-coff-as</CODE> no file names it attempts to read one input file
+from the <CODE>m1750-coff-as</CODE> standard input, which is normally your terminal.  You
+may have to type <KBD>ctl-D</KBD> to tell <CODE>m1750-coff-as</CODE> there is no more program
+to assemble.
+
+</P>
+<P>
+Use <SAMP>`--'</SAMP> if you need to explicitly name the standard input file
+in your command line.
+
+</P>
+<P>
+If the source is empty, <CODE>m1750-coff-as</CODE> produces a small, empty object
+file.
+
+</P>
+
+<H3>Filenames and Line-numbers</H3>
+
+<P>
+<A NAME="IDX15"></A>
+<A NAME="IDX16"></A>
+There are two ways of locating a line in the input file (or files) and
+either may be used in reporting error messages.  One way refers to a line
+number in a physical file; the other refers to a line number in a
+"logical" file.  See section <A HREF="as_1.html#SEC8">Error and Warning Messages</A>.
+
+</P>
+<P>
+<STRONG>Physical files</STRONG> are those files named in the command line given
+to <CODE>m1750-coff-as</CODE>.
+
+</P>
+<P>
+<STRONG>Logical files</STRONG> are simply names declared explicitly by assembler
+directives; they bear no relation to physical files.  Logical file names
+help error messages reflect the original source file, when <CODE>m1750-coff-as</CODE>
+source is itself synthesized from other files.
+See section <A HREF="as_7.html#SEC69"><CODE>.app-file <VAR>string</CODE></VAR></A>.
+
+</P>
+
+
+<H2><A NAME="SEC7" HREF="as_toc.html#TOC7">Output (Object) File</A></H2>
+
+<P>
+<A NAME="IDX17"></A>
+<A NAME="IDX18"></A>
+<A NAME="IDX19"></A>
+<A NAME="IDX20"></A>
+Every time you run <CODE>m1750-coff-as</CODE> it produces an output file, which is
+your assembly language program translated into numbers.  This file
+is the object file.  Its default name is
+<CODE>a.out</CODE>.
+<CODE>b.out</CODE> when <CODE>m1750-coff-as</CODE> is configured for the Intel 80960.
+You can give it another name by using the <CODE>-o</CODE> option.  Conventionally,
+object file names end with <TT>`.o'</TT>.  The default name is used for historical
+reasons: older assemblers were capable of assembling self-contained programs
+directly into a runnable program.  (For some formats, this isn't currently
+possible, but it can be done for the <CODE>a.out</CODE> format.)
+
+</P>
+<P>
+<A NAME="IDX21"></A>
+<A NAME="IDX22"></A>
+The object file is meant for input to the linker <CODE>m1750-coff-ld</CODE>.  It contains
+assembled program code, information to help <CODE>m1750-coff-ld</CODE> integrate
+the assembled program into a runnable file, and (optionally) symbolic
+information for the debugger.
+
+</P>
+
+
+
+<H2><A NAME="SEC8" HREF="as_toc.html#TOC8">Error and Warning Messages</A></H2>
+
+<P>
+<A NAME="IDX23"></A>
+<A NAME="IDX24"></A>
+<A NAME="IDX25"></A>
+<CODE>m1750-coff-as</CODE> may write warnings and error messages to the standard error
+file (usually your terminal).  This should not happen when  a compiler
+runs <CODE>m1750-coff-as</CODE> automatically.  Warnings report an assumption made so
+that <CODE>m1750-coff-as</CODE> could keep assembling a flawed program; errors report a
+grave problem that stops the assembly.
+
+</P>
+<P>
+<A NAME="IDX26"></A>
+Warning messages have the format
+
+</P>
+
+<PRE>
+file_name:<B>NNN</B>:Warning Message Text
+</PRE>
+
+<P>
+<A NAME="IDX27"></A>
+(where <B>NNN</B> is a line number).  If a logical file name has been given
+(see section <A HREF="as_7.html#SEC69"><CODE>.app-file <VAR>string</CODE></VAR></A>) it is used for the filename,
+otherwise the name of the current input file is used.  If a logical line
+number was given
+(see section <A HREF="as_7.html#SEC98"><CODE>.line <VAR>line-number</CODE></VAR></A>)
+then it is used to calculate the number printed,
+otherwise the actual line in the current source file is printed.  The
+message text is intended to be self explanatory (in the grand Unix
+tradition).
+
+</P>
+<P>
+<A NAME="IDX28"></A>
+Error messages have the format
+
+<PRE>
+file_name:<B>NNN</B>:FATAL:Error Message Text
+</PRE>
+
+<P>
+The file name and line number are derived as for warning
+messages.  The actual message text may be rather less explanatory
+because many of them aren't supposed to happen.
+
+</P>
+<P><HR><P>
+Go to the first, previous, <A HREF="as_2.html">next</A>, <A HREF="as_11.html">last</A> section, <A HREF="as_toc.html">table of contents</A>.
+</BODY>
+</HTML>

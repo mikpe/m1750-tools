@@ -1,0 +1,60 @@
+\entry {{\tt\indexbackslash }x}{29}{\code {{\tt\indexbackslash }x}}
+\entry {{\tt\indexbackslash }a}{29}{\code {{\tt\indexbackslash }a}}
+\entry {-mdw}{64}{\code {-mdw}}
+\entry {-mndw}{64}{\code {-mndw}}
+\entry {-mbw}{64}{\code {-mbw}}
+\entry {-mnbw}{64}{\code {-mnbw}}
+\entry {-msmall}{64}{\code {-msmall}}
+\entry {-mnormal}{64}{\code {-mnormal}}
+\entry {-m29050}{64}{\code {-m29050}}
+\entry {-m29000}{64}{\code {-m29000}}
+\entry {-mkernel-registers}{64}{\code {-mkernel-registers}}
+\entry {-muser-registers}{64}{\code {-muser-registers}}
+\entry {-mstack-check}{64}{\code {-mstack-check}}
+\entry {-mstorem-bug}{65}{\code {-mstorem-bug}}
+\entry {-mreuse-arg-regs}{65}{\code {-mreuse-arg-regs}}
+\entry {-msoft-float}{65}{\code {-msoft-float}}
+\entry {-m2}{65}{\code {-m2}}
+\entry {-m3}{65}{\code {-m3}}
+\entry {-m6}{65}{\code {-m6}}
+\entry {-mapcs}{65}{\code {-mapcs}}
+\entry {-mbsd}{65}{\code {-mbsd}}
+\entry {-mxopen}{65}{\code {-mxopen}}
+\entry {-mno-symrename}{65}{\code {-mno-symrename}}
+\entry {-m88000}{66}{\code {-m88000}}
+\entry {-m88100}{66}{\code {-m88100}}
+\entry {-m88110}{66}{\code {-m88110}}
+\entry {-mbig-pic}{66}{\code {-mbig-pic}}
+\entry {-midentify-revision}{66}{\code {-midentify-revision}}
+\entry {ident}{66}{\code {ident}}
+\entry {-mno-underscores}{66}{\code {-mno-underscores}}
+\entry {-mocs-debug-info}{66}{\code {-mocs-debug-info}}
+\entry {-mno-ocs-debug-info}{66}{\code {-mno-ocs-debug-info}}
+\entry {-mocs-frame-position}{66}{\code {-mocs-frame-position}}
+\entry {-mno-ocs-frame-position}{66}{\code {-mno-ocs-frame-position}}
+\entry {-moptimize-arg-area}{66}{\code {-moptimize-arg-area}}
+\entry {-mno-optimize-arg-area}{66}{\code {-mno-optimize-arg-area}}
+\entry {-mshort-data-num}{67}{\code {-mshort-data-\var {num}}}
+\entry {-mserialize-volatile}{67}{\code {-mserialize-volatile}}
+\entry {-mno-serialize-volatile}{67}{\code {-mno-serialize-volatile}}
+\entry {-msvr4}{67}{\code {-msvr4}}
+\entry {-msvr3}{67}{\code {-msvr3}}
+\entry {-mversion-03.00}{67}{\code {-mversion-03.00}}
+\entry {-mno-check-zero-division}{68}{\code {-mno-check-zero-division}}
+\entry {-mcheck-zero-division}{68}{\code {-mcheck-zero-division}}
+\entry {-muse-div-instruction}{68}{\code {-muse-div-instruction}}
+\entry {-mtrap-large-shift}{68}{\code {-mtrap-large-shift}}
+\entry {-mhandle-large-shift}{68}{\code {-mhandle-large-shift}}
+\entry {-mwarn-passed-structs}{69}{\code {-mwarn-passed-structs}}
+\entry {-mpower}{69}{\code {-mpower}}
+\entry {-mpower2}{69}{\code {-mpower2}}
+\entry {-mpowerpc}{69}{\code {-mpowerpc}}
+\entry {-mpowerpc-gpopt}{69}{\code {-mpowerpc-gpopt}}
+\entry {-mpowerpc-gfxopt}{69}{\code {-mpowerpc-gfxopt}}
+\entry {-mnew-mnemonics}{70}{\code {-mnew-mnemonics}}
+\entry {-mold-mnemonics}{70}{\code {-mold-mnemonics}}
+\entry {#pragma interface}{184}{\code {#pragma interface}}
+\entry {#pragma implementation}{185}{\code {#pragma implementation}}
+\entry {bug-gcc{\tt\char'100}prep.ai.mit.edu}{218}{\code {bug-gcc{\tt\char'100}prep.ai.mit.edu}}
+\entry {bug-g{\tt\char43}{\tt\char43}{\tt\char'100}prep.ai.mit.edu}{218}{\code {bug-g{\tt\char43}{\tt\char43}{\tt\char'100}prep.ai.mit.edu}}
+\entry {bug-libg{\tt\char43}{\tt\char43}{\tt\char'100}prep.ai.mit.edu}{218}{\code {bug-libg{\tt\char43}{\tt\char43}{\tt\char'100}prep.ai.mit.edu}}

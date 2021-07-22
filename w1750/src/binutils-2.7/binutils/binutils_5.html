@@ -1,0 +1,303 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from binutils.texi on 29 November 1996 -->
+
+<TITLE>gnu Binary Utilities - objdump</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_4.html">previous</A>, <A HREF="binutils_6.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC7" HREF="binutils_toc.html#TOC7">objdump</A></H1>
+
+<P>
+<A NAME="IDX50"></A>
+<A NAME="IDX51"></A>
+
+</P>
+
+<PRE>
+m1750-coff-objdump [ -a | --archive-headers ] 
+        [ -b <VAR>bfdname</VAR> | --target=<VAR>bfdname</VAR> ] [ --debugging ]
+        [ -d | --disassemble ]  [ -D | --disassemble-all ] 
+        [ -EB | -EL | --endian={big | little } ]
+        [ -f | --file-headers ]
+        [ -h | --section-headers | --headers ]  [ -i | --info ]
+        [ -j <VAR>section</VAR> | --section=<VAR>section</VAR> ]
+        [ -l | --line-numbers ] [ -S | --source ]
+        [ -m <VAR>machine</VAR> | --architecture=<VAR>machine</VAR> ]
+        [ -r | --reloc ] [ -R | --dynamic-reloc ]
+        [ -s | --full-contents ]  [ --stabs ]
+        [ -t | --syms ] [ -T | --dynamic-syms ] [ -x | --all-headers ]
+        [ -w | --wide ] [ --start-address=<VAR>address</VAR> ]
+        [ --stop-address=<VAR>address</VAR> ] [ --show-raw-insn ]
+        [ --version ]  [ --help ]
+        <VAR>objfile</VAR>...
+</PRE>
+
+<P>
+<CODE>objdump</CODE> displays information about one or more object files.
+The options control what particular information to display.  This
+information is mostly useful to programmers who are working on the
+compilation tools, as opposed to programmers who just want their
+program to compile and work.
+
+</P>
+<P>
+<VAR>objfile</VAR>... are the object files to be examined.  When you
+specify archives, <CODE>objdump</CODE> shows information on each of the member
+object files.
+
+</P>
+<P>
+The long and short forms of options, shown here as alternatives, are
+equivalent.  At least one option besides <SAMP>`-l'</SAMP> must be given.
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>-a</CODE>
+<DD>
+<DT><CODE>--archive-header</CODE>
+<DD>
+<A NAME="IDX52"></A>
+If any of the <VAR>objfile</VAR> files are archives, display the archive
+header information (in a format similar to <SAMP>`ls -l'</SAMP>).  Besides the
+information you could list with <SAMP>`ar tv'</SAMP>, <SAMP>`objdump -a'</SAMP> shows
+the object file format of each archive member.
+
+<DT><CODE>-b <VAR>bfdname</VAR></CODE>
+<DD>
+<DT><CODE>--target=<VAR>bfdname</VAR></CODE>
+<DD>
+<A NAME="IDX53"></A>
+Specify that the object-code format for the object files is
+<VAR>bfdname</VAR>.  This option may not be necessary; <VAR>objdump</VAR> can
+automatically recognize many formats.
+
+For example,
+
+<PRE>
+m1750-coff-objdump -b oasys -m vax -h fu.o
+</PRE>
+
+displays summary information from the section headers (<SAMP>`-h'</SAMP>) of
+<TT>`fu.o'</TT>, which is explicitly identified (<SAMP>`-m'</SAMP>) as a VAX object
+file in the format produced by Oasys compilers.  You can list the
+formats available with the <SAMP>`-i'</SAMP> option.
+See section <A HREF="binutils_12.html#SEC15">Target Selection</A>, for more information.
+
+<DT><CODE>--debugging</CODE>
+<DD>
+Display debugging information.  This attempts to parse debugging
+information stored in the file and print it out using a C like syntax.
+Only certain types of debugging information have been implemented.
+
+<DT><CODE>-d</CODE>
+<DD>
+<DT><CODE>--disassemble</CODE>
+<DD>
+<A NAME="IDX54"></A>
+<A NAME="IDX55"></A>
+Display the assembler mnemonics for the machine instructions from
+<VAR>objfile</VAR>.  This option only disassembles those sections which are
+expected to contain instructions.
+
+<DT><CODE>-D</CODE>
+<DD>
+<DT><CODE>--disassemble-all</CODE>
+<DD>
+Like <SAMP>`-d'</SAMP>, but disassemble the contents of all sections, not just
+those expected to contain instructions.
+
+<DT><CODE>-EB</CODE>
+<DD>
+<DT><CODE>-EL</CODE>
+<DD>
+<DT><CODE>--endian={big|little}</CODE>
+<DD>
+<A NAME="IDX56"></A>
+<A NAME="IDX57"></A>
+Specify the endianness of the object files.  This only affects
+disassembly.  This can be useful when disassembling a file format which
+does not describe endianness information, such as S-records.
+
+<DT><CODE>-f</CODE>
+<DD>
+<DT><CODE>--file-header</CODE>
+<DD>
+<A NAME="IDX58"></A>
+Display summary information from the overall header of
+each of the <VAR>objfile</VAR> files.
+
+<DT><CODE>-h</CODE>
+<DD>
+<DT><CODE>--section-header</CODE>
+<DD>
+<DT><CODE>--header</CODE>
+<DD>
+<A NAME="IDX59"></A>
+Display summary information from the section headers of the
+object file.
+
+File segments may be relocated to nonstandard addresses, for example by
+using the <SAMP>`-Ttext'</SAMP>, <SAMP>`-Tdata'</SAMP>, or <SAMP>`-Tbss'</SAMP> options to
+<CODE>ld</CODE>.  However, some object file formats, such as a.out, do not
+store the starting address of the file segments.  In those situations,
+although <CODE>ld</CODE> relocates the sections correctly, using <SAMP>`objdump
+-h'</SAMP> to list the file section headers cannot show the correct addresses.
+Instead, it shows the usual addresses, which are implicit for the
+target.
+
+<DT><CODE>--help</CODE>
+<DD>
+Print a summary of the options to <CODE>objdump</CODE> and exit.
+
+<DT><CODE>-i</CODE>
+<DD>
+<DT><CODE>--info</CODE>
+<DD>
+<A NAME="IDX60"></A>
+<A NAME="IDX61"></A>
+Display a list showing all architectures and object formats available
+for specification with <SAMP>`-b'</SAMP> or <SAMP>`-m'</SAMP>.
+
+<DT><CODE>-j <VAR>name</VAR></CODE>
+<DD>
+<DT><CODE>--section=<VAR>name</VAR></CODE>
+<DD>
+<A NAME="IDX62"></A>
+Display information only for section <VAR>name</VAR>.
+
+<DT><CODE>-l</CODE>
+<DD>
+<DT><CODE>--line-numbers</CODE>
+<DD>
+<A NAME="IDX63"></A>
+Label the display (using debugging information) with the filename and
+source line numbers corresponding to the object code or relocs shown.
+Only useful with <SAMP>`-d'</SAMP>, <SAMP>`-D'</SAMP>, or <SAMP>`-r'</SAMP>.
+
+<DT><CODE>-m <VAR>machine</VAR></CODE>
+<DD>
+<DT><CODE>--architecture=<VAR>machine</VAR></CODE>
+<DD>
+<A NAME="IDX64"></A>
+<A NAME="IDX65"></A>
+Specify the architecture to use when disassembling object files.  This
+can be useful when disasembling object files which do not describe
+architecture information, such as S-records.  You can list the available
+architectures with the <SAMP>`-i'</SAMP> option.
+
+<DT><CODE>-r</CODE>
+<DD>
+<DT><CODE>--reloc</CODE>
+<DD>
+<A NAME="IDX66"></A>
+Print the relocation entries of the file.  If used with <SAMP>`-d'</SAMP> or
+<SAMP>`-D'</SAMP>, the relocations are printed interspersed with the
+disassembly.
+
+<DT><CODE>-R</CODE>
+<DD>
+<DT><CODE>--dynamic-reloc</CODE>
+<DD>
+<A NAME="IDX67"></A>
+Print the dynamic relocation entries of the file.  This is only
+meaningful for dynamic objects, such as certain types of shared
+libraries.
+
+<DT><CODE>-s</CODE>
+<DD>
+<DT><CODE>--full-contents</CODE>
+<DD>
+<A NAME="IDX68"></A>
+<A NAME="IDX69"></A>
+Display the full contents of any sections requested.
+
+<DT><CODE>-S</CODE>
+<DD>
+<DT><CODE>--source</CODE>
+<DD>
+<A NAME="IDX70"></A>
+<A NAME="IDX71"></A>
+Display source code intermixed with disassembly, if possible.  Implies
+<SAMP>`-d'</SAMP>.
+
+<DT><CODE>--show-raw-insn</CODE>
+<DD>
+When disassembling instructions, print the instruction in hex as well as
+in symbolic form.  Not all targets handle this correctly yet.
+
+<DT><CODE>--stabs</CODE>
+<DD>
+<A NAME="IDX72"></A>
+<A NAME="IDX73"></A>
+<A NAME="IDX74"></A>
+<A NAME="IDX75"></A>
+Display the full contents of any sections requested.  Display the
+contents of the .stab and .stab.index and .stab.excl sections from an
+ELF file.  This is only useful on systems (such as Solaris 2.0) in which
+<CODE>.stab</CODE> debugging symbol-table entries are carried in an ELF
+section.  In most other file formats, debugging symbol-table entries are
+interleaved with linkage symbols, and are visible in the <SAMP>`--syms'</SAMP>
+output.  For more information on stabs symbols, see section `Stabs Overview' in <CITE>The "stabs" debug format</CITE>.
+
+<DT><CODE>--start-address=<VAR>address</VAR></CODE>
+<DD>
+<A NAME="IDX76"></A>
+Start displaying data at the specified address.  This affects the output
+of the <CODE>-d</CODE>, <CODE>-r</CODE> and <CODE>-s</CODE> options.
+
+<DT><CODE>--stop-address=<VAR>address</VAR></CODE>
+<DD>
+<A NAME="IDX77"></A>
+Stop displaying data at the specified address.  This affects the output
+of the <CODE>-d</CODE>, <CODE>-r</CODE> and <CODE>-s</CODE> options.
+
+<DT><CODE>-t</CODE>
+<DD>
+<DT><CODE>--syms</CODE>
+<DD>
+<A NAME="IDX78"></A>
+Print the symbol table entries of the file.
+This is similar to the information provided by the <SAMP>`nm'</SAMP> program.
+
+<DT><CODE>-T</CODE>
+<DD>
+<DT><CODE>--dynamic-syms</CODE>
+<DD>
+<A NAME="IDX79"></A>
+Print the dynamic symbol table entries of the file.  This is only
+meaningful for dynamic objects, such as certain types of shared
+libraries.  This is similar to the information provided by the <SAMP>`nm'</SAMP>
+program when given the <SAMP>`-D'</SAMP> (<SAMP>`--dynamic'</SAMP>) option.
+
+<DT><CODE>--version</CODE>
+<DD>
+Print the version number of <CODE>objdump</CODE> and exit.
+
+<DT><CODE>-x</CODE>
+<DD>
+<DT><CODE>--all-header</CODE>
+<DD>
+<A NAME="IDX80"></A>
+<A NAME="IDX81"></A>
+Display all available header information, including the symbol table and
+relocation entries.  Using <SAMP>`-x'</SAMP> is equivalent to specifying all of
+<SAMP>`-a -f -h -r -t'</SAMP>.
+
+<DT><CODE>-w</CODE>
+<DD>
+<DT><CODE>--wide</CODE>
+<DD>
+<A NAME="IDX82"></A>
+Format some lines for output devices that have more than 80 columns.
+</DL>
+
+<P><HR><P>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_4.html">previous</A>, <A HREF="binutils_6.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+</BODY>
+</HTML>

@@ -1,0 +1,128 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from binutils.texi on 29 November 1996 -->
+
+<TITLE>gnu Binary Utilities - size</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_6.html">previous</A>, <A HREF="binutils_8.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC9" HREF="binutils_toc.html#TOC9">size</A></H1>
+
+<P>
+<A NAME="IDX86"></A>
+<A NAME="IDX87"></A>
+
+</P>
+
+<PRE>
+m1750-coff-size [ -A | -B | --format=<VAR>compatibility</VAR> ]
+     [ --help ]  [ -d | -o | -x | --radix=<VAR>number</VAR> ]
+     [ --target=<VAR>bfdname</VAR> ]  [ -V | --version ]  
+     <VAR>objfile</VAR>...
+</PRE>
+
+<P>
+The GNU <CODE>size</CODE> utility lists the section sizes--and the total
+size--for each of the object or archive files <VAR>objfile</VAR> in its
+argument list.  By default, one line of output is generated for each
+object file or each module in an archive.
+
+</P>
+<P>
+<VAR>objfile</VAR>... are the object files to be examined.
+
+</P>
+<P>
+The command line options have the following meanings:
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>-A</CODE>
+<DD>
+<DT><CODE>-B</CODE>
+<DD>
+<DT><CODE>--format=<VAR>compatibility</VAR></CODE>
+<DD>
+<A NAME="IDX88"></A>
+Using one of these options, you can choose whether the output from GNU
+<CODE>size</CODE> resembles output from System V <CODE>size</CODE> (using <SAMP>`-A'</SAMP>,
+or <SAMP>`--format=sysv'</SAMP>), or Berkeley <CODE>size</CODE> (using <SAMP>`-B'</SAMP>, or
+<SAMP>`--format=berkeley'</SAMP>).  The default is the one-line format similar to
+Berkeley's.  
+
+Here is an example of the Berkeley (default) format of output from
+<CODE>size</CODE>: 
+
+<PRE>
+m1750-coff-size --format=Berkeley ranlib size
+text    data    bss     dec     hex     filename
+294880  81920   11592   388392  5ed28   ranlib
+294880  81920   11888   388688  5ee50   size
+</PRE>
+
+This is the same data, but displayed closer to System V conventions:
+
+
+<PRE>
+m1750-coff-size --format=SysV ranlib size
+ranlib  :
+section         size         addr
+.text         294880         8192       
+.data          81920       303104       
+.bss           11592       385024       
+Total         388392    
+
+size  :
+section         size         addr
+.text         294880         8192       
+.data          81920       303104       
+.bss           11888       385024       
+Total         388688    
+</PRE>
+
+<DT><CODE>--help</CODE>
+<DD>
+Show a summary of acceptable arguments and options.
+
+<DT><CODE>-d</CODE>
+<DD>
+<DT><CODE>-o</CODE>
+<DD>
+<DT><CODE>-x</CODE>
+<DD>
+<DT><CODE>--radix=<VAR>number</VAR></CODE>
+<DD>
+<A NAME="IDX89"></A>
+<A NAME="IDX90"></A>
+Using one of these options, you can control whether the size of each
+section is given in decimal (<SAMP>`-d'</SAMP>, or <SAMP>`--radix=10'</SAMP>); octal
+(<SAMP>`-o'</SAMP>, or <SAMP>`--radix=8'</SAMP>); or hexadecimal (<SAMP>`-x'</SAMP>, or
+<SAMP>`--radix=16'</SAMP>).  In <SAMP>`--radix=<VAR>number</VAR>'</SAMP>, only the three
+values (8, 10, 16) are supported.  The total size is always given in two
+radices; decimal and hexadecimal for <SAMP>`-d'</SAMP> or <SAMP>`-x'</SAMP> output, or
+octal and hexadecimal if you're using <SAMP>`-o'</SAMP>.
+
+<DT><CODE>--target=<VAR>bfdname</VAR></CODE>
+<DD>
+<A NAME="IDX91"></A>
+Specify that the object-code format for <VAR>objfile</VAR> is
+<VAR>bfdname</VAR>.  This option may not be necessary; <CODE>size</CODE> can
+automatically recognize many formats.
+See section <A HREF="binutils_12.html#SEC15">Target Selection</A>, for more information.
+
+<DT><CODE>-V</CODE>
+<DD>
+<DT><CODE>--version</CODE>
+<DD>
+Display the version number of <CODE>size</CODE>.
+</DL>
+
+<P><HR><P>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_6.html">previous</A>, <A HREF="binutils_8.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+</BODY>
+</HTML>

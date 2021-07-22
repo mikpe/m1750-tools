@@ -1,0 +1,154 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from binutils.texi on 29 November 1996 -->
+
+<TITLE>gnu Binary Utilities - strip</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_8.html">previous</A>, <A HREF="binutils_10.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC11" HREF="binutils_toc.html#TOC11">strip</A></H1>
+
+<P>
+<A NAME="IDX97"></A>
+<A NAME="IDX98"></A>
+<A NAME="IDX99"></A>
+<A NAME="IDX100"></A>
+
+</P>
+
+<PRE>
+m1750-coff-strip [ -F <VAR>bfdname</VAR> | --target=<VAR>bfdname</VAR> | --target=<VAR>bfdname</VAR> ]
+      [ -I <VAR>bfdname</VAR> | --input-target=<VAR>bfdname</VAR> ]
+      [ -O <VAR>bfdname</VAR> | --output-target=<VAR>bfdname</VAR> ]
+      [ -s | --strip-all ] [ -S | -g | --strip-debug ]
+      [ -K <VAR>symbolname</VAR> | --keep-symbol=<VAR>symbolname</VAR> ]
+      [ -N <VAR>symbolname</VAR> | --strip-symbol=<VAR>symbolname</VAR> ]
+      [ -x | --discard-all ] [ -X | --discard-locals ]
+      [ -R <VAR>sectionname</VAR> | --remove-section=<VAR>sectionname</VAR> ]
+      [ -o <VAR>file</VAR> ]
+      [ -v | --verbose ]  [ -V | --version ]  [ --help ]
+      <VAR>objfile</VAR>...
+</PRE>
+
+<P>
+GNU <CODE>strip</CODE> discards all symbols from object files
+<VAR>objfile</VAR>.  The list of object files may include archives.
+At least one object file must be given.
+
+</P>
+<P>
+<CODE>strip</CODE> modifies the files named in its argument,
+rather than writing modified copies under different names.
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>-F <VAR>bfdname</VAR></CODE>
+<DD>
+<DT><CODE>--target=<VAR>bfdname</VAR></CODE>
+<DD>
+Treat the original <VAR>objfile</VAR> as a file with the object
+code format <VAR>bfdname</VAR>, and rewrite it in the same format.
+See section <A HREF="binutils_12.html#SEC15">Target Selection</A>, for more information.
+
+<DT><CODE>--help</CODE>
+<DD>
+Show a summary of the options to <CODE>strip</CODE> and exit.
+
+<DT><CODE>-I <VAR>bfdname</VAR></CODE>
+<DD>
+<DT><CODE>--input-target=<VAR>bfdname</VAR></CODE>
+<DD>
+Treat the original <VAR>objfile</VAR> as a file with the object
+code format <VAR>bfdname</VAR>.
+See section <A HREF="binutils_12.html#SEC15">Target Selection</A>, for more information.
+
+<DT><CODE>-O <VAR>bfdname</VAR></CODE>
+<DD>
+<DT><CODE>--output-target=<VAR>bfdname</VAR></CODE>
+<DD>
+Replace <VAR>objfile</VAR> with a file in the output format <VAR>bfdname</VAR>.
+See section <A HREF="binutils_12.html#SEC15">Target Selection</A>, for more information.
+
+<DT><CODE>-R <VAR>sectionname</VAR></CODE>
+<DD>
+<DT><CODE>--remove-section=<VAR>sectionname</VAR></CODE>
+<DD>
+Remove any section named <VAR>sectionname</VAR> from the output file.  This
+option may be given more than once.  Note that using this option
+inappropriately may make the output file unusable.
+
+<DT><CODE>-s</CODE>
+<DD>
+<DT><CODE>--strip-all</CODE>
+<DD>
+Remove all symbols.
+
+<DT><CODE>-g</CODE>
+<DD>
+<DT><CODE>-S</CODE>
+<DD>
+<DT><CODE>--strip-debug</CODE>
+<DD>
+Remove debugging symbols only.
+
+<DT><CODE>--strip-unneeded</CODE>
+<DD>
+Remove all symbols that are not needed for relocation processing.
+
+<DT><CODE>-K <VAR>symbolname</VAR></CODE>
+<DD>
+<DT><CODE>--keep-symbol=<VAR>symbolname</VAR></CODE>
+<DD>
+Keep only symbol <VAR>symbolname</VAR> from the source file.  This option may
+be given more than once.
+
+<DT><CODE>-N <VAR>symbolname</VAR></CODE>
+<DD>
+<DT><CODE>--strip-symbol=<VAR>symbolname</VAR></CODE>
+<DD>
+Remove symbol <VAR>symbolname</VAR> from the source file. This option may be
+given more than once, and may be combined with strip options other than
+<CODE>-K</CODE>.
+
+<DT><CODE>-o <VAR>file</VAR></CODE>
+<DD>
+Put the stripped output in <VAR>file</VAR>, rather than replacing the
+existing file.  When this argument is used, only one <VAR>objfile</VAR>
+argument may be specified.
+
+<DT><CODE>-x</CODE>
+<DD>
+<DT><CODE>--discard-all</CODE>
+<DD>
+Remove non-global symbols.
+
+<DT><CODE>-X</CODE>
+<DD>
+<DT><CODE>--discard-locals</CODE>
+<DD>
+Remove compiler-generated local symbols.
+(These usually start with <SAMP>`L'</SAMP> or <SAMP>`.'</SAMP>.)
+
+<DT><CODE>-V</CODE>
+<DD>
+<DT><CODE>--version</CODE>
+<DD>
+Show the version number for <CODE>strip</CODE>.
+
+<DT><CODE>-v</CODE>
+<DD>
+<DT><CODE>--verbose</CODE>
+<DD>
+Verbose output: list all object files modified.  In the case of
+archives, <SAMP>`strip -v'</SAMP> lists all members of the archive.
+</DL>
+
+<P><HR><P>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_8.html">previous</A>, <A HREF="binutils_10.html">next</A>, <A HREF="binutils_13.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+</BODY>
+</HTML>

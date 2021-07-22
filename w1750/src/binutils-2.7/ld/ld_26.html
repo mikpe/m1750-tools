@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 20 November 1996 -->
+
+<TITLE>Using LD, the GNU linker - H8/300</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_25.html">previous</A>, <A HREF="ld_27.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H2><A NAME="SEC26" HREF="ld_toc.html#TOC26"><CODE>ld</CODE> and the H8/300</A></H2>
+
+<P>
+<A NAME="IDX334"></A>
+For the H8/300, <CODE>ld</CODE> can perform these global optimizations when
+you specify the <SAMP>`-relax'</SAMP> command-line option.
+
+</P>
+<DL COMPACT>
+
+<DT><EM>relaxing address modes</EM>
+<DD>
+<A NAME="IDX335"></A>
+ 
+<CODE>ld</CODE> finds all <CODE>jsr</CODE> and <CODE>jmp</CODE> instructions whose
+targets are within eight bits, and turns them into eight-bit
+program-counter relative <CODE>bsr</CODE> and <CODE>bra</CODE> instructions,
+respectively.
+
+<A NAME="IDX336"></A>
+<DT><EM>synthesizing instructions</EM>
+<DD>
+<CODE>ld</CODE> finds all <CODE>mov.b</CODE> instructions which use the
+sixteen-bit absolute address form, but refer to the top
+page of memory, and changes them to use the eight-bit address form.
+(That is: the linker turns <SAMP>`mov.b <CODE>@</CODE><VAR>aa</VAR>:16'</SAMP> into
+<SAMP>`mov.b <CODE>@</CODE><VAR>aa</VAR>:8'</SAMP> whenever the address <VAR>aa</VAR> is in the
+top page of memory).
+</DL>
+
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_25.html">previous</A>, <A HREF="ld_27.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>

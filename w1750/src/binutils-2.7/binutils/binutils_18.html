@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from binutils.texi on 20 November 1996 -->
+
+<TITLE>gnu Binary Utilities - Linker Emulation Selection</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_17.html">previous</A>, <A HREF="binutils_19.html">next</A>, <A HREF="binutils_19.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H2><A NAME="SEC17" HREF="binutils_toc.html#TOC17">Linker emulation selection</A></H2>
+
+<P>
+A linker <STRONG>emulation</STRONG> is a "personality" of the linker, which gives
+the linker default values for the other aspects of the target system.
+In particular, it consists of
+
+</P>
+
+<UL>
+<LI>
+
+the linker script
+
+<LI>
+
+the target
+
+<LI>
+
+several "hook" functions that are run at certain stages of the linking
+process to do special things that some targets require
+</UL>
+
+<P>
+The command to list valid linker emulation values is <SAMP>`ld -V'</SAMP>.
+
+</P>
+<P>
+Sample values: <SAMP>`hp300bsd'</SAMP>, <SAMP>`mipslit'</SAMP>, <SAMP>`sun4'</SAMP>.
+
+</P>
+<P>
+Ways to specify:
+
+</P>
+
+<OL>
+<LI>
+
+command line option: <SAMP>`-m'</SAMP>
+(see section `Options' in <CITE>Using LD</CITE>)
+
+<LI>
+
+environment variable <CODE>LDEMULATION</CODE>
+
+<LI>
+
+compiled-in <CODE>DEFAULT_EMULATION</CODE> from <TT>`Makefile'</TT>,
+which comes from <CODE>EMUL</CODE> in <TT>`config/<VAR>target</VAR>.mt'</TT>
+</OL>
+
+<P><HR><P>
+Go to the <A HREF="binutils_1.html">first</A>, <A HREF="binutils_17.html">previous</A>, <A HREF="binutils_19.html">next</A>, <A HREF="binutils_19.html">last</A> section, <A HREF="binutils_toc.html">table of contents</A>.
+</BODY>
+</HTML>

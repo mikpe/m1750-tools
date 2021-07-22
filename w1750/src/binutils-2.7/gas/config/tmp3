@@ -1,0 +1,85 @@
+static void
+md_apply_fix_2 (fixP, val)
+     fixS *fixP;
+     offsetT val;
+{
+  addressT upper_limit;
+  offsetT lower_limit;
+
+  /* This is unnecessary but it convinces the native rs6000 compiler
+     to generate the code we want.  */
+  char *buf = fixP->fx_frag->fr_literal;
+  buf += fixP->fx_where;
+  /* end ibm compiler workaround */
+
+  if (val & 0x80000000)
+    val |= ~(addressT)0x7fffffff;
+  else
+    val &= 0x7fffffff;
+
+#ifdef OBJ_ELF
+  if (fixP->fx_addsy)
+    {
+      memset (buf, 0, fixP->fx_size);
+      fixP->fx_addnumber = val;	/* Remember value for emit_reloc */
+      return;
+    }
+#endif
+
+  switch (fixP->fx_size)
+    {
+      /* The cast to offsetT below are necessary to make code correct for
+	 machines where ints are smaller than offsetT */
+    case 1:
+      *buf++ = val;
+      upper_limit = 0x7f;
+      lower_limit = - (offsetT) 0x80;
+      break;
+    case 2:
+      *buf++ = (val >> 8);
+      *buf++ = val;
+      upper_limit = 0x7fff;
+      lower_limit = - (offsetT) 0x8000;
+      break;
+    case 4:
+      *buf++ = (val >> 24);
+      *buf++ = (val >> 16);
+      *buf++ = (val >> 8);
+      *buf++ = val;
+      upper_limit = 0x7fffffff;
+      lower_limit = - (offsetT) 0x7fffffff - 1;	/* avoid constant overflow */
+      break;
+    default:
+      BAD_CASE (fixP->fx_size);
+    }
+
+  /* Fix up a negative reloc.  */
+  if (fixP->fx_addsy == NULL && fixP->fx_subsy != NULL)
+    {
+      fixP->fx_addsy = fixP->fx_subsy;
+      fixP->fx_subsy = NULL;
+      fixP->fx_tcbit = 1;
+    }
+
+  /* For non-pc-relative values, it's conceivable we might get something
+     like "0xff" for a byte field.  So extend the upper part of the range
+     to accept such numbers.  We arbitrarily disallow "-0xff" or "0xff+0xff",
+     so that we can do any range checking at all.  */
+  if (!fixP->fx_pcrel)
+    upper_limit = upper_limit * 2 + 1;
+
+  if ((addressT) val > upper_limit
+      && (val > 0 || val < lower_limit))
+    as_bad_where (fixP->fx_file, fixP->fx_line, "value out of range");
+
+  /* A one byte PC-relative reloc means a short branch.  We can't use
+     a short branch with a value of 0 or -1, because those indicate
+     different opcodes (branches with longer offsets).  */
+  if (fixP->fx_pcrel
+      && fixP->fx_size == 1
+      && (fixP->fx_addsy == NULL
+	  || S_IS_DEFINED (fixP->fx_addsy))
+      && (val == 0 || val == -1))
+    as_bad_where (fixP->fx_file, fixP->fx_line, "invalid byte branch offset");
+}
+

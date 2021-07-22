@@ -1,0 +1,150 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.50
+     from ld.texinfo on 20 November 1996 -->
+
+<TITLE>Using LD, the GNU linker - Assignment</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_12.html">previous</A>, <A HREF="ld_14.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H3><A NAME="SEC13" HREF="ld_toc.html#TOC13">Assignment: Defining Symbols</A></H3>
+<P>
+<A NAME="IDX211"></A>
+<A NAME="IDX212"></A>
+<A NAME="IDX213"></A>
+You may create global symbols, and assign values (addresses) to global
+symbols, using any of the C assignment operators:
+
+</P>
+<DL COMPACT>
+
+<DT><CODE><VAR>symbol</VAR>  = <VAR>expression</VAR> ;</CODE>
+<DD>
+<DT><CODE><VAR>symbol</VAR> &#38;= <VAR>expression</VAR> ;</CODE>
+<DD>
+<DT><CODE><VAR>symbol</VAR> += <VAR>expression</VAR> ;</CODE>
+<DD>
+<DT><CODE><VAR>symbol</VAR> -= <VAR>expression</VAR> ;</CODE>
+<DD>
+<DT><CODE><VAR>symbol</VAR> *= <VAR>expression</VAR> ;</CODE>
+<DD>
+<DT><CODE><VAR>symbol</VAR> /= <VAR>expression</VAR> ;</CODE>
+<DD>
+</DL>
+
+<P>
+Two things distinguish assignment from other operators in <CODE>ld</CODE>
+expressions.
+
+<UL>
+<LI>
+
+Assignment may only be used at the root of an expression;
+<SAMP>`a=b+3;'</SAMP> is allowed, but <SAMP>`a+b=3;'</SAMP> is an error.
+
+<A NAME="IDX214"></A>
+<A NAME="IDX215"></A>
+<LI>
+
+You must place a trailing semicolon ("<KBD>;</KBD>") at the end of an
+assignment statement.
+</UL>
+
+<P>
+Assignment statements may appear:
+
+<UL>
+<LI>
+
+as commands in their own right in an <CODE>ld</CODE> script; or
+<LI>
+
+as independent statements within a <CODE>SECTIONS</CODE> command; or
+<LI>
+
+as part of the contents of a section definition in a
+<CODE>SECTIONS</CODE> command.
+</UL>
+
+<P>
+The first two cases are equivalent in effect--both define a symbol with
+an absolute address.  The last case defines a symbol whose address is
+relative to a particular section (see section <A HREF="ld_17.html#SEC17">Specifying Output Sections</A>).
+
+</P>
+<P>
+<A NAME="IDX216"></A>
+<A NAME="IDX217"></A>
+<A NAME="IDX218"></A>
+When a linker expression is evaluated and assigned to a variable, it is
+given either an absolute or a relocatable type. An absolute expression
+type is one in which the symbol contains the value that it will have in
+the output file; a relocatable expression type is one in which the
+value is expressed as a fixed offset from the base of a section.
+
+</P>
+<P>
+The type of the expression is controlled by its position in the script
+file.  A symbol assigned within a section definition is created relative
+to the base of the section; a symbol assigned in any other place is
+created as an absolute symbol. Since a symbol created within a
+section definition is relative to the base of the section, it
+will remain relocatable if relocatable output is requested.  A symbol
+may be created with an absolute value even when assigned to within a
+section definition by using the absolute assignment function
+<CODE>ABSOLUTE</CODE>.  For example, to create an absolute symbol whose address
+is the last byte of an output section named <CODE>.data</CODE>:
+
+<PRE>
+SECTIONS{ ...
+  .data : 
+    {
+      *(.data)
+      _edata = ABSOLUTE(.) ;
+    } 
+... }
+</PRE>
+
+<P>
+The linker tries to put off the evaluation of an assignment until all
+the terms in the source expression are known (see section <A HREF="ld_12.html#SEC12">Evaluation</A>).  For
+instance, the sizes of sections cannot be known until after allocation,
+so assignments dependent upon these are not performed until after
+allocation. Some expressions, such as those depending upon the location
+counter <STRONG>dot</STRONG>, <SAMP>`.'</SAMP> must be evaluated during allocation. If the
+result of an expression is required, but the value is not available,
+then an error results.  For example, a script like the following
+
+<PRE>
+SECTIONS { ...
+  text 9+this_isnt_constant : 
+    { ...
+    }
+... }
+</PRE>
+
+<P>
+<A NAME="IDX219"></A>
+will cause the error message "<CODE>Non constant expression for initial
+address</CODE>".
+
+</P>
+<P>
+<A NAME="IDX220"></A>
+In some cases, it is desirable for a linker script to define a symbol
+only if it is referenced, and only if it is not defined by any object
+included in the link.  For example, traditional linkers defined the
+symbol <SAMP>`etext'</SAMP>.  However, ANSI C requires that the user be able to
+use <SAMP>`etext'</SAMP> as a function name without encountering an error.
+The <CODE>PROVIDE</CODE> keyword may be used to define a symbol, such as
+<SAMP>`etext'</SAMP>, only if it is referenced but not defined.  The syntax is
+<CODE>PROVIDE(<VAR>symbol</VAR> = <VAR>expression</VAR>)</CODE>.
+
+</P>
+<P><HR><P>
+Go to the <A HREF="ld_1.html">first</A>, <A HREF="ld_12.html">previous</A>, <A HREF="ld_14.html">next</A>, <A HREF="ld_33.html">last</A> section, <A HREF="ld_toc.html">table of contents</A>.
+</BODY>
+</HTML>
