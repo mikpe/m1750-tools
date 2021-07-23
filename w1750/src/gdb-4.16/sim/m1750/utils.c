@@ -104,6 +104,7 @@ strdup (char *str)
 #endif
 
 
+#ifndef STRNDUP
 char *
 strndup (char *str, int len)
 {
@@ -115,6 +116,7 @@ strndup (char *str, int len)
   *(p + len) = '\0';
   return strncpy (p, str, len);
 }
+#endif
 
 
 #ifndef STRNCASECMP

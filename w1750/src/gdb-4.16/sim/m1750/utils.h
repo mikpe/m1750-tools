@@ -14,7 +14,9 @@ extern int   xtoi (char c);
 #ifndef STRDUP
 extern char  *strdup (char *str);
 #endif
+#ifndef STRNDUP
 extern char  *strndup (char *str, int len);
+#endif
 #ifndef STRNCASECMP
 extern int   strncasecmp (char *s1, char *s2, int len);
 #endif
