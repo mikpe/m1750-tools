@@ -76,7 +76,7 @@ DEP = mkdep
 
 TARGETLIB = libsim.a
 
-all:	run load libsim.a
+all:	run ./load libsim.a
 
 CFILES = \
 	m1750-dis.c \
@@ -138,7 +138,8 @@ run:$(OFILES) run.o
 	$(CC) $(CFLAGS) -o run run.o $(OFILES) ../../bfd/libbfd.a ../../libiberty/libiberty.a  \
 	../../opcodes/libopcodes.a  -lm -lreadline -ltermcap
 
-load : load.o ../../gdb/version.o
+# Prevent this being mis-interpreted as a GNU make 'load' directive
+./load : load.o ../../gdb/version.o
 	$(CC) $(CFLAGS) -o load load.o ../../gdb/version.o ../../bfd/libbfd.a ../../libiberty/libiberty.a  \
 	../../opcodes/libopcodes.a  -lm -lreadline -ltermcap
 
