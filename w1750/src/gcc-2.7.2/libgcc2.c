@@ -1349,6 +1349,7 @@ L4:");
 #endif /* L__udivhi3 */
 
 #ifdef  L__udivmodsi4
+#if 0 /* m1750-coff ICEs on this */
 /*
  * gcc-1750/libgcc/__udivmodsi4
  * 
@@ -1694,6 +1695,7 @@ __udivmodsi4 (n, d, rp)
   return ww.ll;
 }
 
+#endif /* 0 */
 #endif /* L__udivmodsi4 */
 
 #ifdef  L__udivsi3
