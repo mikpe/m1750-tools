@@ -1,5 +1,0 @@
-This file contains any messages produced by compilers while
-running configure, to aid debugging if configure makes a mistake.
-
-configure:605: gcc -E conftest.c
-configure:1098: gcc -o conftest -g -O   conftest.c  1>&5

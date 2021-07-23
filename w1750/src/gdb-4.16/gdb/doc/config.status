@@ -1,5 +1,0 @@
-#!/bin/sh
-# This file was generated automatically by configure.  Do not edit.
-# This directory was configured as follows:
-/w1750/src/gdb-4.16/gdb/../configure --verbose --host=i386-unknown-cygwin32 --target=m1750-coff --prefix=/w1750 --cache-file=.././config.cache --srcdir=. --norecursion 
-# 
