@@ -175,8 +175,8 @@ extern char *getenv ();
 extern int errno;
 #endif
 
-extern int sys_nerr;
 #ifndef HAVE_STRERROR
+extern int sys_nerr;
 #if defined(bsd4_4)
 extern const char *const sys_errlist[];
 #else
@@ -4724,10 +4724,14 @@ pfatal_with_name (name)
 {
   char *s;
 
+#if 0
   if (errno < sys_nerr)
+#endif
     s = concat ("%s: ", my_strerror( errno ));
+#if 0
   else
     s = "cannot open `%s'";
+#endif
   fatal (s, name);
 }
 
@@ -4737,10 +4741,14 @@ perror_with_name (name)
 {
   char *s;
 
+#if 0
   if (errno < sys_nerr)
+#endif
     s = concat ("%s: ", my_strerror( errno ));
+#if 0
   else
     s = "cannot open `%s'";
+#endif
   error (s, name);
 }
 
@@ -4750,11 +4758,15 @@ perror_exec (name)
 {
   char *s;
 
+#if 0
   if (errno < sys_nerr)
+#endif
     s = concat ("installation problem, cannot exec `%s': ",
 		my_strerror (errno));
+#if 0
   else
     s = "installation problem, cannot exec `%s'";
+#endif
   error (s, name);
 }
 
