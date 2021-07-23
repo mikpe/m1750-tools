@@ -37,7 +37,7 @@ compilation is specified by a string called a "spec".  */
 #include <sys/stat.h>
 #include <errno.h>
 
-#ifdef _WIN32
+#ifndef _WIN32
 #include <sys/file.h>   /* May get R_OK, etc. on some systems.  */
 #else
 #include <process.h>
@@ -2022,7 +2022,7 @@ pexecute (search_flag, program, argv, not_last)
 
 #endif
 
-#if !defined(__MSDOS__) && !defined(OS2) && defined(_WIN32)
+#if !defined(__MSDOS__) && !defined(OS2) && !defined(_WIN32)
 
 static int
 pexecute (search_flag, program, argv, not_last)
@@ -2127,7 +2127,7 @@ pexecute (search_flag, program, argv, not_last)
 }
 #endif /* OS2 */
 
-#if !defined(_WIN32)
+#if defined(_WIN32)
 
 static int
 pexecute (search_flag, program, argv, not_last)
@@ -2262,7 +2262,7 @@ execute ()
 #ifdef __MSDOS__
         status = pid = commands[i].pid;
 #else
-#ifndef _WIN32
+#ifdef _WIN32
 	pid = cwait (&status, commands[i].pid, WAIT_CHILD);
 #else
 	pid = wait (&status);
